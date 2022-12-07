@@ -2,6 +2,7 @@
 
 int main()
 {
-    std::cout << "Hell World!";
+    std::cout << "Hell World!\n";
+
     return 0;
 }
