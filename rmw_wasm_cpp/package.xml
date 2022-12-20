@@ -7,12 +7,17 @@
   <maintainer email="isabel.paredes@quantstack.net">Isabel Paredes</maintainer>
   <license>Apache License 2.0</license>
 
-  <!-- <buildtool_depend>ament_cmake</buildtool_depend> -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <!-- <test_depend>ament_lint_auto</test_depend> -->
-  <!-- <test_depend>ament_lint_common</test_depend> -->
+  <depend>js_transport</depend>
+  <depend>rmw</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <member_of_group>rmw_implementation_packages</member_of_group>
 
   <export>
-    <!-- <build_type>ament_cmake</build_type> -->
+    <build_type>ament_cmake</build_type>
   </export>
 </package>

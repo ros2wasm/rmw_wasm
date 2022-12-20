@@ -1,20 +1,54 @@
 cmake_minimum_required(VERSION 3.8)
 project(rmw_wasm_cpp)
 
-set(CMAKE_EXECUTABLE_SUFFIX ".html")
+# set(CMAKE_EXECUTABLE_SUFFIX ".html")
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
 # find dependencies
-# find_package(ament_cmake REQUIRED)
+find_package(ament_cmake REQUIRED)
 
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+# further dependencies manually
+find_package(js_transport QUIET)
+if(NOT js_transport_FOUND)
+  message(WARNING "Could not find 'js_transport'")
+  ament_cmake()
+  return()
+endif()
 
-add_executable(simple_test src/simple_test.cpp)
+find_package(rmw REQUIRED)
+
+set(${PROJECT_NAME}_SOURCES
+  src/rmw_init.cpp
+  src/rmw_node.cpp
+  src/rmw_publisher.cpp
+  src/rmw_publish.cpp
+  src/rmw_service.cpp
+  src/rmw_client.cpp
+)
+
+add_library(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
+
+ament_target_dependencies(${PROJECT_NAME}
+  js_transport
+  rmw
+)
+
+ament_export_dependencies(rmw)
+ament_export_libraries(${PROJECT_NAME})
+configure_rmw_library(${PROJECT_NAME})
+# register_rmw_implementation(
+#   "c:rosidl_typesupport_c:rosidl_typesupport_introspection_c"
+#   "cpp:rosidl_typesupport_cpp:rosidl_typesupport_introspection_cpp"
+# )
+
+install(
+  TARGETS ${PROJECT_NAME}
+  LIBRARY DESTINATION lib
+)
+# add_executable(simple_test src/simple_test.cpp)
 # ament_target_dependencies(simple_test)
 
 if(BUILD_TESTING)
