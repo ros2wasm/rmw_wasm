@@ -21,19 +21,26 @@ endif()
 find_package(rmw REQUIRED)
 
 set(${PROJECT_NAME}_SOURCES
+  src/identifier.cpp
   src/rmw_init.cpp
   src/rmw_node.cpp
   src/rmw_publisher.cpp
   src/rmw_publish.cpp
   src/rmw_service.cpp
   src/rmw_client.cpp
+  src/simple_test.cpp
+  
 )
 
-add_library(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
+add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCES})
 
 ament_target_dependencies(${PROJECT_NAME}
   js_transport
   rmw
+)
+target_include_directories(${PROJECT_NAME} PRIVATE
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
 )
 
 ament_export_dependencies(rmw)
@@ -48,8 +55,8 @@ install(
   TARGETS ${PROJECT_NAME}
   LIBRARY DESTINATION lib
 )
-# add_executable(simple_test src/simple_test.cpp)
-# ament_target_dependencies(simple_test)
+add_executable(simple_test src/simple_test.cpp)
+ament_target_dependencies(simple_test)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
