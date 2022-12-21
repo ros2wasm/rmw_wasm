@@ -8,7 +8,12 @@ namespace rmw_wasm_cpp
 
     rmw_ret_t rmw_init_options_init(
         rmw_init_options_t * init_options,
-        rcutils_allocator_t allocator);
+        rcutils_allocator_t allocator
+    );
+
+    rmw_ret_t rmw_init_options_copy(
+        const rmw_init_options_t * src, rmw_init_options_t * dst
+    );
 
 } // namespace rmw_wasm_cpp
 
