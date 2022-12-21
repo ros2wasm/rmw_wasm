@@ -12,7 +12,12 @@ namespace rmw_wasm_cpp
     );
 
     rmw_ret_t rmw_init_options_copy(
-        const rmw_init_options_t * src, rmw_init_options_t * dst
+        const rmw_init_options_t * src, 
+        rmw_init_options_t * dst
+    );
+
+    rmw_ret_t rmw_init_options_fini(
+        rmw_init_options_t * init_options
     );
 
 } // namespace rmw_wasm_cpp

@@ -32,7 +32,7 @@ extern "C"
         init_options->impl = nullptr;
         init_options->enclave = NULL;
         init_options->domain_id = RMW_DEFAULT_DOMAIN_ID;
-        init_options->security_options = rmw_get_default_security_options(); // ???
+        init_options->security_options = rmw_get_default_security_options();
         init_options->localhost_only = RMW_LOCALHOST_ONLY_DEFAULT;
         std::cout << "[WASM] rmw_init_options_init(end)\n"; // REMOVE
         return RMW_RET_OK;
@@ -68,7 +68,7 @@ extern "C"
         if (NULL != src->enclave && NULL == tmp.enclave) {
             return RMW_RET_BAD_ALLOC;
         }
-        tmp.security_options = rmw_get_zero_initialized_security_options(); // ???
+        tmp.security_options = rmw_get_zero_initialized_security_options();
         rmw_ret_t ret =
             rmw_security_options_copy(&src->security_options, allocator, &tmp.security_options);
         if (RMW_RET_OK != ret) {
@@ -78,6 +78,29 @@ extern "C"
         *dst = tmp;
         std::cout << "[WASM] rmw_init_options_copy(end)\n"; // REMOVE
         return RMW_RET_OK;
+    }
+
+    rmw_ret_t rmw_init_options_fini(rmw_init_options_t * init_options)
+    {
+        std::cout << "[WASM] rmw_init_options_fini(start)\n"; // REMOVE
+        assert(rmw_wasm_cpp::identifier != NULL);
+        RMW_CHECK_ARGUMENT_FOR_NULL(init_options, RMW_RET_INVALID_ARGUMENT);
+        if (NULL == init_options->implementation_identifier) {
+            RMW_SET_ERROR_MSG("expected initialized init_options");
+            return RMW_RET_INVALID_ARGUMENT;
+        }
+        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
+            init_options,
+            init_options->implementation_identifier,
+            rmw_wasm_cpp::identifier,
+            return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
+        rcutils_allocator_t * allocator = &init_options->allocator;
+        RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
+        allocator->deallocate(init_options->enclave, allocator->state);
+        rmw_ret_t ret = rmw_security_options_fini(&init_options->security_options, allocator);
+        *init_options = rmw_get_zero_initialized_init_options();
+        std::cout << "[WASM] rmw_init_options_fini(end)\n"; // REMOVE
+        return ret;
     }
 
 } // extern "C"
