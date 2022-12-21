@@ -22,6 +22,9 @@ find_package(rmw REQUIRED)
 
 set(${PROJECT_NAME}_SOURCES
   src/identifier.cpp
+  src/rmw_get_implementation_identifier.cpp
+  src/serialization_format.cpp
+  src/rmw_get_serialization_format.cpp
   src/rmw_init.cpp
   src/rmw_node.cpp
   src/rmw_publisher.cpp
@@ -29,10 +32,9 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_service.cpp
   src/rmw_client.cpp
   src/simple_test.cpp
-  
 )
 
-add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCES})
+add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})
 
 ament_target_dependencies(${PROJECT_NAME}
   js_transport
@@ -54,6 +56,8 @@ configure_rmw_library(${PROJECT_NAME})
 install(
   TARGETS ${PROJECT_NAME}
   LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION bin
 )
 add_executable(simple_test src/simple_test.cpp)
 ament_target_dependencies(simple_test)

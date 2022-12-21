@@ -5,8 +5,6 @@ namespace rmw_wasm_cpp
 {
 
     extern const char * identifier;
-    // TODO:
-    // extern const char * serialization_format;
 
 } // namespace rmw_wasm_cpp
 
