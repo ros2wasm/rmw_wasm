@@ -6,9 +6,11 @@
 #include "rcutils/strdup.h"
 #include "rcutils/types.h"
 
+#include "rmw/rmw.h"
 #include "rmw/init.h"
 #include "rmw/impl/cpp/macros.hpp"
 #include "rmw/init_options.h"
+#include "rmw/error_handling.h"
 
 extern "C"
 {
@@ -100,6 +102,52 @@ extern "C"
         rmw_ret_t ret = rmw_security_options_fini(&init_options->security_options, allocator);
         *init_options = rmw_get_zero_initialized_init_options();
         std::cout << "[WASM] rmw_init_options_fini(end)\n"; // REMOVE
+        return ret;
+    }
+
+    rmw_ret_t rmw_shutdown(rmw_context_t * context)
+    {
+        std::cout << "[WASM] rmw_shutdown(start)\n"; // REMOVE
+        RMW_CHECK_ARGUMENT_FOR_NULL(context, RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_FOR_NULL_WITH_MSG(
+            context->impl,
+            "expected initialized context",
+            return RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
+            context,
+            context->implementation_identifier,
+            rmw_wasm_cpp::identifier,
+            return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
+        context->impl->is_shutdown = true; 
+        std::cout << "[WASM] rmw_shutdown(end)\n"; // REMOVE
+        return RMW_RET_OK;
+    }
+
+    rmw_ret_t rmw_context_fini(rmw_context_t * context)
+    {   
+        std::cout << "[WASM] rmw_context_fini(start)\n"; // REMOVE
+        RMW_CHECK_ARGUMENT_FOR_NULL(context, RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_FOR_NULL_WITH_MSG(
+            context->impl,
+            "expected initialized context",
+            return RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
+            context,
+            context->implementation_identifier,
+            rmw_wasm_cpp::identifier,
+            return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
+        if (!context->impl->is_shutdown) {
+            RCUTILS_SET_ERROR_MSG("context has not been shutdown");
+            return RMW_RET_INVALID_ARGUMENT;
+        }
+        if (context->impl->count > 0) {
+            RMW_SET_ERROR_MSG("Finalizing a context with active nodes");
+            return RMW_RET_ERROR;
+        }
+        rmw_ret_t ret = rmw_init_options_fini(&context->options);
+        delete context->impl;
+        *context = rmw_get_zero_initialized_context();
+        std::cout << "[WASM] rmw_context_fini(end)\n"; // REMOVE
         return ret;
     }
 
