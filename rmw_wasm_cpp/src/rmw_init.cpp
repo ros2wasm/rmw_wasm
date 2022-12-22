@@ -108,7 +108,9 @@ extern "C"
         return ret;
     }
 
-    rmw_ret_t rmw_init(const rmw_init_options_t * options, rmw_context_t * context)
+    rmw_ret_t rmw_init(
+        const rmw_init_options_t * options, 
+        rmw_context_t * context)
     {   
         std::cout << "[WASM] rmw_init(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(options, RMW_RET_INVALID_ARGUMENT);
