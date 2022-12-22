@@ -21,6 +21,7 @@ endif()
 find_package(rmw REQUIRED)
 find_package(rcpputils REQUIRED)
 find_package(rcutils REQUIRED)
+find_package(rmw_dds_common REQUIRED)
 
 set(${PROJECT_NAME}_SOURCES
   src/identifier.cpp
@@ -64,14 +65,18 @@ install(
 
 add_executable(simple_test src/simple_test.cpp)
 ament_target_dependencies(${PROJECT_NAME}
+  rmw
   rcpputils
   rcutils
+  rmw_dds_common
 )
 
 ament_export_include_directories(include)
 ament_export_dependencies(
+  rmw
   rcpputils
   rcutils
+  rmw_dds_common
 )
 
 if(BUILD_TESTING)

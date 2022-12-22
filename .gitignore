@@ -15,3 +15,5 @@ install/
 log/
 
 .vscode
+*rmw_node_EMAIL.cpp
+*rmw_node_EPROSIMA.cpp
