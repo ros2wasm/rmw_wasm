@@ -13,3 +13,5 @@ _deps
 build/
 install/
 log/
+
+.vscode
