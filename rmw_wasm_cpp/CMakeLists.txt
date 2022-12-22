@@ -19,6 +19,8 @@ if(NOT js_transport_FOUND)
 endif()
 
 find_package(rmw REQUIRED)
+find_package(rcpputils REQUIRED)
+find_package(rcutils REQUIRED)
 
 set(${PROJECT_NAME}_SOURCES
   src/identifier.cpp
@@ -59,8 +61,18 @@ install(
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION bin
 )
+
 add_executable(simple_test src/simple_test.cpp)
-ament_target_dependencies(simple_test)
+ament_target_dependencies(${PROJECT_NAME}
+  rcpputils
+  rcutils
+)
+
+ament_export_include_directories(include)
+ament_export_dependencies(
+  rcpputils
+  rcutils
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

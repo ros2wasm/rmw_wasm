@@ -7,6 +7,8 @@
 #include "rcutils/strdup.h"
 #include "rcutils/types.h"
 
+#include "rcpputils/scope_exit.hpp"
+
 #include "rmw/rmw.h"
 #include "rmw/init.h"
 #include "rmw/impl/cpp/macros.hpp"
@@ -104,6 +106,60 @@ extern "C"
         *init_options = rmw_get_zero_initialized_init_options();
         std::cout << "[WASM] rmw_init_options_fini(end)\n"; // REMOVE
         return ret;
+    }
+
+    rmw_ret_t rmw_init(const rmw_init_options_t * options, rmw_context_t * context)
+    {   
+        std::cout << "[WASM] rmw_init(start)\n"; // REMOVE
+        RMW_CHECK_ARGUMENT_FOR_NULL(options, RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_ARGUMENT_FOR_NULL(context, RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_FOR_NULL_WITH_MSG(
+            options->implementation_identifier,
+            "expected initialized init options",
+            return RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
+            options,
+            options->implementation_identifier,
+            rmw_wasm_cpp::identifier,
+            return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
+        RMW_CHECK_FOR_NULL_WITH_MSG(
+            options->enclave,
+            "expected non-null enclave",
+            return RMW_RET_INVALID_ARGUMENT);
+        if (NULL != context->implementation_identifier) {
+            RMW_SET_ERROR_MSG("expected a zero-initialized context");
+            return RMW_RET_INVALID_ARGUMENT;
+        }
+
+        auto restore_context = rcpputils::make_scope_exit(
+            [context]() {*context = rmw_get_zero_initialized_context();});
+
+        context->instance_id = options->instance_id;
+        context->implementation_identifier = rmw_wasm_cpp::identifier;
+
+        // Domain ID not used
+        context->actual_domain_id = 0u;
+        // REMOVE RMW_DEFAULT_DOMAIN_ID == options->domain_id ? 0uL : options->domain_id;
+
+        context->impl = new (std::nothrow) rmw_context_impl_t();
+        if (nullptr == context->impl) {
+            RMW_SET_ERROR_MSG("failed to allocate context impl");
+            return RMW_RET_BAD_ALLOC;
+        }
+        auto cleanup_impl = rcpputils::make_scope_exit(
+            [context]() {delete context->impl;});
+
+        context->impl->is_shutdown = false;
+        context->options = rmw_get_zero_initialized_init_options();
+        rmw_ret_t ret = rmw_init_options_copy(options, &context->options);
+        if (RMW_RET_OK != ret) {
+            return ret;
+        }
+
+        cleanup_impl.cancel();
+        restore_context.cancel();
+        std::cout << "[WASM] rmw_init(end)\n"; // REMOVE
+        return RMW_RET_OK;
     }
 
     rmw_ret_t rmw_shutdown(rmw_context_t * context)
