@@ -38,12 +38,30 @@ extern "C"
         return RMW_RET_UNSUPPORTED;
     }
 
+    static rmw_publisher_t * _create_publisher(
+        const char * topic_name,
+        const rmw_publisher_options_t * publisher_options,
+        const rosidl_message_type_support_t * type_supports
+    )
+    {
+        std::cout << "[TODO] _create_publisher(start)\n"; // REMOVE
+        // TODO: implement
+
+        // REMOVE when vars are used
+        RMW_CHECK_ARGUMENT_FOR_NULL(topic_name, nullptr);
+        RMW_CHECK_ARGUMENT_FOR_NULL(publisher_options, nullptr);
+        RMW_CHECK_ARGUMENT_FOR_NULL(type_supports, nullptr);
+
+        std::cout << "[TODO] _create_publisher(end)\n"; // REMOVE
+        return RMW_RET_OK;
+    }
+
     rmw_publisher_t * rmw_create_publisher(
         const rmw_node_t * node,
         const rosidl_message_type_support_t * type_supports,
         const char * topic_name,
         const rmw_qos_profile_t * qos_policies,
-        const rmw_publisher_options_t * publisher_options) // TODO: use somewhere
+        const rmw_publisher_options_t * publisher_options)
     {
         std::cout << "[WASM] rmw_create_publisher(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(node, nullptr);
@@ -52,100 +70,31 @@ extern "C"
             node->implementation_identifier,
             rmw_wasm_cpp::identifier,
             return nullptr);
-        RMW_CHECK_ARGUMENT_FOR_NULL(type_supports, nullptr); // needed???
-        RMW_CHECK_ARGUMENT_FOR_NULL(topic_name, nullptr);    // needed???
+        RMW_CHECK_ARGUMENT_FOR_NULL(type_supports, nullptr);
+        RMW_CHECK_ARGUMENT_FOR_NULL(topic_name, nullptr);
         if (0 == strlen(topic_name)) {
             RMW_SET_ERROR_MSG("topic_name argument is an empty string");
             return nullptr;
         }
         RMW_CHECK_ARGUMENT_FOR_NULL(qos_policies, nullptr);
 
-        // REMOVE: (not used) Adapt any 'best available' QoS options
-        // rmw_qos_profile_t adapted_qos_policies = *qos_policies;
+        // TODO: set some default qos policy
 
-        // REMOVE: qos_profile_get...() does not exist
-        // rmw_ret_t ret = rmw_dds_common::qos_profile_get_best_available_for_topic_publisher(
-        //     node, topic_name, &adapted_qos_policies, rmw_get_subscriptions_info_by_topic);
-        // if (RMW_RET_OK != ret) {
-        //     return nullptr;
-        // }
+        // TODO: validate type support
 
-        // TODO: implement if needed
-        // auto participant_info =
-        //     static_cast<CustomParticipantInfo *>(node->context->impl->participant_info);
-
-        // TODO: implement create_publisher
-        // rmw_publisher_t * publisher = rmw_wasm_cpp::create_publisher(
-        //     type_supports,
-        //     topic_name,
-        //     &adapted_qos_policies,
-        //     publisher_options,
-        //     false,
-        //     true);
-        // if (!publisher) {
-        //     return nullptr;
-        // }
-
-        // REMOVE: not used
-        // auto common_context = static_cast<rmw_dds_common::Context *>(node->context->impl->common);
-
-        // TODO: implement 
-        // auto info = static_cast<const CustomPublisherInfo *>(publisher->data);
-        // {
-        //     // Update graph
-        //     std::lock_guard<std::mutex> guard(common_context->node_update_mutex);
-        //     rmw_dds_common::msg::ParticipantEntitiesInfo msg =
-        //         common_context->graph_cache.associate_writer(
-        //             info->publisher_gid, 
-        //             common_context->gid, 
-        //             node->name, 
-        //             node->namespace_);
-
-        //     // TODO: implement rmw_publish
-        //     rmw_ret_t rmw_ret = rmw_wasm_cpp::__rmw_publish(
-        //         rmw_wasm_cpp::identifier,
-        //         common_context->pub,
-        //         static_cast<void *>(&msg),
-        //         nullptr);
-        //     if (RMW_RET_OK != rmw_ret) {
-        //         rmw_error_state_t error_state = *rmw_get_error_state();
-        //         rmw_reset_error();
-        //         static_cast<void>(common_context->graph_cache.dissociate_writer(
-        //             info->publisher_gid, 
-        //             common_context->gid, 
-        //             node->name, 
-        //             node->namespace_));
-
-        //         // TODO: implement destroy_publisher
-        //         // rmw_ret = rmw_wasm_cpp::destroy_publisher(
-        //         //     rmw_wasm_cpp::identifier, 
-        //         //     publisher);
-        //         if (RMW_RET_OK != rmw_ret) {
-        //             RMW_SAFE_FWRITE_TO_STDERR(rmw_get_error_string().str);
-        //             RMW_SAFE_FWRITE_TO_STDERR(" during '" RCUTILS_STRINGIFY(__function__) "' cleanup\n");
-        //             rmw_reset_error();
-        //         }
-        //         rmw_set_error_state(
-        //             error_state.message, 
-        //             error_state.file, 
-        //             error_state.line_number);
-        //         return nullptr;
-        //     }
-        // }
-        rmw_publisher_t* publisher{ }; // REMOVE
         std::cout << "[WASM] rmw_create_publisher(end)\n"; // REMOVE
-        return publisher;
+        return _create_publisher(topic_name, publisher_options, type_supports);
     }
 
-    rmw_ret_t _destroy_publisher(rmw_publisher_t * publisher)
+    static rmw_ret_t _destroy_publisher(rmw_publisher_t * publisher)
     {
         // TODO: implement
-        std::cout << "[WASM] _destroy_publisher(start)\n"; // REMOVE
+        std::cout << "[TODO] _destroy_publisher(start)\n"; // REMOVE
 
         rmw_free(const_cast<char *>(publisher->topic_name));
         rmw_publisher_free(publisher);
 
-        std::cout << "[WASM] _destroy_publisher(end)\n"; // REMOVE
+        std::cout << "[TODO] _destroy_publisher(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -175,7 +124,8 @@ extern "C"
         const rmw_publisher_t * publisher,
         size_t * subscription_count)
     {
-        std::cout << "[WASM] rmw_publisher_count_matched_subs(start)\n"; // REMOVE
+        std::cout << "[WASM] rmw_publisher_count_matched_subscriptions(start)"
+                  << '\n'; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             publisher,
@@ -186,9 +136,10 @@ extern "C"
             subscription_count, 
             RMW_RET_INVALID_ARGUMENT);
 
-        std::cout << "[WASM] rmw_publisher_count_matched_subs(end)\n"; // REMOVE
+        std::cout << "[WASM] rmw_publisher_count_matched_subscriptions(end)"
+                  << '\n'; // REMOVE
         // TODO: implement if needed
-        // return rmw_wasm_cpp::__rmw_publisher_count_matched_subscriptions(
+        // return _publisher_count_matched_subscriptions(
         //     publisher, 
         //     subscription_count);
         return RMW_RET_OK;
