@@ -9,32 +9,22 @@
 #include "rmw/error_handling.h"
 #include "rmw/impl/cpp/macros.hpp"
 
-// #include "rmw_dds_common/context.hpp" // REMOVE
-// #include "rmw_dds_common/qos.hpp" // REMOVE
-// #include "rmw_dds_common/msg/participant_entities_info.hpp" // REMOVE
-
 extern "C"
 {
 
     rmw_ret_t rmw_init_publisher_allocation(
-        const rosidl_message_type_support_t * type_support,
-        const rosidl_runtime_c__Sequence__bound * message_bounds,
-        rmw_publisher_allocation_t * allocation)
+        [[maybe_unused]] const rosidl_message_type_support_t * type_support,
+        [[maybe_unused]] const rosidl_runtime_c__Sequence__bound * message_bounds,
+        [[maybe_unused]] rmw_publisher_allocation_t * allocation)
     {
-        // Unused in current implementation
-        (void) type_support;
-        (void) message_bounds;
-        (void) allocation;
-        RMW_SET_ERROR_MSG("unimplemented");
+        RMW_SET_ERROR_MSG("rmw_init_publisher_allocation unimplemented");
         return RMW_RET_UNSUPPORTED;
     }
 
     rmw_ret_t rmw_fini_publisher_allocation(
-        rmw_publisher_allocation_t * allocation)
+        [[maybe_unused]] rmw_publisher_allocation_t * allocation)
     {
-        // Unused in current implementation
-        (void) allocation;
-        RMW_SET_ERROR_MSG("unimplemented");
+        RMW_SET_ERROR_MSG("rmw_fini_publisher_allocation unimplemented");
         return RMW_RET_UNSUPPORTED;
     }
 
@@ -165,7 +155,7 @@ extern "C"
 
     rmw_ret_t rmw_publisher_wait_for_all_acked(
         const rmw_publisher_t * publisher, 
-        rmw_time_t wait_timeout)
+        [[maybe_unused]] rmw_time_t wait_timeout)
     {
         std::cout << "[WASM] rmw_publisher_wait_for_all_acked(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
@@ -179,7 +169,6 @@ extern "C"
         // TODO: implement if needed
         // return rmw_wasm_cpp::__rmw_publisher_wait_for_all_acked(
         //     rmw_wasm_cpp::identifier, publisher, wait_timeout);
-        static_cast<void>(wait_timeout);
         return RMW_RET_OK;
     }
 
@@ -205,14 +194,12 @@ extern "C"
     }
 
     rmw_ret_t rmw_borrow_loaned_message(
-        const rmw_publisher_t * publisher,
-        const rosidl_message_type_support_t * type_support,
-        void ** ros_message)
+        [[maybe_unused]] const rmw_publisher_t * publisher,
+        [[maybe_unused]] const rosidl_message_type_support_t * type_support,
+        [[maybe_unused]] void ** ros_message)
     {   
         std::cout << "[WASM] rmw_borrow_loaned_message(start)\n"; // REMOVE
-        static_cast<void>(publisher);
-        static_cast<void>(type_support);
-        static_cast<void>(ros_message);
+
         RMW_SET_ERROR_MSG("rmw_borrow_loaned_message not implemented for rmw_wasm_cpp");
 
         // TODO: implement if needed
@@ -223,12 +210,11 @@ extern "C"
     }
 
     rmw_ret_t rmw_return_loaned_message_from_publisher(
-        const rmw_publisher_t * publisher,
-        void * loaned_message)
+        [[maybe_unused]] const rmw_publisher_t * publisher,
+        [[maybe_unused]] void * loaned_message)
     {
         std::cout << "[WASM] rmw_return_loaned_message_from_publisher(start)\n"; // REMOVE
-        static_cast<void>(publisher);
-        static_cast<void>(loaned_message);
+
         RMW_SET_ERROR_MSG("rmw_return_loaned_message_from_publisher not implemented for rmw_wasm_cpp");
         
         // TODO: implement if needed
