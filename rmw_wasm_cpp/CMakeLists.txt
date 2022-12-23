@@ -33,6 +33,7 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_publisher.cpp
   src/rmw_publish.cpp
   src/rmw_event.cpp
+  src/rmw_serialize.cpp
   src/rmw_service.cpp
   src/rmw_client.cpp
   src/simple_test.cpp
