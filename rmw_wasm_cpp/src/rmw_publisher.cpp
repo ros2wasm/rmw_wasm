@@ -7,12 +7,11 @@
 #include "rmw/rmw.h"
 #include "rmw/allocators.h"
 #include "rmw/error_handling.h"
-// #include "rmw/get_topic_endpoint_info.h"
 #include "rmw/impl/cpp/macros.hpp"
 
-#include "rmw_dds_common/context.hpp"
-#include "rmw_dds_common/qos.hpp"
-// #include "rmw_dds_common/msg/participant_entities_info.hpp"
+// #include "rmw_dds_common/context.hpp" // REMOVE
+// #include "rmw_dds_common/qos.hpp" // REMOVE
+// #include "rmw_dds_common/msg/participant_entities_info.hpp" // REMOVE
 
 extern "C"
 {
@@ -138,6 +137,40 @@ extern "C"
         return publisher;
     }
 
+    rmw_ret_t _destroy_publisher(rmw_publisher_t * publisher)
+    {
+        // TODO: implement
+        std::cout << "[WASM] _destroy_publisher(start)\n"; // REMOVE
+
+        rmw_free(const_cast<char *>(publisher->topic_name));
+        rmw_publisher_free(publisher);
+
+        std::cout << "[WASM] _destroy_publisher(end)\n"; // REMOVE
+        return RMW_RET_OK;
+    }
+
+    rmw_ret_t rmw_destroy_publisher(
+        rmw_node_t * node, 
+        rmw_publisher_t * publisher)
+    {
+        std::cout << "[WASM] rmw_destroy_publisher(start)\n"; // REMOVE
+        RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
+            node,
+            node->implementation_identifier,
+            rmw_wasm_cpp::identifier,
+            return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
+        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
+            publisher,
+            publisher->implementation_identifier,
+            rmw_wasm_cpp::identifier,
+            return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
+
+        std::cout << "[WASM] rmw_destroy_publisher(end)\n"; // REMOVE
+        return _destroy_publisher(publisher);
+    }
+
     rmw_ret_t rmw_publisher_count_matched_subscriptions(
         const rmw_publisher_t * publisher,
         size_t * subscription_count)
@@ -252,33 +285,6 @@ extern "C"
         //     rmw_wasm_cpp::identifier, publisher, loaned_message);
         std::cout << "[WASM] rmw_return_loaned_message_from_publisher(end)\n"; // REMOVE
         return RMW_RET_UNSUPPORTED;
-    }
-
-    rmw_ret_t rmw_destroy_publisher(
-        rmw_node_t * node, 
-        rmw_publisher_t * publisher)
-    {
-        RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
-        RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
-        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
-            node,
-            node->implementation_identifier,
-            rmw_wasm_cpp::identifier,
-            return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
-        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
-            publisher,
-            publisher->implementation_identifier,
-            rmw_wasm_cpp::identifier,
-            return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
-
-        // TODO: implement destruction
-        // return rmw_wasm_cpp::__rmw_destroy_publisher(
-        //     rmw_wasm_cpp::identifier, node, publisher);
-
-        // NOTE: these may be moved to __rmw_destroy_publisher
-        rmw_free(const_cast<char *>(publisher->topic_name));
-        rmw_publisher_free(publisher);
-        return RMW_RET_OK;
     }
 
 }  // extern "C"
