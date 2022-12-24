@@ -47,26 +47,25 @@ extern "C"
             publisher->data);
     }
 
-    // NOTE: may need to be called "subscription"
-    rmw_ret_t rmw_subscriber_event_init(
+    rmw_ret_t rmw_subscription_event_init(
         rmw_event_t * rmw_event,
-        const rmw_subscription_t * subscriber,
+        const rmw_subscription_t * subscription,
         rmw_event_type_t event_type)
     {   
-        std::cout << "[WASM] rmw_subscriber_event_init(start)\n"; // REMOVE
-        RMW_CHECK_ARGUMENT_FOR_NULL(subscriber, RMW_RET_INVALID_ARGUMENT);
+        std::cout << "[WASM] subscription(start)\n"; // REMOVE
+        RMW_CHECK_ARGUMENT_FOR_NULL(subscription, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
-            subscriber,
-            subscriber->implementation_identifier,
+            subscription,
+            subscription->implementation_identifier,
             rmw_wasm_cpp::identifier,
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
 
-        std::cout << "[WASM] rmw_subscriber_event(end)\n"; // REMOVE
+        std::cout << "[WASM] rmw_subscription_event(end)\n"; // REMOVE
         return _event_init(
             rmw_event,
             event_type,
-            subscriber->implementation_identifier,
-            subscriber->data);
+            subscription->implementation_identifier,
+            subscription->data);
     }
 
 }  // extern "C"
