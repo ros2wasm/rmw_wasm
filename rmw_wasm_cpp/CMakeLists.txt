@@ -40,6 +40,8 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_request.cpp
   src/rmw_response.cpp
   src/rmw_service.cpp
+  src/rmw_guard_condition.cpp
+  src/rmw_wait.cpp
   src/simple_test.cpp
 )
 
