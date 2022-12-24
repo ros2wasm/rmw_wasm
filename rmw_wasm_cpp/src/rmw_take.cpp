@@ -1,7 +1,10 @@
 #include <iostream> // REMOVE
 
+#include "rmw_wasm_cpp/identifier.hpp"
+
 #include "rmw/rmw.h"
 #include "rmw/error_handling.h"
+#include "rmw/impl/cpp/macros.hpp"
 
 extern "C"
 {
@@ -82,6 +85,25 @@ extern "C"
         std::cout << "[WASM] rmw_return_loaned_message_from_subscription()\n"; // REMOVE
         RMW_SET_ERROR_MSG("rmw_return_loaned_message_from_subscription not implemented");
         return RMW_RET_UNSUPPORTED;
+    }
+
+    rmw_ret_t rmw_take_event(
+        const rmw_event_t * event_handle,
+        void * event_info,
+        bool * taken)
+    {
+        RMW_CHECK_ARGUMENT_FOR_NULL(event_handle, RMW_RET_ERROR);
+        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
+            event_handle,
+            event_handle->implementation_identifier,
+            rmw_wasm_cpp::identifier,
+            return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
+        RMW_CHECK_ARGUMENT_FOR_NULL(event_info, RMW_RET_ERROR);
+        RMW_CHECK_ARGUMENT_FOR_NULL(taken, RMW_RET_ERROR);
+
+        // TODO: implement if needed
+        std::cout << "[WASM] rmw_take_event()\n"; // REMOVE
+        return RMW_RET_OK;
     }
 
 }  // extern "C"
