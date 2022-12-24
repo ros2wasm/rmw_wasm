@@ -36,8 +36,8 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_serialize.cpp
   src/rmw_subscription.cpp
   src/rmw_take.cpp
-  src/rmw_service.cpp
   src/rmw_client.cpp
+  src/rmw_service.cpp
   src/simple_test.cpp
 )
 
