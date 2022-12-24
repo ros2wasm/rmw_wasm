@@ -3,10 +3,8 @@
 #include "rmw_wasm_cpp/identifier.hpp"
 
 #include "rmw/rmw.h"
-// #include "rmw/allocators.h"
 #include "rmw/error_handling.h"
 #include "rmw/impl/cpp/macros.hpp"
-// #include "rmw/get_topic_endpoint_info.h"
 
 extern "C"
 {
