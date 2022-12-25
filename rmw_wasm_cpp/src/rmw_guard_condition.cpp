@@ -10,12 +10,20 @@ extern "C"
 {
     rmw_guard_condition_t * rmw_create_guard_condition(rmw_context_t * context)
     {
-        std::cout << "[TODO] rmw_create_guard_condition()\n"; // REMOVE
+        std::cout << "[WASM] rmw_create_guard_condition()\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(context, NULL);
+        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
+            init context,
+            context->implementation_identifier,
+            rmw_wasm_cpp::identifier,
+            return NULL);
 
-        // TODO: implement rmw_wasm_cpp::create_guard_condition()
-        rmw_guard_condition_t * fake_guard_condition{ };
-        return fake_guard_condition;
+        // TODO: implement rmw_wasm_cpp::create_guard_condition(){
+        RCUTILS_CAN_RETURN_WITH_ERROR_OF(nullptr); // ???
+        rmw_guard_condition_t * guard_condition = new rmw_guard_condition_t;
+        guard_condition->implementation_identifier = rmw_wasm_cpp::identifier;
+        // guard_condition->data = new rmw_wasm_cpp::GuardCondition();
+        return guard_condition;
     }
 
     rmw_ret_t rmw_destroy_guard_condition(
