@@ -44,6 +44,7 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_wait.cpp
   src/rmw_get_names_and_types.cpp
   src/rmw_count.cpp
+  src/rmw_gid.cpp
   src/simple_test.cpp
 )
 
