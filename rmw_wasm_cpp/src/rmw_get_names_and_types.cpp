@@ -5,6 +5,8 @@
 #include "rmw/rmw.h"
 #include "rmw/impl/cpp/macros.hpp"
 #include "rmw/get_node_info_and_types.h"
+#include "rmw/get_topic_names_and_types.h"
+#include "rmw/get_service_names_and_types.h"
 #include "rmw/names_and_types.h"
 #include "rmw/validate_node_name.h"
 #include "rmw/validate_namespace.h"
