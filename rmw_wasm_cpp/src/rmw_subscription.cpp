@@ -160,4 +160,14 @@ extern "C"
         return RMW_RET_OK;
     }
 
+    rmw_ret_t rmw_subscription_set_on_new_message_callback(
+        rmw_subscription_t * rmw_subscription,
+        [[maybe_unused]] rmw_event_callback_t callback,
+        [[maybe_unused]] const void * user_data)
+    {
+        RMW_CHECK_ARGUMENT_FOR_NULL(rmw_subscription, RMW_RET_INVALID_ARGUMENT);
+        // TODO: implement if needed
+        return RMW_RET_OK;        
+    }
+
 }  // extern "C"

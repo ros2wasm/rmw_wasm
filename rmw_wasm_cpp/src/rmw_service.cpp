@@ -131,4 +131,14 @@ extern "C"
         return RMW_RET_OK;
     }
 
+    rmw_ret_t rmw_service_set_on_new_request_callback(
+        rmw_service_t * rmw_service,
+        [[maybe_unused]] rmw_event_callback_t callback,
+        [[maybe_unused]] const void * user_data)
+    {
+        RMW_CHECK_ARGUMENT_FOR_NULL(rmw_service, RMW_RET_INVALID_ARGUMENT);
+        // TODO: implement if needed
+        return RMW_RET_OK;
+    }
+
 }  // extern "C"

@@ -68,4 +68,14 @@ extern "C"
             subscription->data);
     }
 
+    rmw_ret_t rmw_event_set_callback(
+        rmw_event_t * rmw_event,
+        [[maybe_unused]] rmw_event_callback_t callback,
+        [[maybe_unused]] const void * user_data)
+    {
+        RMW_CHECK_ARGUMENT_FOR_NULL(rmw_event, RMW_RET_INVALID_ARGUMENT);
+        // TODO: implement if needed
+        return RMW_RET_OK;
+    }
+
 }  // extern "C"
