@@ -120,25 +120,6 @@ extern "C"
         return RMW_RET_OK;
     }
 
-    rmw_ret_t rmw_subscription_get_actual_qos(
-        const rmw_subscription_t * subscription,
-        rmw_qos_profile_t * qos)
-    {
-        std::cout << "[WASM] rmw_subscription_get_actual_qos(start)\n"; // REMOVE
-        RMW_CHECK_ARGUMENT_FOR_NULL(subscription, RMW_RET_INVALID_ARGUMENT);
-        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
-            subscription,
-            subscription->implementation_identifier,
-            rmw_wasm_cpp::identifier,
-            return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
-        RMW_CHECK_ARGUMENT_FOR_NULL(qos, RMW_RET_INVALID_ARGUMENT);
-
-        // TODO: implement if needed
-
-        std::cout << "[WASM] rmw_subscription_get_actual_qos(start)\n"; // REMOVE
-        return RMW_RET_OK;
-    }
-
     rmw_ret_t rmw_subscription_set_content_filter(
         rmw_subscription_t * subscription,
         const rmw_subscription_content_filter_options_t * options)

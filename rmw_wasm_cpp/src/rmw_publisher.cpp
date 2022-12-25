@@ -172,27 +172,6 @@ extern "C"
         return RMW_RET_OK;
     }
 
-    rmw_ret_t rmw_publisher_get_actual_qos(
-        const rmw_publisher_t * publisher,
-        rmw_qos_profile_t * qos)
-    {
-        std::cout << "[WASM] rmw_publisher_get_actual_qos(start)\n"; // REMOVE
-        RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
-        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
-            publisher,
-            publisher->implementation_identifier,
-            rmw_wasm_cpp::identifier,
-            return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
-        RMW_CHECK_ARGUMENT_FOR_NULL(qos, RMW_RET_INVALID_ARGUMENT);
-
-        std::cout << "[WASM] rmw_publisher_get_actual_qos(end)\n"; // REMOVE
-        // TODO: implement if needed
-        // return rmw_wasm_cpp::__rmw_publisher_get_actual_qos(
-        //     publisher, 
-        //     qos);
-        return RMW_RET_OK;
-    }
-
     rmw_ret_t rmw_borrow_loaned_message(
         [[maybe_unused]] const rmw_publisher_t * publisher,
         [[maybe_unused]] const rosidl_message_type_support_t * type_support,
