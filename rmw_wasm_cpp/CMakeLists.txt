@@ -46,6 +46,7 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_count.cpp
   src/rmw_gid.cpp
   src/rmw_qos.cpp
+  src/rmw_log_and_features.cpp
   src/simple_test.cpp
 )
 
