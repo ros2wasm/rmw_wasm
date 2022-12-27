@@ -3,6 +3,8 @@
 #include "rmw/rmw.h"
 #include "rmw/impl/cpp/macros.hpp"
 
+// NOTE: gid is a unique identifier
+
 extern "C" 
 {
     rmw_ret_t rmw_get_gid_for_publisher(
