@@ -34,7 +34,7 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_publish.cpp
   src/rmw_event.cpp
   src/rmw_serialize.cpp
-  src/rmw_subscription.cpp
+  src/rmw_subscriber.cpp
   src/rmw_take.cpp
   src/rmw_client.cpp
   src/rmw_request.cpp
