@@ -3,6 +3,7 @@
 
 #include "rmw_wasm_cpp/rmw_identifier.hpp"
 #include "rmw_wasm_cpp/rmw_context_impl.hpp"
+#include "rmw_wasm_cpp/rmw_types.hpp"
 
 #include "rmw/rmw.h"
 #include "rmw/allocators.h"
@@ -128,15 +129,16 @@ extern "C"
     }
 
     const rmw_guard_condition_t * rmw_node_get_graph_guard_condition(
-        const rmw_node_t * node)
+        [[maybe_unused]] const rmw_node_t * node)
     {
         // TODO: fix or replace
-        auto common_context = static_cast<rmw_dds_common::Context *>(node->context->impl->common);
-        if (!common_context) {
-            RMW_SET_ERROR_MSG("common_context is nullptr");
-            return nullptr;
-        }
-        return common_context->graph_guard_condition;
+        // auto node_impl = static_cast<rmw_wasm_node_t *>(node->data);
+        // if (!node_impl) {
+        //     RMW_SET_ERROR_MSG("node_impl is nullptr");
+        //     return nullptr;
+        // }
+        rmw_guard_condition_t * fake_guard_condition{ };
+        return fake_guard_condition;
     }
 
 }  // extern "C"
