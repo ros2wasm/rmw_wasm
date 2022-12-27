@@ -11,8 +11,6 @@
 #include "rmw/validate_namespace.h"
 #include "rmw/error_handling.h"
 
-#include "rmw_dds_common/context.hpp" // REMOVE: do not use dds
-
 #include "rcpputils/scope_exit.hpp"
 
 extern "C"
