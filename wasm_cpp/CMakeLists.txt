@@ -11,6 +11,32 @@ find_package(ament_cmake REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
+set(${PROJECT_NAME}_SOURCES
+  src/guard_condition.cpp
+)
+
+add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})
+
+ament_target_dependencies(${PROJECT_NAME})
+
+target_include_directories(${PROJECT_NAME} PRIVATE
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
+)
+
+ament_export_libraries(${PROJECT_NAME})
+
+install(
+  TARGETS ${PROJECT_NAME}
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+ament_target_dependencies(${PROJECT_NAME})
+
+# ament_export_include_directories(include)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
