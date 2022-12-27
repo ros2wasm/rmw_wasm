@@ -16,8 +16,8 @@ struct rmw_context_impl_s
     // Shutdown flag
     bool is_shutdown{ false };
 
-    // Pointer to `rmw_dds_common::Context`.
-    void * common;
+    // Pointer to `rmw_dds_common::Context`. 
+    void * common; // REMOVE: do not use dds
 
     // TODO: create / destroy nodes
 

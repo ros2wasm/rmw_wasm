@@ -1,4 +1,4 @@
-#include "rmw_wasm_cpp/serialization_format.hpp"
+#include "rmw_wasm_cpp/rmw_serialization_format.hpp"
 
 namespace rmw_wasm_cpp
 {

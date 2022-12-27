@@ -1,5 +1,5 @@
-#ifndef RMW_WASM_CPP__IDENTIFIER_HPP_
-#define RMW_WASM_CPP__IDENTIFIER_HPP_
+#ifndef RMW_WASM_CPP__RMW_IDENTIFIER_HPP_
+#define RMW_WASM_CPP__RMW_IDENTIFIER_HPP_
 
 namespace rmw_wasm_cpp
 {
@@ -8,4 +8,4 @@ namespace rmw_wasm_cpp
 
 } // namespace rmw_wasm_cpp
 
-#endif // RMW_WASM_CPP__IDENTIFIER_HPP_
+#endif // RMW_WASM_CPP__RMW_IDENTIFIER_HPP_
