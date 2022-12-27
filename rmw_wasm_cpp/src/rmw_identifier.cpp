@@ -1,4 +1,4 @@
-#include "rmw_wasm_cpp/identifier.hpp"
+#include "rmw_wasm_cpp/rmw_identifier.hpp"
 
 namespace rmw_wasm_cpp
 {

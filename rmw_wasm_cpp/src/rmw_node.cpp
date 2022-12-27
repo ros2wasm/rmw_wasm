@@ -1,7 +1,7 @@
 #include <iostream> // REMOVE
 #include <string>
 
-#include "rmw_wasm_cpp/identifier.hpp"
+#include "rmw_wasm_cpp/rmw_identifier.hpp"
 #include "rmw_wasm_cpp/rmw_context_impl.hpp"
 
 #include "rmw/rmw.h"
@@ -10,7 +10,7 @@
 #include "rmw/validate_namespace.h"
 #include "rmw/error_handling.h"
 
-#include "rmw_dds_common/context.hpp"
+#include "rmw_dds_common/context.hpp" // REMOVE: do not use dds
 
 #include "rcpputils/scope_exit.hpp"
 

@@ -24,7 +24,7 @@ find_package(rcutils REQUIRED)
 find_package(rmw_dds_common REQUIRED)
 
 set(${PROJECT_NAME}_SOURCES
-  src/identifier.cpp
+  src/rmw_identifier.cpp
   src/rmw_get_implementation_identifier.cpp
   src/serialization_format.cpp
   src/rmw_get_serialization_format.cpp
@@ -49,7 +49,6 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_log_and_features.cpp
   src/rmw_get_info_by_topic.cpp
   src/rmw_network.cpp
-  src/simple_test.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})
@@ -78,7 +77,7 @@ install(
   RUNTIME DESTINATION bin
 )
 
-add_executable(simple_test src/simple_test.cpp)
+# add_executable(simple_test src/simple_test.cpp)
 ament_target_dependencies(${PROJECT_NAME}
   rmw
   rcpputils

@@ -1,7 +1,7 @@
 #include <iostream>  // REMOVE
 
 #include "rmw_wasm_cpp/rmw_init.hpp"
-#include "rmw_wasm_cpp/identifier.hpp"
+#include "rmw_wasm_cpp/rmw_identifier.hpp"
 #include "rmw_wasm_cpp/rmw_context_impl.hpp"
 
 #include "rcutils/strdup.h"
