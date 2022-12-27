@@ -37,7 +37,7 @@ extern "C"
         // TODO: check if qos is valid rmw_wasm_cpp::is_valid_qos()
 
         // TODO: create wasm_server and cleaner
-        rmw_service_t * wasm_server{ }; // js_transport::ServiceServer
+        rmw_service_t * wasm_server{ }; // wasm_cpp::ServiceServer
         auto cleanup_wasm_server = rcpputils::make_scope_exit(
             [wasm_server]() {
                 delete wasm_server;

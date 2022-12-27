@@ -11,9 +11,9 @@ endif()
 find_package(ament_cmake REQUIRED)
 
 # further dependencies manually
-find_package(js_transport QUIET)
-if(NOT js_transport_FOUND)
-  message(WARNING "Could not find 'js_transport'")
+find_package(wasm_cpp QUIET)
+if(NOT wasm_cpp_FOUND)
+  message(WARNING "Could not find 'wasm_cpp'")
   ament_cmake()
   return()
 endif()
@@ -54,7 +54,7 @@ set(${PROJECT_NAME}_SOURCES
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})
 
 ament_target_dependencies(${PROJECT_NAME}
-  js_transport
+  wasm_cpp
   rmw
 )
 target_include_directories(${PROJECT_NAME} PRIVATE

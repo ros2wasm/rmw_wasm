@@ -16,7 +16,7 @@ extern "C"
         std::cout << "[WASM] rmw_create_wait_set(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(context, nullptr);
 
-        // TODO: implement js_transport::wait_set()
+        // TODO: implement wasm_cpp::wait_set()
         rmw_wait_set_t * wasm_wait_set{ };
         if (nullptr == wasm_wait_set) {
             RMW_SET_ERROR_MSG("failed to allocate wasm_wait_set");
