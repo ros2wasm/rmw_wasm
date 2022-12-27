@@ -130,13 +130,14 @@ extern "C"
         [[maybe_unused]] const rmw_node_t * node)
     {
         // TODO: fix or replace
-        // auto node_impl = static_cast<rmw_wasm_node_t *>(node->data);
-        // if (!node_impl) {
-        //     RMW_SET_ERROR_MSG("node_impl is nullptr");
-        //     return nullptr;
-        // }
-        rmw_guard_condition_t * fake_guard_condition{ };
-        return fake_guard_condition;
+        auto node_impl = static_cast<rmw_wasm_node_t *>(node->data);
+        if (!node_impl) {
+            RMW_SET_ERROR_MSG("node_impl is nullptr");
+            return nullptr;
+        }
+        
+        // rmw_guard_condition_t * fake_guard_condition{ };
+        return node->context->impl->graph_guard_condition;
     }
 
 }  // extern "C"

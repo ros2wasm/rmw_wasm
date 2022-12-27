@@ -199,7 +199,7 @@ extern "C"
             RCUTILS_SET_ERROR_MSG("context has not been shutdown");
             return RMW_RET_INVALID_ARGUMENT;
         }
-        if (context->impl->count > 0) {
+        if (context->impl->node_count > 0) {
             RMW_SET_ERROR_MSG("Finalizing a context with active nodes");
             return RMW_RET_ERROR;
         }

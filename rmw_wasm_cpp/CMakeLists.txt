@@ -27,6 +27,7 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_get_implementation_identifier.cpp
   src/rmw_serialization_format.cpp
   src/rmw_get_serialization_format.cpp
+  src/rmw_context_impl.cpp
   src/rmw_init.cpp
   src/rmw_node.cpp
   src/rmw_publisher.cpp

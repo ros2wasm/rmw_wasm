@@ -3,7 +3,6 @@
 
 typedef struct rmw_wasm_node_t
 {
-    // TODO: implement
 } rmw_wasm_node_t;
 
 
