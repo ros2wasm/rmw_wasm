@@ -11,7 +11,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 
 # further dependencies manually
-find_package(wasm_cpp QUIET)
+find_package(wasm_cpp REQUIRED)
 if(NOT wasm_cpp_FOUND)
   message(WARNING "Could not find 'wasm_cpp'")
   ament_cmake()
@@ -53,10 +53,6 @@ set(${PROJECT_NAME}_SOURCES
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})
 
-ament_target_dependencies(${PROJECT_NAME}
-  wasm_cpp
-  rmw
-)
 target_include_directories(${PROJECT_NAME} PRIVATE
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
@@ -80,6 +76,7 @@ install(
 # add_executable(simple_test src/simple_test.cpp)
 ament_target_dependencies(${PROJECT_NAME}
   rmw
+  wasm_cpp
   rcpputils
   rcutils
 )

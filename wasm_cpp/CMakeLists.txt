@@ -27,15 +27,21 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 ament_export_libraries(${PROJECT_NAME})
 
 install(
+  DIRECTORY include/
+  DESTINATION include
+)
+
+install(
   TARGETS ${PROJECT_NAME}
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include
 )
 
 ament_target_dependencies(${PROJECT_NAME})
 
-# ament_export_include_directories(include)
+ament_export_include_directories(include)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
