@@ -17,20 +17,14 @@ struct rmw_context_impl_s
     bool is_shutdown{ false };
 
     rmw_context_impl_s();
+
     ~rmw_context_impl_s();
 
-    // Pointer to `rmw_dds_common::Context`. 
-    // void * common; // REMOVE: do not use dds
-
-    // TODO: create / destroy nodes
     // Call when node is created
     rmw_ret_t init(rmw_init_options_t * options, size_t domain_id);
 
     // Call when node is destroyed
     rmw_ret_t fini();
-
-    // Reference count
-    // uint64_t count;
 
     // Cleanup on failure or fini
     void cleanup();

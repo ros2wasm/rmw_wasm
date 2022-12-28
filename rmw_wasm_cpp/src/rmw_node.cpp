@@ -44,6 +44,10 @@ extern "C"
             RMW_SET_ERROR_MSG_WITH_FORMAT_STRING("invalid node namespace: %s", reason);
             return nullptr;
         }
+        ret = context->impl->init(&context->options, context->actual_domain_id);
+        if (RMW_RET_OK != ret) {
+            return nullptr;
+        }
 
         // REMOVE: not used
         // auto common_context = static_cast<rmw_dds_common::Context *>(context->impl->common);

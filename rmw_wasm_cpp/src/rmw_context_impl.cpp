@@ -1,19 +1,24 @@
 #include <iostream> // REMOVE
 
+#include "wasm_cpp/init.hpp"
+
 #include "rmw_wasm_cpp/rmw_context_impl.hpp"
+#include "rmw_wasm_cpp/rmw_guard_condition.hpp"
+
+#include "rmw/error_handling.h"
 
 extern "C"
 {
     rmw_context_impl_s::rmw_context_impl_s()
     {
-        std::cout << "[WASM] Initializing context implementation";
+        std::cout << "[WASM] Initializing context implementation\n"; // REMOVE
         // TODO: log info
     }
 
     rmw_context_impl_s::~rmw_context_impl_s()
     {
-        RMW_EMAIL_LOG_DEBUG("shutting down context implementation");
-        // Shutdown middleware
+        std::cout << "[WASM] Shutting down context implementation\n"; // REMOVE
+        // TODO: log info
         wasm_cpp::shutdown();
 
         // Make sure we didn't get destroyed while there's still a node
@@ -39,6 +44,7 @@ extern "C"
 
         this->graph_guard_condition = rmw_wasm_cpp::create_guard_condition();
         if (nullptr == this->graph_guard_condition) {
+            std::cout << "[DEBUG] graph_guard_condition NOT allocated\n"; // REMOVE
             cleanup();
             return RMW_RET_BAD_ALLOC;
         }
