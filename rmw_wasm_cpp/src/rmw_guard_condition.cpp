@@ -99,7 +99,7 @@ extern "C"
             rmw_guard_condition->data);
         auto wasm_guard_condition = rmw_wasm_guard_condition->wasm_guard_condition;
 
-        wasm_guard_condition->trigger();
+        wasm_guard_condition->set_trigger_value(true);
 
         std::cout << "[WASM] rmw_trigger_guard_condition(end)\n"; // REMOVE
         return RMW_RET_OK;

@@ -4,7 +4,7 @@ namespace wasm_cpp
 {
 
     GuardCondition::GuardCondition()
-        : trigger_value_(false)
+        : m_trigger_value(false)
     {
     }
 
@@ -14,14 +14,14 @@ namespace wasm_cpp
 
     bool GuardCondition::get_trigger_value() const
     {
-        return trigger_value_.load();
+        return m_trigger_value.load();
     }
 
     void GuardCondition::set_trigger_value(bool value)
     {
         // trigger with true
         // reset with false
-        trigger_value_.store(value);
+        m_trigger_value.store(value);
     }
 
 }   // namespace wasm_cpp

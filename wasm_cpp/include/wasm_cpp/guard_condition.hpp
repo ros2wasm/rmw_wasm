@@ -22,7 +22,7 @@ namespace wasm_cpp
 
         private:
 
-            std::atomic_bool trigger_value_;
+            std::atomic_bool m_trigger_value;
     };
 
 } // namespace wasm_cpp
