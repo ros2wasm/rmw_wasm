@@ -49,29 +49,26 @@ extern "C"
         // TODO: implement 
         // rmw_wasm_pub->gid = rmw_wasm_cpp::convert_gid(wasm_pub->get_gid())
 
-        rmw_publisher_t * rmw_publisher = rmw_publisher_allocate();
-        auto cleanup_rmw_publisher = rcpputils::make_scope_exit(
-            [rmw_publisher]() {
-                rmw_free(const_cast<char *>(rmw_publisher->topic_name));
-                rmw_publisher_free(rmw_publisher);
+        rmw_publisher_t * publisher = rmw_publisher_allocate();
+        auto cleanup_publisher = rcpputils::make_scope_exit(
+            [publisher]() {
+                rmw_free(const_cast<char *>(publisher->topic_name));
+                rmw_publisher_free(publisher);
             }
         );
 
-        rmw_publisher->implementation_identifier = rmw_wasm_cpp::identifier;
-        rmw_publisher->data = rmw_wasm_pub;
-        rmw_publisher->topic_name = reinterpret_cast<char *>(
+        publisher->implementation_identifier = rmw_wasm_cpp::identifier;
+        publisher->data = rmw_wasm_pub;
+        publisher->topic_name = reinterpret_cast<char *>(
             rmw_allocate(strlen(topic_name) + 1));
-        memcpy(
-            const_cast<char *>(rmw_publisher->topic_name), 
-            topic_name, 
-            strlen(topic_name) + 1);
-        rmw_publisher->options = *publisher_options;
-        rmw_publisher->can_loan_messages = false;
+        memcpy(const_cast<char *>(publisher->topic_name), topic_name, strlen(topic_name) + 1);
+        publisher->options = *publisher_options;
+        publisher->can_loan_messages = false;
 
-        cleanup_rmw_publisher.cancel();
+        cleanup_publisher.cancel();
 
         std::cout << "[WASM] _create_publisher(end)\n"; // REMOVE
-        return rmw_publisher;
+        return publisher;
     }
 
     rmw_publisher_t * rmw_create_publisher(
@@ -107,12 +104,16 @@ extern "C"
     static rmw_ret_t _destroy_publisher(rmw_publisher_t * publisher)
     {
         // TODO: implement
-        std::cout << "[TODO] _destroy_publisher(start)\n"; // REMOVE
+        std::cout << "[WASM] _destroy_publisher(start)\n"; // REMOVE
+        auto rmw_wasm_pub = static_cast<rmw_wasm_pub_t *>(publisher->data);
+        if (nullptr != rmw_wasm_pub) {
+            auto wasm_pub = static_cast<wasm_cpp::Publisher *>(rmw_wasm_pub->wasm_pub);
+            delete wasm_pub;
+        }
 
         rmw_free(const_cast<char *>(publisher->topic_name));
         rmw_publisher_free(publisher);
-
-        std::cout << "[TODO] _destroy_publisher(end)\n"; // REMOVE
+        std::cout << "[WASM] _destroy_publisher(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -205,14 +206,8 @@ extern "C"
         [[maybe_unused]] const rosidl_message_type_support_t * type_support,
         [[maybe_unused]] void ** ros_message)
     {   
-        std::cout << "[WASM] rmw_borrow_loaned_message(start)\n"; // REMOVE
-
-        RMW_SET_ERROR_MSG("rmw_borrow_loaned_message not implemented for rmw_wasm_cpp");
-
-        // TODO: implement if needed
-        // return rmw_wasm_cpp::__rmw_borrow_loaned_message(
-        //     rmw_wasm_cpp::identifier, publisher, type_support, ros_message);
-        std::cout << "[WASM] rmw_borrow_loaned_message(end)\n"; // REMOVE
+        std::cout << "[WASM] rmw_borrow_loaned_message()\n"; // REMOVE
+        RMW_SET_ERROR_MSG("rmw_borrow_loaned_message not implemented");
         return RMW_RET_UNSUPPORTED;
     }
 
@@ -220,14 +215,8 @@ extern "C"
         [[maybe_unused]] const rmw_publisher_t * publisher,
         [[maybe_unused]] void * loaned_message)
     {
-        std::cout << "[WASM] rmw_return_loaned_message_from_publisher(start)\n"; // REMOVE
-
-        RMW_SET_ERROR_MSG("rmw_return_loaned_message_from_publisher not implemented for rmw_wasm_cpp");
-        
-        // TODO: implement if needed
-        // return rmw_wasm_cpp::__rmw_return_loaned_message_from_publisher(
-        //     rmw_wasm_cpp::identifier, publisher, loaned_message);
-        std::cout << "[WASM] rmw_return_loaned_message_from_publisher(end)\n"; // REMOVE
+        std::cout << "[WASM] rmw_return_loaned_message_from_publisher()\n"; // REMOVE
+        RMW_SET_ERROR_MSG("rmw_return_loaned_message_from_publisher not implemented");
         return RMW_RET_UNSUPPORTED;
     }
 
