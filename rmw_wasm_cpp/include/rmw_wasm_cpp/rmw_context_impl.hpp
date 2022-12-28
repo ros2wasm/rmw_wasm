@@ -7,6 +7,9 @@
 
 struct rmw_context_impl_s
 {
+
+    rmw_guard_condition_t * graph_guard_condition{ nullptr };
+
     // Mutex used to protect initialization/destruction.
     std::mutex mutex_initialization; // REMOVE
 
@@ -28,6 +31,7 @@ struct rmw_context_impl_s
 
     // Cleanup on failure or fini
     void cleanup();
-};
+
+}; // struct rmw_context_impl_s
 
 #endif // RMW_WASM_CPP__RMW_CONTEXT_IMPL_HPP_

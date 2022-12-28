@@ -12,5 +12,4 @@ typedef struct rmw_wasm_guard_condition_t
     wasm_cpp::GuardCondition * wasm_guard_condition;
 } rmw_wasm_guard_condition_t;
 
-
 #endif // RMW_WASM_CPP__RMW_TYPES_HPP_

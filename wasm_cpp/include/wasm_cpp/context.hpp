@@ -40,6 +40,7 @@ namespace wasm_cpp
 
             bool is_valid() const;
 
+            // REMOVE: will not parse options for now
             // WASM_CPP_PUBLIC std::shared_ptr<Options> get_options() const;
 
             // TODO: wasm objects

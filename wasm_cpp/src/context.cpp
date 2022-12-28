@@ -10,8 +10,9 @@ namespace wasm_cpp
     std::shared_ptr<Context> get_global_context()
     {
         if (!g_global_context) {
-            return g_global_context;
+            g_global_context = std::make_shared<Context>();
         }
+        return g_global_context;
     }
 
     Context::Context() : m_is_valid(false)
@@ -52,7 +53,6 @@ namespace wasm_cpp
     void Context::init_context()
     {
         m_is_valid = true;
-
         // TODO: add pub/sub init
     }
 
