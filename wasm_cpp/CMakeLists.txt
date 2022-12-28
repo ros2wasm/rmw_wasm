@@ -13,6 +13,8 @@ find_package(ament_cmake REQUIRED)
 
 set(${PROJECT_NAME}_SOURCES
   src/guard_condition.cpp
+  src/context.cpp
+  src/init.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})

@@ -9,15 +9,9 @@ namespace wasm_cpp
         get_global_context()->init();
     }
 
-    void context_init(int argc, char const * const argv[])
+    bool fini()
     {
-        get_global_context()->init(argc, argv);
+        return get_global_context()->fini();
     }
-
-    bool shutdown()
-    {
-        return get_global_context()->shutdown();
-    }
-
 
 } // namespace wasm_cpp

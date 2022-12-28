@@ -2,13 +2,29 @@
 #define WASM_CPP__CONTEXT_HPP_
 
 #include <memory> // std::shared_ptr
-#include <optional>
+#include <stdexcept>
 
 #include "wasm_cpp/visibility_control.hpp"
-#include "wasm_cpp/options.hpp"
+// #include "wasm_cpp/options.hpp"
 
 namespace wasm_cpp
 {
+
+    class ContextError : public std::runtime_error
+    {
+        public:
+            explicit ContextError(const std::string & msg)
+            : std::runtime_error(msg)
+            {}
+    };
+
+    class ContextAlreadyInitializedError : public ContextError
+    {
+        public:
+            ContextAlreadyInitializedError()
+            : ContextError("Context already initialized")
+            {}
+    };
 
     class Context
     {
@@ -20,23 +36,22 @@ namespace wasm_cpp
 
             void init();
 
-            void context_init(int argc, char const * const argv[]);
-
-            bool shutdown();
+            bool fini();
 
             bool is_valid() const;
 
-            WASM_CPP_PUBLIC std::shared_ptr<Options> get_options() const;
+            // WASM_CPP_PUBLIC std::shared_ptr<Options> get_options() const;
 
             // TODO: wasm objects
 
         private:
 
-            void init_common();
+            void init_context();
 
             bool m_is_valid;
-            std::shared_ptr<Options> m_options;
 
+            // REMOVE: will not parse options for now
+            // std::shared_ptr<Options> m_options;
 
     }; // class Context
 
