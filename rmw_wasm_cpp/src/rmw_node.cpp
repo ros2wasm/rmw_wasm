@@ -10,6 +10,7 @@
 #include "rmw/validate_node_name.h"
 #include "rmw/validate_namespace.h"
 #include "rmw/error_handling.h"
+#include "rmw/impl/cpp/macros.hpp"
 
 #include "rcpputils/scope_exit.hpp"
 
@@ -17,13 +18,26 @@ extern "C"
 {
     rmw_node_t * rmw_create_node(
         rmw_context_t * context,
-        // const char * identifier, // REMOVE
         const char * name,
         const char * namespace_)
     {
         std::cout << "[WASM] rmw_create_node(start)\n"; // REMOVE
-        assert(rmw_wasm_cpp::identifier == context->implementation_identifier);
-
+        RMW_CHECK_ARGUMENT_FOR_NULL(context, nullptr);
+        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
+            context,
+            context->implementation_identifier,
+            rmw_wasm_cpp::identifier,
+            return nullptr);
+        RMW_CHECK_FOR_NULL_WITH_MSG(
+            context->impl,
+            "expected initialized context",
+            return nullptr);
+        if (context->impl->is_shutdown) {
+            RMW_SET_ERROR_MSG("context has been shut down");
+            return nullptr;
+        }
+        
+        // Validate node name
         int validation_result = RMW_NODE_NAME_VALID;
         rmw_ret_t ret = rmw_validate_node_name(name, &validation_result, nullptr);
         if (RMW_RET_OK != ret) {
@@ -34,6 +48,8 @@ extern "C"
             RMW_SET_ERROR_MSG_WITH_FORMAT_STRING("invalid node name: %s", reason);
             return nullptr;
         }
+
+        // Validate node namespace
         validation_result = RMW_NAMESPACE_VALID;
         ret = rmw_validate_namespace(namespace_, &validation_result, nullptr);
         if (RMW_RET_OK != ret) {
@@ -44,104 +60,92 @@ extern "C"
             RMW_SET_ERROR_MSG_WITH_FORMAT_STRING("invalid node namespace: %s", reason);
             return nullptr;
         }
+
+        // Init context implementation when creating node
         ret = context->impl->init(&context->options, context->actual_domain_id);
         if (RMW_RET_OK != ret) {
             return nullptr;
         }
+        auto cleanup_context = rcpputils::make_scope_exit(
+            [context]() {
+                context->impl->fini();
+            });
 
-        // REMOVE: not used
-        // auto common_context = static_cast<rmw_dds_common::Context *>(context->impl->common);
-        
-        // REMOVE: not used
-        // rmw_dds_common::GraphCache & graph_cache = common_context->graph_cache;
+        // Init node
+        auto rmw_wasm_node = new (std::nothrow) rmw_wasm_node_t;
+        auto cleanup_rmw_wasm_node = rcpputils::make_scope_exit(
+            [rmw_wasm_node]() {
+                delete rmw_wasm_node;
+            });
 
-        rmw_node_t * node_handle = rmw_node_allocate();
-        if (nullptr == node_handle) {
+        rmw_node_t * rmw_node = rmw_node_allocate();
+        if (nullptr == rmw_node) {
             RMW_SET_ERROR_MSG("failed to allocate node");
             return nullptr;
         }
-        auto cleanup_node = rcpputils::make_scope_exit(
-            [node_handle]() {
-            rmw_free(const_cast<char *>(node_handle->name));
-            rmw_free(const_cast<char *>(node_handle->namespace_));
-            rmw_node_free(node_handle);
+        auto cleanup_rmw_node = rcpputils::make_scope_exit(
+            [rmw_node]() {
+            rmw_free(const_cast<char *>(rmw_node->name));
+            rmw_free(const_cast<char *>(rmw_node->namespace_));
+            rmw_node_free(rmw_node);
             });
-        node_handle->implementation_identifier = rmw_wasm_cpp::identifier;
-        node_handle->data = nullptr;
-
-        node_handle->name =
-            static_cast<const char *>(rmw_allocate(sizeof(char) * strlen(name) + 1));
-        if (nullptr == node_handle->name) {
+        
+        rmw_node->implementation_identifier = rmw_wasm_cpp::identifier;
+        rmw_node->data = rmw_wasm_node;
+        rmw_node->name = static_cast<const char *>(
+            rmw_allocate(sizeof(char) * strlen(name) + 1));
+        if (nullptr == rmw_node->name) {
             RMW_SET_ERROR_MSG("failed to copy node name");
             return nullptr;
         }
-        memcpy(const_cast<char *>(node_handle->name), name, strlen(name) + 1);
+        memcpy(const_cast<char *>(rmw_node->name), name, strlen(name) + 1);
 
-        node_handle->namespace_ =
-            static_cast<const char *>(rmw_allocate(sizeof(char) * strlen(namespace_) + 1));
-        if (nullptr == node_handle->namespace_) {
+        rmw_node->namespace_ = static_cast<const char *>(
+            rmw_allocate(sizeof(char) * strlen(namespace_) + 1));
+        if (nullptr == rmw_node->namespace_) {
             RMW_SET_ERROR_MSG("failed to copy node namespace");
             return nullptr;
         }
-        memcpy(const_cast<char *>(node_handle->namespace_), namespace_, strlen(namespace_) + 1);
+        memcpy(const_cast<char *>(rmw_node->namespace_), namespace_, strlen(namespace_) + 1);
 
-        node_handle->context = context;
+        rmw_node->context = context;
 
-        // { // TODO: needed???
-        //     // Though graph_cache methods are thread safe, both cache update and publishing have to also
-        //     // be atomic.
-        //     // If not, the following race condition is possible:
-        //     // node1-update-get-message / node2-update-get-message / node2-publish / node1-publish
-        //     // In that case, the last message published is not accurate.
-        //     std::lock_guard<std::mutex> guard(common_context->node_update_mutex);
-        //     rmw_dds_common::msg::ParticipantEntitiesInfo participant_msg =
-        //     graph_cache.add_node(common_context->gid, name, namespace_);
-        //     if (RMW_RET_OK != __rmw_publish(
-        //         node_handle->implementation_identifier,
-        //         common_context->pub,
-        //         static_cast<void *>(&participant_msg),
-        //         nullptr))
-        //     {
-        //         return nullptr;
-        //     }
-        // }
-        cleanup_node.cancel();
+        cleanup_rmw_wasm_node.cancel();
+        cleanup_rmw_node.cancel();
+        cleanup_context.cancel();
         std::cout << "[WASM] rmw_create_node(end)\n"; // REMOVE
-        return node_handle;
+        return rmw_node;
     }
 
     rmw_ret_t rmw_destroy_node(
-        // const char * identifier, // REMOVE
-        rmw_node_t * node)
+        rmw_node_t * rmw_node)
     {
         std::cout << "[WASM] rmw_destroy_node(start)\n"; // REMOVE
-        assert(node->implementation_identifier == rmw_wasm_cpp::identifier);
-        rmw_ret_t ret = RMW_RET_OK;
+        RMW_CHECK_ARGUMENT_FOR_NULL(rmw_node, RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
+            rmw_node,
+            rmw_node->implementation_identifier,
+            rmw_wasm_cpp::identifier,
+            return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
 
-        // TODO: fix or replace
-        // auto common_context = static_cast<rmw_dds_common::Context *>(node->context->impl->common);
-        // rmw_dds_common::GraphCache & graph_cache = common_context->graph_cache;
-        
-        rmw_free(const_cast<char *>(node->name));
-        rmw_free(const_cast<char *>(node->namespace_));
-        rmw_node_free(node);
-
+        rmw_node->context->impl->fini();
+        rmw_free(const_cast<char *>(rmw_node->name));
+        rmw_free(const_cast<char *>(rmw_node->namespace_));
+        rmw_node_free(rmw_node);
         std::cout << "[WASM] rmw_destroy_node(end)\n"; // REMOVE
-        return ret;
+        return RMW_RET_OK;
     }
 
     const rmw_guard_condition_t * rmw_node_get_graph_guard_condition(
-        [[maybe_unused]] const rmw_node_t * node)
+        const rmw_node_t * rmw_node)
     {
-        // TODO: fix or replace
-        auto node_impl = static_cast<rmw_wasm_node_t *>(node->data);
+        auto node_impl = static_cast<rmw_wasm_node_t *>(rmw_node->data);
         if (!node_impl) {
             RMW_SET_ERROR_MSG("node_impl is nullptr");
             return nullptr;
         }
         
-        // rmw_guard_condition_t * fake_guard_condition{ };
-        return node->context->impl->graph_guard_condition;
+        return rmw_node->context->impl->graph_guard_condition;
     }
 
 }  // extern "C"
