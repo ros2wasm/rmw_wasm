@@ -15,6 +15,7 @@ set(${PROJECT_NAME}_SOURCES
   src/guard_condition.cpp
   src/context.cpp
   src/init.cpp
+  src/publisher.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})

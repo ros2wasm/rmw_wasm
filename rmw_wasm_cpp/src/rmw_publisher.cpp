@@ -3,11 +3,16 @@
 
 #include "rmw_wasm_cpp/rmw_identifier.hpp"
 #include "rmw_wasm_cpp/rmw_context_impl.hpp"
+#include "rmw_wasm_cpp/rmw_types.hpp"
+
+#include "wasm_cpp/publisher.hpp"
 
 #include "rmw/rmw.h"
 #include "rmw/allocators.h"
 #include "rmw/error_handling.h"
 #include "rmw/impl/cpp/macros.hpp"
+
+#include "rcpputils/scope_exit.hpp"
 
 extern "C"
 {
@@ -31,24 +36,47 @@ extern "C"
     static rmw_publisher_t * _create_publisher(
         const char * topic_name,
         const rmw_publisher_options_t * publisher_options,
-        const rosidl_message_type_support_t * type_supports
+        const rosidl_message_type_support_t * type_support
     )
     {
-        std::cout << "[TODO] _create_publisher(start)\n"; // REMOVE
-        // TODO: implement
+        std::cout << "[WASM] _create_publisher(start)\n"; // REMOVE
+        auto wasm_pub = new (std::nothrow) wasm_cpp::Publisher(topic_name);
 
-        // REMOVE when vars are used
-        RMW_CHECK_ARGUMENT_FOR_NULL(topic_name, nullptr);
-        RMW_CHECK_ARGUMENT_FOR_NULL(publisher_options, nullptr);
-        RMW_CHECK_ARGUMENT_FOR_NULL(type_supports, nullptr);
+        rmw_wasm_pub_t * rmw_wasm_pub = new (std::nothrow) rmw_wasm_pub_t();
+        rmw_wasm_pub->type_support = *type_support;
+        rmw_wasm_pub->wasm_pub = wasm_pub;
 
-        std::cout << "[TODO] _create_publisher(end)\n"; // REMOVE
-        return RMW_RET_OK;
+        // TODO: implement 
+        // rmw_wasm_pub->gid = rmw_wasm_cpp::convert_gid(wasm_pub->get_gid())
+
+        rmw_publisher_t * rmw_publisher = rmw_publisher_allocate();
+        auto cleanup_rmw_publisher = rcpputils::make_scope_exit(
+            [rmw_publisher]() {
+                rmw_free(const_cast<char *>(rmw_publisher->topic_name));
+                rmw_publisher_free(rmw_publisher);
+            }
+        );
+
+        rmw_publisher->implementation_identifier = rmw_wasm_cpp::identifier;
+        rmw_publisher->data = rmw_wasm_pub;
+        rmw_publisher->topic_name = reinterpret_cast<char *>(
+            rmw_allocate(strlen(topic_name) + 1));
+        memcpy(
+            const_cast<char *>(rmw_publisher->topic_name), 
+            topic_name, 
+            strlen(topic_name) + 1);
+        rmw_publisher->options = *publisher_options;
+        rmw_publisher->can_loan_messages = false;
+
+        cleanup_rmw_publisher.cancel();
+
+        std::cout << "[WASM] _create_publisher(end)\n"; // REMOVE
+        return rmw_publisher;
     }
 
     rmw_publisher_t * rmw_create_publisher(
         const rmw_node_t * node,
-        const rosidl_message_type_support_t * type_supports,
+        const rosidl_message_type_support_t * type_support,
         const char * topic_name,
         const rmw_qos_profile_t * qos_policies,
         const rmw_publisher_options_t * publisher_options)
@@ -60,7 +88,7 @@ extern "C"
             node->implementation_identifier,
             rmw_wasm_cpp::identifier,
             return nullptr);
-        RMW_CHECK_ARGUMENT_FOR_NULL(type_supports, nullptr);
+        RMW_CHECK_ARGUMENT_FOR_NULL(type_support, nullptr);
         RMW_CHECK_ARGUMENT_FOR_NULL(topic_name, nullptr);
         if (0 == strlen(topic_name)) {
             RMW_SET_ERROR_MSG("topic_name argument is an empty string");
@@ -73,7 +101,7 @@ extern "C"
         // TODO: validate type support
 
         std::cout << "[WASM] rmw_create_publisher(end)\n"; // REMOVE
-        return _create_publisher(topic_name, publisher_options, type_supports);
+        return _create_publisher(topic_name, publisher_options, type_support);
     }
 
     static rmw_ret_t _destroy_publisher(rmw_publisher_t * publisher)
