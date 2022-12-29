@@ -61,7 +61,10 @@ extern "C"
         publisher->data = rmw_wasm_pub;
         publisher->topic_name = reinterpret_cast<char *>(
             rmw_allocate(strlen(topic_name) + 1));
-        memcpy(const_cast<char *>(publisher->topic_name), topic_name, strlen(topic_name) + 1);
+        memcpy(
+            const_cast<char *>(publisher->topic_name), 
+            topic_name, 
+            strlen(topic_name) + 1);
         publisher->options = *publisher_options;
         publisher->can_loan_messages = false;
 

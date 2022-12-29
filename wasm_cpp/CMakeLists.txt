@@ -16,6 +16,7 @@ set(${PROJECT_NAME}_SOURCES
   src/context.cpp
   src/init.cpp
   src/publisher.cpp
+  src/subscriber.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})
