@@ -4,6 +4,7 @@
 #include "wasm_cpp/guard_condition.hpp"
 #include "wasm_cpp/publisher.hpp"
 #include "wasm_cpp/subscriber.hpp"
+#include "wasm_cpp/wait_set.hpp"
 
 #include "rmw/rmw.h"
 
@@ -29,5 +30,10 @@ typedef struct rmw_wasm_sub_t
     rmw_gid_t gid;
     rosidl_message_type_support_t type_support;
 } rmw_wasm_sub_t;
+
+typedef struct rmw_wasm_wait_set_t
+{
+    wasm_cpp::WaitSet * wasm_wait_set;
+} rmw_wasm_wait_set_t;
 
 #endif // RMW_WASM_CPP__RMW_TYPES_HPP_

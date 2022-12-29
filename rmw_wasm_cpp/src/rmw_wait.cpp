@@ -2,6 +2,9 @@
 #include <chrono>
 
 #include "rmw_wasm_cpp/rmw_identifier.hpp"
+#include "rmw_wasm_cpp/rmw_types.hpp"
+
+#include "wasm_cpp/wait_set.hpp"
 
 #include "rmw/rmw.h"
 #include "rmw/impl/cpp/macros.hpp"
@@ -16,33 +19,17 @@ extern "C"
         std::cout << "[WASM] rmw_create_wait_set(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(context, nullptr);
 
-        // TODO: implement wasm_cpp::wait_set()
-        rmw_wait_set_t * wasm_wait_set{ };
-        if (nullptr == wasm_wait_set) {
-            RMW_SET_ERROR_MSG("failed to allocate wasm_wait_set");
-            return nullptr;
-        }
+        auto wasm_wait_set = new (std::nothrow) wasm_cpp::WaitSet();
 
-        // TODO: implement rmw_wasm_wait_set_t
-        // rmw_wait_set_t rmw_wasm_wait_set{ };
-        // if (nullptr == rmw_wasm_wait_set) {
-        //     RMW_SET_ERROR_MSG("failed to allocate rmw_wasm_wait_set");
-        //     return nullptr;
-        // }
+        auto rmw_wasm_wait_set = new(std::nothrow) rmw_wasm_wait_set_t();
+        rmw_wasm_wait_set->wasm_wait_set = wasm_wait_set;
 
-        // rmw_wasm_wait_set->wasm__wait_set = wasm__wait_set;
+        rmw_wait_set_t * wait_set = rmw_wait_set_allocate();
+        wait_set->implementation_identifier = rmw_wasm_cpp::identifier;
+        wait_set->data = rmw_wasm_wait_set;
 
-        // TODO: verify
-        rmw_wait_set_t * rmw_wait_set = rmw_wait_set_allocate();
-        if (nullptr == rmw_wait_set) {
-            RMW_SET_ERROR_MSG("failed to allocate rmw_wait_set");
-            return nullptr;
-        }
-
-        rmw_wait_set->implementation_identifier = rmw_wasm_cpp::identifier;
-        // rmw_wait_set->data = rmw_wasm_wait_set;
         std::cout << "[WASM] rmw_create_wait_set(end)\n"; // REMOVE
-        return rmw_wait_set;
+        return wait_set;
     }
 
     rmw_ret_t rmw_destroy_wait_set(rmw_wait_set_t * wait_set)
@@ -55,9 +42,11 @@ extern "C"
             rmw_wasm_cpp::identifier,
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
 
-        // TODO: create and delete rmw_wasm_wait_set
-        // TODO: create and delete wasm_wait_set
+        auto rmw_wasm_wait_set = static_cast<rmw_wasm_wait_set_t *>(wait_set->data);
+        auto wasm_wait_set = rmw_wasm_wait_set->wasm_wait_set;
 
+        delete wasm_wait_set;
+        delete rmw_wasm_wait_set;
         rmw_wait_set_free(wait_set);
         std::cout << "[WASM] rmw_destroy_wait_set(end)\n"; // REMOVE
         return RMW_RET_OK;

@@ -17,6 +17,7 @@ set(${PROJECT_NAME}_SOURCES
   src/init.cpp
   src/publisher.cpp
   src/subscriber.cpp
+  src/wait_set.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})
