@@ -1,3 +1,5 @@
+#include <iostream> // REMOVE
+
 #include "rmw_wasm_cpp/rmw_identifier.hpp"
 
 #include "rmw/rmw.h"
@@ -9,6 +11,7 @@ extern "C"
         [[maybe_unused]] rmw_log_severity_t severity)
     {
         // TODO: implement
+        std::cout << "[WASM] rmw_set_log_severity()\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -16,6 +19,7 @@ extern "C"
         [[maybe_unused]] rmw_feature_t feature)
     {
         // TODO: implement
+        std::cout << "[WASM] rmw_feature_supported()\n"; // REMOVE
         return true;
     }
 

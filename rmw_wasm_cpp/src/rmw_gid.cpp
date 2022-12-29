@@ -11,6 +11,7 @@ extern "C"
         const rmw_publisher_t * publisher,
         rmw_gid_t * gid)
     {
+        std::cout << "[WASM] rmw_get_gid_for_publisher(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             publisher,
@@ -22,6 +23,7 @@ extern "C"
         // TODO: implement
         // auto pub = static_cast<rmw_wasm_pub_t *>(publisher->data);
         // rmw_wasm_cpp::copy_gids(gid, &pub->gid);
+        std::cout << "[WASM] rmw_get_gid_for_publisher(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -30,6 +32,7 @@ extern "C"
         const rmw_gid_t * gid2,
         bool * result)
     {
+        std::cout << "[WASM] rmw_compare_gids_equal(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(gid1, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             gid1,
@@ -45,6 +48,7 @@ extern "C"
         RMW_CHECK_ARGUMENT_FOR_NULL(result, RMW_RET_INVALID_ARGUMENT);
 
         *result = memcmp(gid1->data, gid2->data, sizeof(gid1->data)) == 0;
+        std::cout << "[WASM] rmw_compare_gids_equal(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 

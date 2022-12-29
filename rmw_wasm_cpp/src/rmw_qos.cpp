@@ -50,6 +50,7 @@ extern "C"
         const rmw_service_t * service,
         rmw_qos_profile_t * qos)
     {
+        std::cout << "[WASM] rmw_service_response_publisher_get_actual_qos(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(service, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             service,
@@ -59,7 +60,7 @@ extern "C"
         RMW_CHECK_ARGUMENT_FOR_NULL(qos, RMW_RET_INVALID_ARGUMENT);
 
         // TODO: implement if needed 
-
+        std::cout << "[WASM] rmw_service_response_publisher_get_actual_qos(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -67,6 +68,7 @@ extern "C"
         const rmw_client_t * client,
         rmw_qos_profile_t * qos)
     {
+        std::cout << "[WASM] rmw_client_response_subscription_get_actual_qos(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(client, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             client,
@@ -76,7 +78,7 @@ extern "C"
         RMW_CHECK_ARGUMENT_FOR_NULL(qos, RMW_RET_INVALID_ARGUMENT);
 
         // TODO: implement if needed
-
+        std::cout << "[WASM] rmw_client_response_subscription_get_actual_qos(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -85,6 +87,7 @@ extern "C"
         const rmw_client_t * client,
         rmw_qos_profile_t * qos)
     {
+        std::cout << "[WASM] rmw_client_request_publisher_get_actual_qos(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(client, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             client,
@@ -94,7 +97,7 @@ extern "C"
         RMW_CHECK_ARGUMENT_FOR_NULL(qos, RMW_RET_INVALID_ARGUMENT);
 
         // TODO: implement if needed
-
+        std::cout << "[WASM] rmw_client_request_publisher_get_actual_qos(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -102,6 +105,7 @@ extern "C"
         const rmw_service_t * service,
         rmw_qos_profile_t * qos)
     {
+        std::cout << "[WASM] rmw_service_request_subscription_get_actual_qos(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(service, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             service,
@@ -111,7 +115,7 @@ extern "C"
         RMW_CHECK_ARGUMENT_FOR_NULL(qos, RMW_RET_INVALID_ARGUMENT);
 
         // TODO: implement if needed
-
+        std::cout << "[WASM] rmw_service_request_subscription_get_actual_qos(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -122,6 +126,7 @@ extern "C"
         char * reason,
         size_t reason_size)
     {
+        std::cout << "[WASM] rmw_qos_profile_check_compatible(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(compatibility, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_ARGUMENT_FOR_NULL(compatibility, RMW_RET_INVALID_ARGUMENT);
         if (!reason && 0u != reason_size) {
@@ -130,7 +135,7 @@ extern "C"
         }
 
         // TODO: figure out
-
+        std::cout << "[WASM] rmw_qos_profile_check_compatible(end)\n"; // REMOVE
         *compatibility = RMW_QOS_COMPATIBILITY_OK;
         return RMW_RET_OK;
     }

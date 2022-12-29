@@ -119,6 +119,7 @@ extern "C"
         rmw_node_t * node, 
         rmw_subscription_t * subscriber)
     {
+        std::cout << "[WASM] rmw_destroy_subscription(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_ARGUMENT_FOR_NULL(subscriber, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -131,7 +132,7 @@ extern "C"
             subscriber->implementation_identifier,
             rmw_wasm_cpp::identifier,
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
-
+        std::cout << "[WASM] rmw_destroy_subscription(end)\n"; // REMOVE
         return _destroy_subscriber(subscriber);
     }
 
@@ -199,6 +200,7 @@ extern "C"
         [[maybe_unused]] rmw_event_callback_t callback,
         [[maybe_unused]] const void * user_data)
     {
+        std::cout << "[WASM] rmw_subscription_set_on_new_message_callback()\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(subscriber, RMW_RET_INVALID_ARGUMENT);
         // TODO: implement if needed
         return RMW_RET_OK;        

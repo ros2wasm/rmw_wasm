@@ -2,6 +2,7 @@
 #define WASM_CPP__SUBSCRIBER_HPP_
 
 #include <string>
+#include <optional>
 
 #include "wasm_cpp/visibility_control.hpp"
 
@@ -18,6 +19,8 @@ namespace wasm_cpp
             WASM_CPP_PUBLIC virtual ~Subscriber();
 
             WASM_CPP_PUBLIC std::string get_message();
+
+            // WASM_CPP_PUBLIC std::optional<std::pair<std::string, MessageInfo>> get_message_info();
 
             // TODO: add more funs when needed
 

@@ -75,7 +75,8 @@ extern "C"
         bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        // TODO: verify if need to be differen
+        // TODO: verify if need to be different
+        std::cout << "[WASM] rmw_get_publisher_names_and_types_by_node()\n"; // REMOVE
         return _get_names_and_types_by_node(
             node,
             allocator,
@@ -94,6 +95,7 @@ extern "C"
         rmw_names_and_types_t * names_and_types)
     {
         // TODO: verify if need to be different
+        std::cout << "[WASM] rmw_get_subscriber_names_and_types_by_node()\n"; // REMOVE
         return _get_names_and_types_by_node(
             node,
             allocator,
@@ -111,6 +113,7 @@ extern "C"
         rmw_names_and_types_t * names_and_types)
     {
         // TODO: verify if need to be different
+        std::cout << "[WASM] rmw_get_service_names_and_types_by_node()\n"; // REMOVE
         bool no_demangle{ true };
         return _get_names_and_types_by_node(
             node,
@@ -129,6 +132,7 @@ extern "C"
         rmw_names_and_types_t * names_and_types)
     {
         // TODO: verify if need to be different
+        std::cout << "[WASM] rmw_get_client_names_and_types_by_node()\n"; // REMOVE
         bool no_demangle{ true };
         return _get_names_and_types_by_node(
             node,
@@ -145,6 +149,7 @@ extern "C"
         [[maybe_unused]] bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
+        std::cout << "[WASM] _get_names_and_types(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -157,6 +162,7 @@ extern "C"
         }
 
         // TODO: figure out if needed
+        std::cout << "[WASM] _get_names_and_types(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -167,7 +173,7 @@ extern "C"
         rmw_names_and_types_t * names_and_types)
     {
         // TODO: verify if needs to be different
-        // FAIL TO RESOLVE SYMBOL
+        std::cout << "[WASM] rmw_get_topic_names_and_types()\n"; // REMOVE
         return _get_names_and_types(
             node,
             allocator,
@@ -181,7 +187,7 @@ extern "C"
         rmw_names_and_types_t * names_and_types)
     {
         // TODO: verify if needs to be different
-        // FAIL TO RESOLVE SYMBOL
+        std::cout << "[WASM] rmw_get_service_names_and_types\n"; // REMOVE
         bool no_demangle{ true };
         return _get_names_and_types(
             node,
@@ -195,6 +201,7 @@ extern "C"
         rcutils_string_array_t * node_names,
         rcutils_string_array_t * node_namespaces)
     {
+        std::cout << "[WASM] rmw_get_nodes_names(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -209,7 +216,7 @@ extern "C"
         }
 
         // TODO: figure out
-
+        std::cout << "[WASM] rmw_get_node_names(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -219,6 +226,7 @@ extern "C"
         rcutils_string_array_t * node_namespaces,
         rcutils_string_array_t * enclaves)
     {
+        std::cout << "[WASM] rmw_get_nodes_names_with_enclaves(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -235,9 +243,9 @@ extern "C"
             return RMW_RET_INVALID_ARGUMENT;
         }
 
-    // TODO: figure out
-
-    return RMW_RET_OK;
+        // TODO: figure out
+        std::cout << "[WASM] rmw_get_node_names_with_enclaves(end)\n"; // REMOVE
+        return RMW_RET_OK;
     }
 
 } // extern "C"

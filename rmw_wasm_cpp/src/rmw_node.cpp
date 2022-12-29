@@ -139,12 +139,13 @@ extern "C"
     const rmw_guard_condition_t * rmw_node_get_graph_guard_condition(
         const rmw_node_t * rmw_node)
     {
+        std::cout << "[WASM] rmw_node_get_graph_guard_condition(start)\n"; // REMOVE
         auto node_impl = static_cast<rmw_wasm_node_t *>(rmw_node->data);
         if (!node_impl) {
             RMW_SET_ERROR_MSG("node_impl is nullptr");
             return nullptr;
         }
-        
+        std::cout << "[WASM] rmw_node_get_graph_guard_condition(end)\n"; // REMOVE
         return rmw_node->context->impl->graph_guard_condition;
     }
 

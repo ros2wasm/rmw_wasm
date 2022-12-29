@@ -61,6 +61,7 @@ extern "C"
         rmw_wait_set_t * wait_set,
         const rmw_time_t * wait_timeout)
     {
+        std::cout << "[WASM] rmw_wait(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(wait_set, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             wait_set,
@@ -173,7 +174,7 @@ extern "C"
 
         // TODO: clear wait set after checking results
         // wasm_wait_set->clear();
-
+        std::cout << "[WASM] rmw_wait(end)\n"; // REMOVE
         return timedout ? RMW_RET_TIMEOUT : RMW_RET_OK;
     }
 

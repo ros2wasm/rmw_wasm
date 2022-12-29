@@ -14,7 +14,8 @@ extern "C"
         const char * topic_name,
         [[maybe_unused]] bool no_mangle,
         rmw_topic_endpoint_info_array_t * publishers_info)
-    {
+    {   
+        std::cout << "[WASM] _get_info_by_topic(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -28,7 +29,7 @@ extern "C"
         }
 
         // TODO: figure out
-
+        std::cout << "[WASM] _get_info_by_topic(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -40,6 +41,7 @@ extern "C"
         rmw_topic_endpoint_info_array_t * subscriptions_info)
     {
         // TODO: check if needs to be different
+        std::cout << "[WASM] rmw_get_publishers_info_by_topic()\n"; // REMOVE
         return _get_info_by_topic(
             node,
             allocator,
@@ -56,6 +58,7 @@ extern "C"
         rmw_topic_endpoint_info_array_t * subscriptions_info)
     {
         // TODO: check if needs to be different
+        std::cout << "[WASM] rmw_get_subscriptions_info_by_topic()\n"; // REMOVE
         return _get_info_by_topic(
             node,
             allocator,

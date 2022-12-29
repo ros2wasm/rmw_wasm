@@ -111,6 +111,7 @@ extern "C"
         const rmw_client_t * client,
         bool * is_available)
     {
+        std::cout << "[WASM] rmw_service_server_is_available(start)\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_ERROR);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -128,6 +129,7 @@ extern "C"
         // TODO: figure out
 
         *is_available = true;
+        std::cout << "[WASM] rmw_service_server_is_available(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -136,6 +138,7 @@ extern "C"
         [[maybe_unused]] rmw_event_callback_t callback,
         [[maybe_unused]] const void * user_data)
     {
+        std::cout << "[WASM] rmw_service_set_on_new_request_callback()\n"; // REMOVE
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_service, RMW_RET_INVALID_ARGUMENT);
         // TODO: implement if needed
         return RMW_RET_OK;

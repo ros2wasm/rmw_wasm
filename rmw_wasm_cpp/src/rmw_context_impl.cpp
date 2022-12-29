@@ -34,6 +34,7 @@ extern "C"
         [[maybe_unused]] rmw_init_options_t * options, 
         [[maybe_unused]] size_t domain_id)
     {
+        std::cout << "[WASM] rmw_context_impl_s::init(start)\n"; // REMOVE
         // If this isn't the first node, just increment the node counter;
         // we only do the rest if this was the first node
         std::scoped_lock<std::mutex> lock(mutex_initialization);
@@ -59,17 +60,20 @@ extern "C"
         }
 
         this->node_count++;
+        std::cout << "[WASM] rmw_context_impl_s::init(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
     rmw_ret_t rmw_context_impl_s::fini()
     {
+        std::cout << "[WASM] rmw_context_impl_s::fini(start)\n"; // REMOVE
         std::scoped_lock<std::mutex> lock(mutex_initialization);
         if (0u != --this->node_count) {
             return RMW_RET_OK;
         }
 
         cleanup();
+        std::cout << "[WASM] rmw_context_impl_s::fini(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
