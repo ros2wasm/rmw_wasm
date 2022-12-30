@@ -105,6 +105,11 @@ extern "C"
         RMW_CHECK_ARGUMENT_FOR_NULL(taken, RMW_RET_ERROR);
 
         // TODO: implement if needed
+
+        // To avoid error: 
+        // [rclcpp]: Couldn't take event info: error not set
+        *taken = true;
+        
         std::cout << "[WASM] rmw_take_event(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
