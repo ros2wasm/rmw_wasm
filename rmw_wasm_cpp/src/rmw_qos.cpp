@@ -1,10 +1,43 @@
+#include <iostream> // REMOVE
+
 #include "rmw_wasm_cpp/rmw_identifier.hpp"
+#include "rmw_wasm_cpp/rmw_qos.hpp"
 
 #include "rmw/rmw.h"
 #include "rmw/impl/cpp/macros.hpp"
 
+namespace rmw_wasm_cpp
+{
+    bool is_valid_qos(const rmw_qos_profile_t * qos_profile)
+    {
+        std::cout << "[DEBUG] Checking is_valid_qos()\n"; // REMOVE
+        bool is_valid =  nullptr != qos_profile &&
+               RMW_QOS_POLICY_HISTORY_UNKNOWN != qos_profile->history &&
+               RMW_QOS_POLICY_RELIABILITY_UNKNOWN != qos_profile->reliability &&
+               RMW_QOS_POLICY_DURABILITY_UNKNOWN != qos_profile->durability &&
+               RMW_QOS_POLICY_LIVELINESS_UNKNOWN != qos_profile->liveliness;
+        std::cout << "[DEBUG] is_valid: " << is_valid << '\n'; // REMOVE
+        return is_valid;
+    }
+} // namespace rmw_wasm_cpp
+
 extern "C"
 {
+    static rmw_ret_t _get_actual_qos(rmw_qos_profile_t * qos)
+    {
+        std::cout << "[DEBUG] _get_actual_qos()\n"; // REMOVE
+        // Based on rcl_qos_profile_rosout_default
+        qos->history = RMW_QOS_POLICY_HISTORY_KEEP_LAST;
+        qos->depth = 1000;
+        qos->reliability = RMW_QOS_POLICY_RELIABILITY_RELIABLE;
+        qos->durability = RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL;
+        qos->deadline = RMW_QOS_DEADLINE_DEFAULT;
+        qos->lifespan = RMW_QOS_LIFESPAN_DEFAULT;
+        qos->liveliness = RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT;
+        qos->liveliness_lease_duration = RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT;
+        qos->avoid_ros_namespace_conventions = false;
+        return RMW_RET_OK;
+    }
 
     rmw_ret_t rmw_publisher_get_actual_qos(
         const rmw_publisher_t * publisher,
@@ -24,7 +57,7 @@ extern "C"
         // return rmw_wasm_cpp::rmw_publisher_get_actual_qos(
         //     publisher, 
         //     qos);
-        return RMW_RET_OK;
+        return _get_actual_qos(qos);
     }
 
     rmw_ret_t rmw_subscription_get_actual_qos(
@@ -43,7 +76,7 @@ extern "C"
         // TODO: implement if needed
 
         std::cout << "[WASM] rmw_subscription_get_actual_qos(start)\n"; // REMOVE
-        return RMW_RET_OK;
+        return _get_actual_qos(qos);
     }
 
     rmw_ret_t rmw_service_response_publisher_get_actual_qos(
@@ -61,7 +94,7 @@ extern "C"
 
         // TODO: implement if needed 
         std::cout << "[WASM] rmw_service_response_publisher_get_actual_qos(end)\n"; // REMOVE
-        return RMW_RET_OK;
+        return _get_actual_qos(qos);
     }
 
     rmw_ret_t rmw_client_response_subscription_get_actual_qos(
@@ -79,7 +112,7 @@ extern "C"
 
         // TODO: implement if needed
         std::cout << "[WASM] rmw_client_response_subscription_get_actual_qos(end)\n"; // REMOVE
-        return RMW_RET_OK;
+        return _get_actual_qos(qos);
     }
 
 
@@ -96,9 +129,8 @@ extern "C"
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
         RMW_CHECK_ARGUMENT_FOR_NULL(qos, RMW_RET_INVALID_ARGUMENT);
 
-        // TODO: implement if needed
         std::cout << "[WASM] rmw_client_request_publisher_get_actual_qos(end)\n"; // REMOVE
-        return RMW_RET_OK;
+        return _get_actual_qos(qos);
     }
 
     rmw_ret_t rmw_service_request_subscription_get_actual_qos(
@@ -116,7 +148,7 @@ extern "C"
 
         // TODO: implement if needed
         std::cout << "[WASM] rmw_service_request_subscription_get_actual_qos(end)\n"; // REMOVE
-        return RMW_RET_OK;
+        return _get_actual_qos(qos);
     }
 
     rmw_ret_t rmw_qos_profile_check_compatible(

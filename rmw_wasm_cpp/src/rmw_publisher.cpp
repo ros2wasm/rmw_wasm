@@ -4,10 +4,12 @@
 #include "rmw_wasm_cpp/rmw_identifier.hpp"
 #include "rmw_wasm_cpp/rmw_context_impl.hpp"
 #include "rmw_wasm_cpp/rmw_types.hpp"
+#include "rmw_wasm_cpp/rmw_qos.hpp"
 
 #include "wasm_cpp/publisher.hpp"
 
 #include "rmw/rmw.h"
+#include "rmw/types.h"
 #include "rmw/allocators.h"
 #include "rmw/error_handling.h"
 #include "rmw/impl/cpp/macros.hpp"
@@ -78,7 +80,7 @@ extern "C"
         const rmw_node_t * node,
         const rosidl_message_type_support_t * type_support,
         const char * topic_name,
-        const rmw_qos_profile_t * qos_policies,
+        const rmw_qos_profile_t * qos_profile,
         const rmw_publisher_options_t * publisher_options)
     {
         std::cout << "[WASM] rmw_create_publisher(start)\n"; // REMOVE
@@ -94,7 +96,11 @@ extern "C"
             RMW_SET_ERROR_MSG("topic_name argument is an empty string");
             return nullptr;
         }
-        RMW_CHECK_ARGUMENT_FOR_NULL(qos_policies, nullptr);
+        RMW_CHECK_ARGUMENT_FOR_NULL(qos_profile, nullptr);
+        if (!rmw_wasm_cpp::is_valid_qos(qos_profile)) {
+            RMW_SET_ERROR_MSG("qos_profile is not valid");
+            return nullptr;
+        }
 
         // TODO: set some default qos policy
 
