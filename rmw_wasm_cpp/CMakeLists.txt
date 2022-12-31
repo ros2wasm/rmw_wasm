@@ -21,6 +21,7 @@ endif()
 find_package(rmw REQUIRED)
 find_package(rcpputils REQUIRED)
 find_package(rcutils REQUIRED)
+find_package(std_msgs REQUIRED)
 
 set(${PROJECT_NAME}_SOURCES
   src/rmw_identifier.cpp
@@ -79,6 +80,7 @@ ament_target_dependencies(${PROJECT_NAME}
   wasm_cpp
   rcpputils
   rcutils
+  std_msgs
 )
 
 ament_export_include_directories(include)
@@ -86,6 +88,7 @@ ament_export_dependencies(
   rmw
   rcpputils
   rcutils
+  std_msgs
 )
 
 if(BUILD_TESTING)

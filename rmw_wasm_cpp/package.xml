@@ -13,7 +13,9 @@
   <depend>rcpputils</depend>
   <depend>rmw</depend>
   <depend>wasm_cpp</depend>
-  <!-- <depend>rmw_dds_common</depend> -->
+
+  <!-- REMOVE later -->
+  <depend>std_msgs</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

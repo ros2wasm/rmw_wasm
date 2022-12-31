@@ -10,6 +10,8 @@
 #include "rmw/error_handling.h"
 #include "rmw/impl/cpp/macros.hpp"
 
+#include "std_msgs/msg/string.hpp" // REMOVE
+
 extern "C"
 {
     rmw_ret_t rmw_publish(
@@ -48,11 +50,13 @@ extern "C"
         // std::string message = static_cast<std::string *>(ros_message);
         std::string message{ "Hi there!" };
 
-        // auto msg_data = const_cast<void *>(ros_message);
-        // auto msg_data = std::to_string(*reinterpret_cast<const char *>(&ros_message));
-        // auto msg_data = *reinterpret_cast<const std::string *>(&ros_message);
+        std::string topic { publisher->topic_name };
 
-        // std::cout << "WAHT THIS: " << msg_data << '\n';
+        if (topic == "/wasm_topic") {
+            std_msgs::msg::String msg = *reinterpret_cast<const std_msgs::msg::String *>(&ros_message);
+            // TODO: convert msg to regular string
+            std::cout << "Publishing in " << topic << '\n';
+        } 
 
 
         wasm_pub->publish(message);
