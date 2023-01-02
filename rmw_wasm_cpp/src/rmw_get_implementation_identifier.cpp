@@ -1,5 +1,5 @@
 #include "rmw/rmw.h"
-#include "rmw_wasm_cpp/rmw_identifier.hpp"
+#include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
 
 extern "C"
 {

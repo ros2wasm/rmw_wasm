@@ -1,5 +1,5 @@
-#ifndef RMW_WASM_CPP__RMW_VALIDATION_HPP_
-#define RMW_WASM_CPP__RMW_VALIDATION_HPP_
+#ifndef RMW_WASM_CPP__RMW_WASM_VALIDATION_HPP_
+#define RMW_WASM_CPP__RMW_WASM_VALIDATION_HPP_
 
 #include "rmw/rmw.h"
 
@@ -18,4 +18,4 @@ namespace rmw_wasm_cpp
 
 } // namespace rmw_wasm_cpp
 
-#endif // RMW_WASM_CPP__RMW_VALIDATION_HPP_
+#endif // RMW_WASM_CPP__RMW_WASM_VALIDATION_HPP_

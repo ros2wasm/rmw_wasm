@@ -3,7 +3,7 @@
 #include "wasm_cpp/init.hpp"
 
 #include "rmw_wasm_cpp/rmw_init.hpp"
-#include "rmw_wasm_cpp/rmw_identifier.hpp"
+#include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
 #include "rmw_wasm_cpp/rmw_context_impl.hpp"
 
 #include "rcutils/strdup.h"

@@ -1,7 +1,10 @@
-#include "rmw_wasm_cpp/rmw_validation.hpp"
+#include "rmw_wasm_cpp/rmw_wasm_validation.hpp"
 
 #include "rmw/types.h"
 #include "rmw/validate_full_topic_name.h"
+#include "rmw/error_handling.h"
+
+#include "rcutils/error_handling.h"
 
 #include "rosidl_runtime_c/message_type_support_struct.h"
 #include "rosidl_runtime_c/service_type_support_struct.h"
@@ -42,6 +45,8 @@ namespace rmw_wasm_cpp
         if (ts) {
             return true;
         }
+        rcutils_error_string_t error_c = rcutils_get_error_string();
+        rcutils_reset_error();
 
         ts = get_message_typesupport_handle(
             type_support,
@@ -49,6 +54,15 @@ namespace rmw_wasm_cpp
         if (ts) {
             return true;
         }
+        rcutils_error_string_t error_cpp = rcutils_get_error_string();
+        rcutils_reset_error();
+
+        RMW_SET_ERROR_MSG_WITH_FORMAT_STRING(
+            "Unable to find type support:\n"
+            "    C: %s\n"
+            "  C++: %s\n",
+            error_c.str,
+            error_cpp.str);
 
         return false;
     }
@@ -63,6 +77,8 @@ namespace rmw_wasm_cpp
         if (ts) {
             return true;
         }
+        rcutils_error_string_t error_c = rcutils_get_error_string();
+        rcutils_reset_error();
 
         ts = get_service_typesupport_handle(
             type_support,
@@ -70,6 +86,15 @@ namespace rmw_wasm_cpp
         if (ts) {
             return true;
         }
+        rcutils_error_string_t error_cpp = rcutils_get_error_string();
+        rcutils_reset_error();
+
+        RMW_SET_ERROR_MSG_WITH_FORMAT_STRING(
+            "Unable to find type support:\n"
+            "    C: %s\n"
+            "  C++: %s\n",
+            error_c.str,
+            error_cpp.str);
 
         return false;
     }

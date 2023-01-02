@@ -1,6 +1,6 @@
 #include <iostream> // REMOVE
 
-#include "rmw_wasm_cpp/rmw_identifier.hpp"
+#include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
 #include "rmw_wasm_cpp/rmw_types.hpp"
 
 #include "rmw/rmw.h"

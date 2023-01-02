@@ -1,11 +1,10 @@
 #include <iostream> // REMOVE
 #include <string>
 
-#include "rmw_wasm_cpp/rmw_identifier.hpp"
+#include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
+#include "rmw_wasm_cpp/rmw_wasm_validation.hpp"
 #include "rmw_wasm_cpp/rmw_context_impl.hpp"
 #include "rmw_wasm_cpp/rmw_types.hpp"
-#include "rmw_wasm_cpp/rmw_qos.hpp"
-#include "rmw_wasm_cpp/rmw_validation.hpp"
 
 #include "wasm_cpp/publisher.hpp"
 

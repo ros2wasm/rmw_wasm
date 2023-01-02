@@ -24,7 +24,9 @@ find_package(rcutils REQUIRED)
 find_package(std_msgs REQUIRED)
 
 set(${PROJECT_NAME}_SOURCES
-  src/rmw_identifier.cpp
+  src/rmw_wasm_identifier.cpp
+  src/rmw_wasm_guard_condition.cpp
+  src/rmw_wasm_validation.cpp
   src/rmw_get_implementation_identifier.cpp
   src/rmw_serialization_format.cpp
   src/rmw_get_serialization_format.cpp
@@ -50,7 +52,6 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_log_and_features.cpp
   src/rmw_get_info_by_topic.cpp
   src/rmw_network.cpp
-  src/rmw_validation.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})

@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "rmw_wasm_cpp/rmw_identifier.hpp"
+#include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
 
 #include "rmw/rmw.h"
 #include "rmw/allocators.h"

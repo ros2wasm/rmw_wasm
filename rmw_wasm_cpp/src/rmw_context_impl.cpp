@@ -3,7 +3,7 @@
 #include "wasm_cpp/init.hpp"
 
 #include "rmw_wasm_cpp/rmw_context_impl.hpp"
-#include "rmw_wasm_cpp/rmw_guard_condition.hpp"
+#include "rmw_wasm_cpp/rmw_wasm_guard_condition.hpp"
 
 #include "rmw/error_handling.h"
 
