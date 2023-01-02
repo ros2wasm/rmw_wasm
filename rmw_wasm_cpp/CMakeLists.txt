@@ -50,6 +50,7 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_log_and_features.cpp
   src/rmw_get_info_by_topic.cpp
   src/rmw_network.cpp
+  src/rmw_validation.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})

@@ -6,21 +6,6 @@
 #include "rmw/rmw.h"
 #include "rmw/impl/cpp/macros.hpp"
 
-namespace rmw_wasm_cpp
-{
-    bool is_valid_qos(const rmw_qos_profile_t * qos_profile)
-    {
-        std::cout << "[DEBUG] Checking is_valid_qos()\n"; // REMOVE
-        bool is_valid =  nullptr != qos_profile &&
-               RMW_QOS_POLICY_HISTORY_UNKNOWN != qos_profile->history &&
-               RMW_QOS_POLICY_RELIABILITY_UNKNOWN != qos_profile->reliability &&
-               RMW_QOS_POLICY_DURABILITY_UNKNOWN != qos_profile->durability &&
-               RMW_QOS_POLICY_LIVELINESS_UNKNOWN != qos_profile->liveliness;
-        std::cout << "[DEBUG] is_valid: " << is_valid << '\n'; // REMOVE
-        return is_valid;
-    }
-} // namespace rmw_wasm_cpp
-
 extern "C"
 {
     static rmw_ret_t _get_actual_qos(rmw_qos_profile_t * qos)
@@ -53,10 +38,6 @@ extern "C"
         RMW_CHECK_ARGUMENT_FOR_NULL(qos, RMW_RET_INVALID_ARGUMENT);
 
         std::cout << "[WASM] rmw_publisher_get_actual_qos(end)\n"; // REMOVE
-        // TODO: implement if needed
-        // return rmw_wasm_cpp::rmw_publisher_get_actual_qos(
-        //     publisher, 
-        //     qos);
         return _get_actual_qos(qos);
     }
 
@@ -72,8 +53,6 @@ extern "C"
             rmw_wasm_cpp::identifier,
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
         RMW_CHECK_ARGUMENT_FOR_NULL(qos, RMW_RET_INVALID_ARGUMENT);
-
-        // TODO: implement if needed
 
         std::cout << "[WASM] rmw_subscription_get_actual_qos(start)\n"; // REMOVE
         return _get_actual_qos(qos);
@@ -92,7 +71,6 @@ extern "C"
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
         RMW_CHECK_ARGUMENT_FOR_NULL(qos, RMW_RET_INVALID_ARGUMENT);
 
-        // TODO: implement if needed 
         std::cout << "[WASM] rmw_service_response_publisher_get_actual_qos(end)\n"; // REMOVE
         return _get_actual_qos(qos);
     }
@@ -110,11 +88,9 @@ extern "C"
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
         RMW_CHECK_ARGUMENT_FOR_NULL(qos, RMW_RET_INVALID_ARGUMENT);
 
-        // TODO: implement if needed
         std::cout << "[WASM] rmw_client_response_subscription_get_actual_qos(end)\n"; // REMOVE
         return _get_actual_qos(qos);
     }
-
 
     rmw_ret_t rmw_client_request_publisher_get_actual_qos(
         const rmw_client_t * client,
@@ -146,7 +122,6 @@ extern "C"
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
         RMW_CHECK_ARGUMENT_FOR_NULL(qos, RMW_RET_INVALID_ARGUMENT);
 
-        // TODO: implement if needed
         std::cout << "[WASM] rmw_service_request_subscription_get_actual_qos(end)\n"; // REMOVE
         return _get_actual_qos(qos);
     }

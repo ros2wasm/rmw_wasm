@@ -5,6 +5,7 @@
 #include "rmw_wasm_cpp/rmw_context_impl.hpp"
 #include "rmw_wasm_cpp/rmw_types.hpp"
 #include "rmw_wasm_cpp/rmw_qos.hpp"
+#include "rmw_wasm_cpp/rmw_validation.hpp"
 
 #include "wasm_cpp/publisher.hpp"
 
@@ -24,14 +25,14 @@ extern "C"
         [[maybe_unused]] const rosidl_runtime_c__Sequence__bound * message_bounds,
         [[maybe_unused]] rmw_publisher_allocation_t * allocation)
     {
-        RMW_SET_ERROR_MSG("rmw_init_publisher_allocation unimplemented");
+        RMW_SET_ERROR_MSG("rmw_init_publisher_allocation not implemented");
         return RMW_RET_UNSUPPORTED;
     }
 
     rmw_ret_t rmw_fini_publisher_allocation(
         [[maybe_unused]] rmw_publisher_allocation_t * allocation)
     {
-        RMW_SET_ERROR_MSG("rmw_fini_publisher_allocation unimplemented");
+        RMW_SET_ERROR_MSG("rmw_fini_publisher_allocation not implemented");
         return RMW_RET_UNSUPPORTED;
     }
 
@@ -90,21 +91,28 @@ extern "C"
             node->implementation_identifier,
             rmw_wasm_cpp::identifier,
             return nullptr);
+
         RMW_CHECK_ARGUMENT_FOR_NULL(type_support, nullptr);
+        if (!rmw_wasm_cpp::is_valid_type_support_message(type_support)) {
+            RMW_SET_ERROR_MSG("type_support is not valid");
+            return nullptr;
+        }
+
         RMW_CHECK_ARGUMENT_FOR_NULL(topic_name, nullptr);
         if (0 == strlen(topic_name)) {
             RMW_SET_ERROR_MSG("topic_name argument is an empty string");
             return nullptr;
         }
+        if (!rmw_wasm_cpp::is_valid_topic_name(topic_name)) {
+            RMW_SET_ERROR_MSG("topic_name is not valid");
+            return nullptr;
+        }
+
         RMW_CHECK_ARGUMENT_FOR_NULL(qos_profile, nullptr);
         if (!rmw_wasm_cpp::is_valid_qos(qos_profile)) {
             RMW_SET_ERROR_MSG("qos_profile is not valid");
             return nullptr;
         }
-
-        // TODO: set some default qos policy
-
-        // TODO: validate type support
 
         std::cout << "[WASM] rmw_create_publisher(end)\n"; // REMOVE
         return _create_publisher(topic_name, publisher_options, type_support);
