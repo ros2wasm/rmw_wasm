@@ -1,6 +1,7 @@
 #include <iostream> // REMOVE
 
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
+#include "rmw_wasm_cpp/rmw_wasm_yaml.hpp"
 #include "rmw_wasm_cpp/rmw_types.hpp"
 
 #include "wasm_cpp/publisher.hpp"
@@ -48,16 +49,13 @@ extern "C"
 
         // TODO: convert to YAML but keep as string for now
         // std::string message = static_cast<std::string *>(ros_message);
-        std::string message{ "Hi there!" };
 
-        std::string topic { publisher->topic_name };
+        // Convert to yaml string and publish
+        std::string message = rmw_wasm_cpp::msg_to_yaml(rmw_wasm_pub, ros_message);
 
-        if (topic == "/wasm_topic") {
-            std_msgs::msg::String msg = *reinterpret_cast<const std_msgs::msg::String *>(&ros_message);
-            // TODO: convert msg to regular string
-            std::cout << "Publishing in " << topic << '\n';
+        if (message.empty()) {
+            message = "Empty string";
         } 
-
 
         wasm_pub->publish(message);
 

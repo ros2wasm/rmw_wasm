@@ -119,7 +119,6 @@ extern "C"
 
     static rmw_ret_t _destroy_publisher(rmw_publisher_t * publisher)
     {
-        // TODO: implement
         std::cout << "[WASM] _destroy_publisher(start)\n"; // REMOVE
         auto rmw_wasm_pub = static_cast<rmw_wasm_pub_t *>(publisher->data);
         if (nullptr != rmw_wasm_pub) {

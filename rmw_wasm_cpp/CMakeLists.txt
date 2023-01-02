@@ -21,12 +21,18 @@ endif()
 find_package(rmw REQUIRED)
 find_package(rcpputils REQUIRED)
 find_package(rcutils REQUIRED)
+find_package(dynmsg REQUIRED)
+find_package(rosidl_runtime_c REQUIRED)
+find_package(rosidl_runtime_cpp REQUIRED)
+find_package(rosidl_typesupport_introspection_c REQUIRED)
+find_package(rosidl_typesupport_introspection_cpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
 set(${PROJECT_NAME}_SOURCES
   src/rmw_wasm_identifier.cpp
   src/rmw_wasm_guard_condition.cpp
   src/rmw_wasm_validation.cpp
+  src/rmw_wasm_yaml.cpp
   src/rmw_get_implementation_identifier.cpp
   src/rmw_serialization_format.cpp
   src/rmw_get_serialization_format.cpp
@@ -82,14 +88,25 @@ ament_target_dependencies(${PROJECT_NAME}
   wasm_cpp
   rcpputils
   rcutils
+  dynmsg
+  rosidl_runtime_c
+  rosidl_runtime_cpp
+  rosidl_typesupport_introspection_c
+  rosidl_typesupport_introspection_cpp
   std_msgs
 )
 
 ament_export_include_directories(include)
 ament_export_dependencies(
   rmw
+  wasm_cpp
   rcpputils
   rcutils
+  dynmsg
+  rosidl_runtime_c
+  rosidl_runtime_cpp
+  rosidl_typesupport_introspection_c
+  rosidl_typesupport_introspection_cpp
   std_msgs
 )
 

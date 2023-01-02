@@ -13,6 +13,11 @@
   <depend>rcpputils</depend>
   <depend>rmw</depend>
   <depend>wasm_cpp</depend>
+  <depend>dynmsg</depend>
+  <depend>rosidl_runtime_c</depend>
+  <depend>rosidl_runtime_cpp</depend>
+  <depend>rosidl_typesupport_introspection_c</depend>
+  <depend>rosidl_typesupport_introspection_cpp</depend>
 
   <!-- REMOVE later -->
   <depend>std_msgs</depend>
