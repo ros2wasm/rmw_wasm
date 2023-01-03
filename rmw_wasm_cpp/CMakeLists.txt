@@ -26,7 +26,6 @@ find_package(rosidl_runtime_c REQUIRED)
 find_package(rosidl_runtime_cpp REQUIRED)
 find_package(rosidl_typesupport_introspection_c REQUIRED)
 find_package(rosidl_typesupport_introspection_cpp REQUIRED)
-find_package(rclcpp REQUIRED)
 
 set(${PROJECT_NAME}_SOURCES
   src/rmw_wasm_identifier.cpp
@@ -93,7 +92,6 @@ ament_target_dependencies(${PROJECT_NAME}
   rosidl_runtime_cpp
   rosidl_typesupport_introspection_c
   rosidl_typesupport_introspection_cpp
-  rclcpp
 )
 
 ament_export_include_directories(include)
@@ -107,7 +105,6 @@ ament_export_dependencies(
   rosidl_runtime_cpp
   rosidl_typesupport_introspection_c
   rosidl_typesupport_introspection_cpp
-  rclcpp
 )
 
 if(BUILD_TESTING)

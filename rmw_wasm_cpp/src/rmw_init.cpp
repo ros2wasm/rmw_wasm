@@ -26,6 +26,7 @@ extern "C"
         rcutils_allocator_t allocator)
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        assert(rmw_wasm_cpp::identifier != NULL);
 
         RMW_CHECK_ARGUMENT_FOR_NULL(init_options, RMW_RET_INVALID_ARGUMENT);
         RCUTILS_CHECK_ALLOCATOR(&allocator, return RMW_RET_INVALID_ARGUMENT);
@@ -49,6 +50,7 @@ extern "C"
         rmw_init_options_t * dst)
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        assert(rmw_wasm_cpp::identifier != NULL);
 
         RMW_CHECK_ARGUMENT_FOR_NULL(src, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_ARGUMENT_FOR_NULL(dst, RMW_RET_INVALID_ARGUMENT);
@@ -87,6 +89,7 @@ extern "C"
     rmw_ret_t rmw_init_options_fini(rmw_init_options_t * init_options)
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        assert(rmw_wasm_cpp::identifier != NULL);
 
         RMW_CHECK_ARGUMENT_FOR_NULL(init_options, RMW_RET_INVALID_ARGUMENT);
         if (NULL == init_options->implementation_identifier) {

@@ -1,7 +1,6 @@
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
 
-// Fail to get identifier without this
-#include "rclcpp/logging.hpp"
+#include "rmw/rmw.h"
 
 #include "rcutils/logging_macros.h"
 
