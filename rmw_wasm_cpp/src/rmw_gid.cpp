@@ -4,6 +4,8 @@
 #include "rmw/impl/cpp/macros.hpp"
 
 #include "rclcpp/logging.hpp"
+#include "rcutils/logging_macros.h"
+
 
 // NOTE: gid is a unique identifier
 
@@ -13,7 +15,8 @@ extern "C"
         const rmw_publisher_t * publisher,
         rmw_gid_t * gid)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -35,7 +38,8 @@ extern "C"
         const rmw_gid_t * gid2,
         bool * result)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(gid1, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(

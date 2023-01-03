@@ -6,6 +6,8 @@
 #include "rmw/features.h"
 
 #include "rclcpp/logging.hpp"
+#include "rcutils/logging_macros.h"
+
 
 extern "C"
 {
@@ -13,7 +15,8 @@ extern "C"
         [[maybe_unused]] rmw_log_severity_t severity)
     {
         // TODO: implement
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         return RMW_RET_OK;
     }
 
@@ -21,7 +24,8 @@ extern "C"
         [[maybe_unused]] rmw_feature_t feature)
     {
         // TODO: implement
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         return true;
     }
 

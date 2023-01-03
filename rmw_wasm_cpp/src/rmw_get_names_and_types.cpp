@@ -13,6 +13,8 @@
 #include "rmw/sanity_checks.h"
 
 #include "rclcpp/logging.hpp"
+#include "rcutils/logging_macros.h"
+
 
 extern "C"
 {
@@ -25,7 +27,8 @@ extern "C"
         [[maybe_unused]] bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -77,7 +80,8 @@ extern "C"
         bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         return _get_names_and_types_by_node(
             node,
             allocator,
@@ -95,7 +99,8 @@ extern "C"
         bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         return _get_names_and_types_by_node(
             node,
             allocator,
@@ -112,7 +117,8 @@ extern "C"
         const char * node_namespace,
         rmw_names_and_types_t * names_and_types)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         bool no_demangle{ true };
         return _get_names_and_types_by_node(
             node,
@@ -130,7 +136,8 @@ extern "C"
         const char * node_namespace,
         rmw_names_and_types_t * names_and_types)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         bool no_demangle{ true };
         return _get_names_and_types_by_node(
             node,
@@ -147,7 +154,8 @@ extern "C"
         [[maybe_unused]] bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -170,7 +178,8 @@ extern "C"
         bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         return _get_names_and_types(
             node,
             allocator,
@@ -183,7 +192,8 @@ extern "C"
         rcutils_allocator_t * allocator,
         rmw_names_and_types_t * names_and_types)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         bool no_demangle{ true };
         return _get_names_and_types(
             node,
@@ -197,7 +207,8 @@ extern "C"
         rcutils_string_array_t * node_names,
         rcutils_string_array_t * node_namespaces)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -223,7 +234,8 @@ extern "C"
         rcutils_string_array_t * node_namespaces,
         rcutils_string_array_t * enclaves)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(

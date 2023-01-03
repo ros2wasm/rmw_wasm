@@ -9,12 +9,15 @@
 #include "rmw/impl/cpp/macros.hpp"
 
 #include "rclcpp/logging.hpp"
+#include "rcutils/logging_macros.h"
+
 
 extern "C"
 {
     rmw_guard_condition_t * rmw_create_guard_condition(rmw_context_t * context)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(context, NULL);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -29,7 +32,8 @@ extern "C"
     rmw_ret_t rmw_destroy_guard_condition(
         rmw_guard_condition_t * rmw_guard_condition)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_guard_condition, RMW_RET_INVALID_ARGUMENT);
         return rmw_wasm_cpp::destroy_guard_condition(rmw_guard_condition);
@@ -38,7 +42,8 @@ extern "C"
     rmw_ret_t rmw_trigger_guard_condition(
         const rmw_guard_condition_t * rmw_guard_condition)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_guard_condition, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(

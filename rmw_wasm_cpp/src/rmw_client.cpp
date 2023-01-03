@@ -8,6 +8,8 @@
 #include "rcpputils/scope_exit.hpp"
 
 #include "rclcpp/logging.hpp"
+#include "rcutils/logging_macros.h"
+
 
 extern "C"
 {
@@ -17,7 +19,8 @@ extern "C"
         const char * service_name,
         const rmw_qos_profile_t * qos_policies)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, nullptr);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -75,7 +78,8 @@ extern "C"
         rmw_node_t * node, 
         rmw_client_t * client)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -102,7 +106,8 @@ extern "C"
         [[maybe_unused]] rmw_event_callback_t callback,
         [[maybe_unused]] const void * user_data)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_client, RMW_RET_INVALID_ARGUMENT);
         // TODO: implement if needed

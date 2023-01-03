@@ -5,6 +5,8 @@
 #include "rmw/impl/cpp/macros.hpp"
 
 #include "rclcpp/logging.hpp"
+#include "rcutils/logging_macros.h"
+
 
 extern "C"
 {
@@ -14,7 +16,8 @@ extern "C"
         void * ros_response,
         bool * taken)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(client, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -43,7 +46,8 @@ extern "C"
         rmw_request_id_t * request_header,
         void * ros_response)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(service, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(

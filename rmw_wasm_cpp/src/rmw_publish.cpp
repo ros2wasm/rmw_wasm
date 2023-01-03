@@ -12,6 +12,8 @@
 #include "rclcpp/logging.hpp"
 #include "rcutils/logging_macros.h"
 
+#include "rcutils/logging_macros.h"
+
 extern "C"
 {
     rmw_ret_t rmw_publish(
@@ -19,7 +21,8 @@ extern "C"
         const void * ros_message,
         [[maybe_unused]] rmw_publisher_allocation_t * allocation)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "WHATTT");
 
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -62,7 +65,8 @@ extern "C"
         const rmw_serialized_message_t * serialized_message,
         [[maybe_unused]] rmw_publisher_allocation_t * allocation)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             publisher,

@@ -14,6 +14,8 @@
 #include "rcpputils/scope_exit.hpp"
 
 #include "rclcpp/logging.hpp"
+#include "rcutils/logging_macros.h"
+
 
 extern "C"
 {
@@ -22,7 +24,8 @@ extern "C"
         const char * name,
         const char * namespace_)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(context, nullptr);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -121,7 +124,8 @@ extern "C"
     rmw_ret_t rmw_destroy_node(
         rmw_node_t * rmw_node)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -140,7 +144,8 @@ extern "C"
     const rmw_guard_condition_t * rmw_node_get_graph_guard_condition(
         const rmw_node_t * rmw_node)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         auto node_impl = static_cast<rmw_wasm_node_t *>(rmw_node->data);
         if (!node_impl) {

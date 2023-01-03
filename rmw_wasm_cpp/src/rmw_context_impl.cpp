@@ -6,17 +6,21 @@
 #include "rmw/error_handling.h"
 
 #include "rclcpp/logging.hpp"
+#include "rcutils/logging_macros.h"
+
 
 extern "C"
 {
     rmw_context_impl_s::rmw_context_impl_s()
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
     }
 
     rmw_context_impl_s::~rmw_context_impl_s()
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         wasm_cpp::shutdown();
 
@@ -33,7 +37,8 @@ extern "C"
         [[maybe_unused]] rmw_init_options_t * options, 
         [[maybe_unused]] size_t domain_id)
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         
         // If this isn't the first node, just increment the node counter;
         // we only do the rest if this was the first node
@@ -67,7 +72,8 @@ extern "C"
 
     rmw_ret_t rmw_context_impl_s::fini()
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         std::scoped_lock<std::mutex> lock(mutex_initialization);
         if (0u != --this->node_count) {
@@ -80,7 +86,8 @@ extern "C"
 
     void rmw_context_impl_s::cleanup()
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         if (this->graph_guard_condition) {
             rmw_wasm_cpp::destroy_guard_condition(this->graph_guard_condition);

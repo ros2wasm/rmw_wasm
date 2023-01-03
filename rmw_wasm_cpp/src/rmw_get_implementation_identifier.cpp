@@ -1,12 +1,15 @@
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
 
 #include "rclcpp/logging.hpp"
+#include "rcutils/logging_macros.h"
+
 
 extern "C"
 {
     const char * rmw_get_implementation_identifier()
     {
-        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        // 
+RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         return rmw_wasm_cpp::identifier;
     } 
 } // extern "C"
