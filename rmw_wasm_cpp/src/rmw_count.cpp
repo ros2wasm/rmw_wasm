@@ -3,7 +3,6 @@
 #include "rmw/rmw.h"
 #include "rmw/impl/cpp/macros.hpp"
 
-#include "rclcpp/logging.hpp"
 #include "rcutils/logging_macros.h"
 
 
@@ -15,8 +14,7 @@ extern "C"
         const char * topic_name,
         size_t * count)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -39,8 +37,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         const char * topic_name,
         size_t * count)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         return _count_entities(node, topic_name, count);
     }
 
@@ -49,8 +46,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         const char * topic_name,
         size_t * count)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         return _count_entities(node, topic_name, count);
     }
 

@@ -7,7 +7,6 @@
 
 #include "rcpputils/scope_exit.hpp"
 
-#include "rclcpp/logging.hpp"
 #include "rcutils/logging_macros.h"
 
 
@@ -19,8 +18,7 @@ extern "C"
         const char * service_name, 
         const rmw_qos_profile_t * qos_policies)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         
         RMW_CHECK_ARGUMENT_FOR_NULL(node, nullptr);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -75,8 +73,6 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         cleanup_rmw_service.cancel();
         cleanup_rmw_wasm_server.cancel();
         cleanup_wasm_server.cancel();
-
-        std::cout << "[TODO] rmw_create_service(end)\n"; // REMOVE
         return rmw_service;
     }
 
@@ -84,7 +80,8 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         rmw_node_t * node, 
         rmw_service_t * service)
     {   
-        std::cout << "[WASM] rmw_destroy_servide(start)\n"; // REMOVE
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -103,7 +100,6 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         
         rmw_free(const_cast<char *>(service->service_name));
         rmw_service_free(service);
-        std::cout << "[WASM] rmw_destroy_service(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -112,7 +108,8 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         const rmw_client_t * client,
         bool * is_available)
     {
-        std::cout << "[WASM] rmw_service_server_is_available(start)\n"; // REMOVE
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_ERROR);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -130,7 +127,6 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         // TODO: figure out
 
         *is_available = true;
-        std::cout << "[WASM] rmw_service_server_is_available(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -139,7 +135,8 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         [[maybe_unused]] rmw_event_callback_t callback,
         [[maybe_unused]] const void * user_data)
     {
-        std::cout << "[WASM] rmw_service_set_on_new_request_callback()\n"; // REMOVE
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_service, RMW_RET_INVALID_ARGUMENT);
         // TODO: implement if needed
         return RMW_RET_OK;

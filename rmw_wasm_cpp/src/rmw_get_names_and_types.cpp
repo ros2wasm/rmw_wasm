@@ -12,7 +12,6 @@
 #include "rmw/validate_namespace.h"
 #include "rmw/sanity_checks.h"
 
-#include "rclcpp/logging.hpp"
 #include "rcutils/logging_macros.h"
 
 
@@ -27,8 +26,7 @@ extern "C"
         [[maybe_unused]] bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -80,8 +78,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         return _get_names_and_types_by_node(
             node,
             allocator,
@@ -99,8 +96,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         return _get_names_and_types_by_node(
             node,
             allocator,
@@ -117,8 +113,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         const char * node_namespace,
         rmw_names_and_types_t * names_and_types)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         bool no_demangle{ true };
         return _get_names_and_types_by_node(
             node,
@@ -136,8 +131,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         const char * node_namespace,
         rmw_names_and_types_t * names_and_types)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         bool no_demangle{ true };
         return _get_names_and_types_by_node(
             node,
@@ -154,8 +148,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         [[maybe_unused]] bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -178,8 +171,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         return _get_names_and_types(
             node,
             allocator,
@@ -192,8 +184,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         rcutils_allocator_t * allocator,
         rmw_names_and_types_t * names_and_types)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         bool no_demangle{ true };
         return _get_names_and_types(
             node,
@@ -207,8 +198,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         rcutils_string_array_t * node_names,
         rcutils_string_array_t * node_namespaces)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -234,8 +224,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         rcutils_string_array_t * node_namespaces,
         rcutils_string_array_t * enclaves)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(

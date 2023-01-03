@@ -1,5 +1,3 @@
-#include <iostream> // REMOVE
-
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
 #include "rmw_wasm_cpp/rmw_types.hpp"
 
@@ -7,7 +5,7 @@
 #include "rmw/error_handling.h"
 #include "rmw/impl/cpp/macros.hpp"
 
-
+#include "rcutils/logging_macros.h"
 
 extern "C"
 {
@@ -18,7 +16,8 @@ extern "C"
         [[maybe_unused]] rmw_subscription_allocation_t * allocation,
         [[maybe_unused]] rmw_message_info_t * message_info)
     {
-        std::cout << "[WASM] _take(start)\n"; // REMOVE
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(subscription, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             subscription handle,
@@ -34,9 +33,6 @@ extern "C"
         // auto msg_with_info_opt = wasm_sub->get_message_with_info();
         auto msg_with_info = wasm_sub->get_message();
         *taken = false;
-        
-        std::cout << "[TAKE] " << msg_with_info << '\n'; // REMOVE
-        std::cout << "[WASM] _take(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -46,8 +42,9 @@ extern "C"
         bool * taken,
         rmw_subscription_allocation_t * allocation)
     {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+
         // TODO: implement rmw_wasm_cpp::rmw_take()
-        std::cout << "[TODO] rmw_take()\n"; // REMOVE
         return _take(
             subscription, 
             ros_message, 
@@ -63,7 +60,8 @@ extern "C"
         [[maybe_unused]] rmw_message_info_t * message_info,
         [[maybe_unused]] rmw_subscription_allocation_t * allocation)
     {
-        std::cout << "[WASM] rmw_take_with_info()\n"; // REMOVE
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(message_info, RMW_RET_INVALID_ARGUMENT);
         return _take(
             subscription, 
@@ -79,8 +77,8 @@ extern "C"
         [[maybe_unused]] bool * taken,
         [[maybe_unused]] rmw_subscription_allocation_t * allocation)
     {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         // TODO: implement if needed
-        std::cout << "[WASM] rmw_take_serialized_message()\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -91,8 +89,8 @@ extern "C"
         [[maybe_unused]] rmw_message_info_t * message_info,
         [[maybe_unused]] rmw_subscription_allocation_t * allocation)
     {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         // TODO: implement if needed or reuse above
-        std::cout << "[WASM] rmw_take_serialized_message_with_info()\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -102,7 +100,6 @@ extern "C"
         [[maybe_unused]] bool * taken,
         [[maybe_unused]] rmw_subscription_allocation_t * allocation)
     {
-        std::cout << "[WASM] rmw_take_loaned_message()\n"; // REMOVE
         RMW_SET_ERROR_MSG("rmw_take_loaned_message not implemented");
         return RMW_RET_UNSUPPORTED;
     }
@@ -114,7 +111,6 @@ extern "C"
         [[maybe_unused]] rmw_message_info_t * message_info,
         [[maybe_unused]] rmw_subscription_allocation_t * allocation)
     {
-        std::cout << "[WASM] rmw_take_loaned_message_with_info()\n"; // REMOVE
         RMW_SET_ERROR_MSG("rmw_take_loaned_message_with_info not implemented");
         return RMW_RET_UNSUPPORTED;
     }
@@ -123,7 +119,6 @@ extern "C"
         [[maybe_unused]] const rmw_subscription_t * subscription,
         [[maybe_unused]] void * loaned_message)
     {
-        std::cout << "[WASM] rmw_return_loaned_message_from_subscription()\n"; // REMOVE
         RMW_SET_ERROR_MSG("rmw_return_loaned_message_from_subscription not implemented");
         return RMW_RET_UNSUPPORTED;
     }

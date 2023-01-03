@@ -8,7 +8,6 @@
 #include "rmw/error_handling.h"
 #include "rmw/impl/cpp/macros.hpp"
 
-#include "rclcpp/logging.hpp"
 #include "rcutils/logging_macros.h"
 
 
@@ -16,8 +15,7 @@ extern "C"
 {
     rmw_guard_condition_t * rmw_create_guard_condition(rmw_context_t * context)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(context, NULL);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -32,8 +30,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
     rmw_ret_t rmw_destroy_guard_condition(
         rmw_guard_condition_t * rmw_guard_condition)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_guard_condition, RMW_RET_INVALID_ARGUMENT);
         return rmw_wasm_cpp::destroy_guard_condition(rmw_guard_condition);
@@ -42,8 +39,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
     rmw_ret_t rmw_trigger_guard_condition(
         const rmw_guard_condition_t * rmw_guard_condition)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_guard_condition, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(

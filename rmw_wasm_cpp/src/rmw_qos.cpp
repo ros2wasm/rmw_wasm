@@ -3,7 +3,6 @@
 #include "rmw/rmw.h"
 #include "rmw/impl/cpp/macros.hpp"
 
-#include "rclcpp/logging.hpp"
 #include "rcutils/logging_macros.h"
 
 
@@ -11,8 +10,7 @@ extern "C"
 {
     static rmw_ret_t _get_actual_qos(rmw_qos_profile_t * qos)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         // Based on rcl_qos_profile_rosout_default
         qos->history = RMW_QOS_POLICY_HISTORY_KEEP_LAST;
@@ -31,8 +29,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         const rmw_publisher_t * publisher,
         rmw_qos_profile_t * qos)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -49,8 +46,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         const rmw_subscription_t * subscription,
         rmw_qos_profile_t * qos)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(subscription, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -67,8 +63,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         const rmw_service_t * service,
         rmw_qos_profile_t * qos)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(service, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -85,8 +80,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         const rmw_client_t * client,
         rmw_qos_profile_t * qos)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(client, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -103,8 +97,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         const rmw_client_t * client,
         rmw_qos_profile_t * qos)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(client, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -121,8 +114,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         const rmw_service_t * service,
         rmw_qos_profile_t * qos)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(service, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -142,8 +134,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         char * reason,
         size_t reason_size)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(compatibility, RMW_RET_INVALID_ARGUMENT);
         if (!reason && 0u != reason_size) {

@@ -1,4 +1,3 @@
-#include <iostream> // REMOVE
 #include <chrono>
 
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
@@ -9,6 +8,8 @@
 #include "rmw/rmw.h"
 #include "rmw/impl/cpp/macros.hpp"
 
+#include "rcutils/logging_macros.h"
+
 
 extern "C" 
 {
@@ -16,7 +17,8 @@ extern "C"
         rmw_context_t * context, 
         [[maybe_unused]] size_t max_conditions)
     {
-        std::cout << "[WASM] rmw_create_wait_set(start)\n"; // REMOVE
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(context, nullptr);
 
         auto wasm_wait_set = new (std::nothrow) wasm_cpp::WaitSet();
@@ -27,14 +29,13 @@ extern "C"
         rmw_wait_set_t * wait_set = rmw_wait_set_allocate();
         wait_set->implementation_identifier = rmw_wasm_cpp::identifier;
         wait_set->data = rmw_wasm_wait_set;
-
-        std::cout << "[WASM] rmw_create_wait_set(end)\n"; // REMOVE
         return wait_set;
     }
 
     rmw_ret_t rmw_destroy_wait_set(rmw_wait_set_t * wait_set)
     {
-        std::cout << "[WASM] rmw_destroy_wait_set(start)\n"; // REMOVE
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(wait_set, RMW_RET_ERROR);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             wait_set,
@@ -48,7 +49,6 @@ extern "C"
         delete wasm_wait_set;
         delete rmw_wasm_wait_set;
         rmw_wait_set_free(wait_set);
-        std::cout << "[WASM] rmw_destroy_wait_set(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -61,7 +61,8 @@ extern "C"
         rmw_wait_set_t * wait_set,
         const rmw_time_t * wait_timeout)
     {
-        std::cout << "[WASM] rmw_wait(start)\n"; // REMOVE
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(wait_set, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             wait_set,
@@ -174,7 +175,6 @@ extern "C"
 
         // TODO: clear wait set after checking results
         // wasm_wait_set->clear();
-        std::cout << "[WASM] rmw_wait(end)\n"; // REMOVE
         return timedout ? RMW_RET_TIMEOUT : RMW_RET_OK;
     }
 

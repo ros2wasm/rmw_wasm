@@ -7,7 +7,6 @@
 
 #include "rcpputils/scope_exit.hpp"
 
-#include "rclcpp/logging.hpp"
 #include "rcutils/logging_macros.h"
 
 
@@ -19,7 +18,6 @@ extern "C"
         const char * service_name,
         const rmw_qos_profile_t * qos_policies)
     {
-        
         RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, nullptr);
@@ -78,7 +76,6 @@ extern "C"
         rmw_node_t * node, 
         rmw_client_t * client)
     {
-        
         RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
@@ -106,7 +103,6 @@ extern "C"
         [[maybe_unused]] rmw_event_callback_t callback,
         [[maybe_unused]] const void * user_data)
     {
-        
         RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_client, RMW_RET_INVALID_ARGUMENT);

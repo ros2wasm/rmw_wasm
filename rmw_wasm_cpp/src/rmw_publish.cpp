@@ -9,10 +9,8 @@
 #include "rmw/error_handling.h"
 #include "rmw/impl/cpp/macros.hpp"
 
-#include "rclcpp/logging.hpp"
 #include "rcutils/logging_macros.h"
 
-#include "rcutils/logging_macros.h"
 
 extern "C"
 {
@@ -21,9 +19,7 @@ extern "C"
         const void * ros_message,
         [[maybe_unused]] rmw_publisher_allocation_t * allocation)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "WHATTT");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             publisher,
@@ -65,8 +61,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         const rmw_serialized_message_t * serialized_message,
         [[maybe_unused]] rmw_publisher_allocation_t * allocation)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             publisher,

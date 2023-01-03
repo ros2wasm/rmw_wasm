@@ -1,11 +1,12 @@
 #include <string>
-#include <iostream> // REMOVE
 
 #include "rmw_wasm_cpp/rmw_wasm_yaml.hpp"
 #include "rmw_wasm_cpp/rmw_types.hpp"
 
 #include "dynmsg/message_reading.hpp"
 #include "dynmsg/yaml_utils.hpp"
+
+#include "rcutils/logging_macros.h"
 
 #include "rosidl_typesupport_introspection_c/identifier.h"
 #include "rosidl_typesupport_introspection_c/message_introspection.h"
@@ -28,14 +29,14 @@ namespace rmw_wasm_cpp
                 const rosidl_typesupport_introspection_c__MessageMembers * members,
                 const void * msg)
             {
+                RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+
                 RosMessage ros_msg{ };
                 ros_msg.type_info = members;
                 ros_msg.data = const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(msg));
                 YAML::Node yaml = dynmsg::c::message_to_yaml(ros_msg);
                 const auto & yaml_str = yaml_to_string(yaml);
-                // TODO: log info
-                // RMW_WASM_LOG_DEBUG("message C: %s", str.c_str());
-                std::cout << "[YAML] Message C: " << yaml_str.c_str() << '\n';
+                RCUTILS_LOG_INFO_NAMED("MSG", "C: %s", yaml_str.c_str());
                 return yaml_str;
             }
         } // namespace c
@@ -46,14 +47,14 @@ namespace rmw_wasm_cpp
                 const rosidl_typesupport_introspection_cpp::MessageMembers * members,
                 const void * msg)
             {
+                RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+
                 RosMessage_Cpp ros_msg{ };
                 ros_msg.type_info = members;
                 ros_msg.data = const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(msg));
                 YAML::Node yaml = dynmsg::cpp::message_to_yaml(ros_msg);
                 const auto & yaml_str = yaml_to_string(yaml);
-                // TODO: log info
-                // RMW_EMAIL_LOG_DEBUG("message C++: %s", str.c_str());
-                std::cout << "[YAML] Message C++: " << yaml_str.c_str() << '\n';
+                RCUTILS_LOG_INFO_NAMED("MSG", "C++: %s", yaml_str.c_str());
                 return yaml_str;
             }
         } // namespace cpp
@@ -64,6 +65,8 @@ namespace rmw_wasm_cpp
         const rmw_wasm_pub_t * publisher, 
         const void * msg)
     {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+
         const rosidl_message_type_support_t * ts = nullptr;
         ts = get_message_typesupport_handle(
             &publisher->type_support,

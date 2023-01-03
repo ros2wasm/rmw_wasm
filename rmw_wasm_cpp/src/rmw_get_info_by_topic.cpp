@@ -5,7 +5,6 @@
 #include "rmw/topic_endpoint_info_array.h"
 #include "rmw/get_topic_endpoint_info.h"
 
-#include "rclcpp/logging.hpp"
 #include "rcutils/logging_macros.h"
 
 
@@ -19,8 +18,7 @@ extern "C"
         [[maybe_unused]] bool no_mangle,
         rmw_topic_endpoint_info_array_t * publishers_info)
     {   
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -46,8 +44,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         bool no_mangle,
         rmw_topic_endpoint_info_array_t * subscriptions_info)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         return _get_info_by_topic(
             node,
             allocator,
@@ -63,8 +60,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         bool no_mangle,
         rmw_topic_endpoint_info_array_t * subscriptions_info)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         return _get_info_by_topic(
             node,
             allocator,

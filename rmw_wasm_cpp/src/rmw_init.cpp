@@ -15,7 +15,6 @@
 #include "rmw/init_options.h"
 #include "rmw/error_handling.h"
 
-#include "rclcpp/logging.hpp"
 #include "rcutils/logging_macros.h"
 
 
@@ -26,8 +25,7 @@ extern "C"
         rmw_init_options_t * init_options, 
         rcutils_allocator_t allocator)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(init_options, RMW_RET_INVALID_ARGUMENT);
         RCUTILS_CHECK_ALLOCATOR(&allocator, return RMW_RET_INVALID_ARGUMENT);
@@ -50,8 +48,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         const rmw_init_options_t * src, 
         rmw_init_options_t * dst)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(src, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_ARGUMENT_FOR_NULL(dst, RMW_RET_INVALID_ARGUMENT);
@@ -89,8 +86,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
     rmw_ret_t rmw_init_options_fini(rmw_init_options_t * init_options)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(init_options, RMW_RET_INVALID_ARGUMENT);
         if (NULL == init_options->implementation_identifier) {
@@ -116,8 +112,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         const rmw_init_options_t * options, 
         rmw_context_t * context)
     {   
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(options, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_ARGUMENT_FOR_NULL(context, RMW_RET_INVALID_ARGUMENT);
@@ -171,8 +166,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
     rmw_ret_t rmw_shutdown(rmw_context_t * context)
     {
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(context, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_FOR_NULL_WITH_MSG(
@@ -190,8 +184,7 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
     rmw_ret_t rmw_context_fini(rmw_context_t * context)
     {   
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(context, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_FOR_NULL_WITH_MSG(

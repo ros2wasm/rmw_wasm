@@ -5,18 +5,17 @@
 #include "rmw/rmw.h"
 #include "rmw/features.h"
 
-#include "rclcpp/logging.hpp"
 #include "rcutils/logging_macros.h"
 
 
 extern "C"
 {
+    
     rmw_ret_t rmw_set_log_severity(
         [[maybe_unused]] rmw_log_severity_t severity)
     {
         // TODO: implement
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         return RMW_RET_OK;
     }
 
@@ -24,9 +23,8 @@ RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         [[maybe_unused]] rmw_feature_t feature)
     {
         // TODO: implement
-        
-RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
         return true;
     }
 
-}
+} // extern "C"
