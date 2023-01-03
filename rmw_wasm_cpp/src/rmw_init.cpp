@@ -1,5 +1,3 @@
-#include <iostream>  // REMOVE
-
 #include "wasm_cpp/init.hpp"
 
 #include "rmw_wasm_cpp/rmw_init.hpp"
@@ -17,16 +15,17 @@
 #include "rmw/init_options.h"
 #include "rmw/error_handling.h"
 
+#include "rclcpp/logging.hpp"
+
 extern "C"
 {
 
     rmw_ret_t rmw_init_options_init(
-        // const char * identifier, // REMOVE
         rmw_init_options_t * init_options, 
         rcutils_allocator_t allocator)
     {
-        std::cout << "[WASM] rmw_init_options_init(start)\n"; // REMOVE
-        assert(rmw_wasm_cpp::identifier != NULL);
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(init_options, RMW_RET_INVALID_ARGUMENT);
         RCUTILS_CHECK_ALLOCATOR(&allocator, return RMW_RET_INVALID_ARGUMENT);
         if (NULL != init_options->implementation_identifier) {
@@ -41,17 +40,15 @@ extern "C"
         init_options->domain_id = RMW_DEFAULT_DOMAIN_ID;
         init_options->security_options = rmw_get_default_security_options();
         init_options->localhost_only = RMW_LOCALHOST_ONLY_DEFAULT;
-        std::cout << "[WASM] rmw_init_options_init(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
     rmw_ret_t rmw_init_options_copy(
-        // const char * identifier, // REMOVE
         const rmw_init_options_t * src, 
         rmw_init_options_t * dst)
     {
-        std::cout << "[WASM] rmw_init_options_copy(start)\n"; // REMOVE
-        assert(rmw_wasm_cpp::identifier != NULL);
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(src, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_ARGUMENT_FOR_NULL(dst, RMW_RET_INVALID_ARGUMENT);
         if (NULL == src->implementation_identifier) {
@@ -83,14 +80,13 @@ extern "C"
             return ret;
         }
         *dst = tmp;
-        std::cout << "[WASM] rmw_init_options_copy(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
     rmw_ret_t rmw_init_options_fini(rmw_init_options_t * init_options)
     {
-        std::cout << "[WASM] rmw_init_options_fini(start)\n"; // REMOVE
-        assert(rmw_wasm_cpp::identifier != NULL);
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(init_options, RMW_RET_INVALID_ARGUMENT);
         if (NULL == init_options->implementation_identifier) {
             RMW_SET_ERROR_MSG("expected initialized init_options");
@@ -101,12 +97,13 @@ extern "C"
             init_options->implementation_identifier,
             rmw_wasm_cpp::identifier,
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
+
         rcutils_allocator_t * allocator = &init_options->allocator;
         RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
         allocator->deallocate(init_options->enclave, allocator->state);
+
         rmw_ret_t ret = rmw_security_options_fini(&init_options->security_options, allocator);
         *init_options = rmw_get_zero_initialized_init_options();
-        std::cout << "[WASM] rmw_init_options_fini(end)\n"; // REMOVE
         return ret;
     }
 
@@ -114,7 +111,8 @@ extern "C"
         const rmw_init_options_t * options, 
         rmw_context_t * context)
     {   
-        std::cout << "[WASM] rmw_init(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(options, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_ARGUMENT_FOR_NULL(context, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_FOR_NULL_WITH_MSG(
@@ -162,13 +160,13 @@ extern "C"
 
         cleanup_impl.cancel();
         restore_context.cancel();
-        std::cout << "[WASM] rmw_init(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
     rmw_ret_t rmw_shutdown(rmw_context_t * context)
     {
-        std::cout << "[WASM] rmw_shutdown(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(context, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_FOR_NULL_WITH_MSG(
             context->impl,
@@ -180,13 +178,13 @@ extern "C"
             rmw_wasm_cpp::identifier,
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
         context->impl->is_shutdown = true; 
-        std::cout << "[WASM] rmw_shutdown(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
     rmw_ret_t rmw_context_fini(rmw_context_t * context)
     {   
-        std::cout << "[WASM] rmw_context_fini(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(context, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_FOR_NULL_WITH_MSG(
             context->impl,
@@ -208,7 +206,6 @@ extern "C"
         rmw_ret_t ret = rmw_init_options_fini(&context->options);
         delete context->impl;
         *context = rmw_get_zero_initialized_context();
-        std::cout << "[WASM] rmw_context_fini(end)\n"; // REMOVE
         return ret;
     }
 

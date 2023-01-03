@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
 
 #include "rmw/rmw.h"
@@ -9,6 +7,8 @@
 
 #include "rcpputils/scope_exit.hpp"
 
+#include "rclcpp/logging.hpp"
+
 extern "C"
 {
     rmw_client_t * rmw_create_client(
@@ -17,7 +17,8 @@ extern "C"
         const char * service_name,
         const rmw_qos_profile_t * qos_policies)
     {
-        std::cout << "[TODO] rmw_create_client(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(node, nullptr);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -67,7 +68,6 @@ extern "C"
 
 
         cleanup_rmw_client.cancel(); // TODO: clean up other clients
-        std::cout << "[WASM] rmw_create_client(end)\n"; // REMOVE
         return rmw_client;
     }
 
@@ -75,7 +75,8 @@ extern "C"
         rmw_node_t * node, 
         rmw_client_t * client)
     {
-        std::cout << "[WASM] rmw_destroy_client(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -93,7 +94,6 @@ extern "C"
 
         rmw_free(const_cast<char *>(client->service_name));
         rmw_client_free(client);
-        std::cout << "[WASM] rmw_destroy_client(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -102,6 +102,8 @@ extern "C"
         [[maybe_unused]] rmw_event_callback_t callback,
         [[maybe_unused]] const void * user_data)
     {
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_client, RMW_RET_INVALID_ARGUMENT);
         // TODO: implement if needed
         return RMW_RET_OK;

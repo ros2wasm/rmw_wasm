@@ -1,10 +1,10 @@
-#include <iostream> // REMOVE
-
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
 
 #include "rmw/rmw.h"
 #include "rmw/error_handling.h"
 #include "rmw/impl/cpp/macros.hpp"
+
+#include "rclcpp/logging.hpp"
 
 extern "C"
 {
@@ -14,7 +14,8 @@ extern "C"
         void * ros_response,
         bool * taken)
     {
-        std::cout << "[TODO] rmw_take_response(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(client, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             client,
@@ -34,7 +35,6 @@ extern "C"
         // TODO: convert JSON back to response
         // TODO: copy info to response header
 
-        std::cout << "[TODO] rmw_take_response(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -43,7 +43,8 @@ extern "C"
         rmw_request_id_t * request_header,
         void * ros_response)
     {
-        std::cout << "[TODO] rmw_take_response(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(service, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             service,
@@ -61,7 +62,6 @@ extern "C"
   
         // TODO: send request and response
         
-        std::cout << "[TODO] rmw_take_response(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 

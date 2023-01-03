@@ -1,4 +1,3 @@
-#include <iostream> // REMOVE
 #include <string>
 
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
@@ -15,6 +14,8 @@
 #include "rmw/impl/cpp/macros.hpp"
 
 #include "rcpputils/scope_exit.hpp"
+
+#include "rclcpp/logging.hpp"
 
 extern "C"
 {
@@ -41,7 +42,8 @@ extern "C"
         const rosidl_message_type_support_t * type_support
     )
     {
-        std::cout << "[WASM] _create_publisher(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         auto wasm_pub = new (std::nothrow) wasm_cpp::Publisher(topic_name);
 
         rmw_wasm_pub_t * rmw_wasm_pub = new (std::nothrow) rmw_wasm_pub_t();
@@ -71,8 +73,6 @@ extern "C"
         publisher->can_loan_messages = false;
 
         cleanup_publisher.cancel();
-
-        std::cout << "[WASM] _create_publisher(end)\n"; // REMOVE
         return publisher;
     }
 
@@ -83,7 +83,8 @@ extern "C"
         const rmw_qos_profile_t * qos_profile,
         const rmw_publisher_options_t * publisher_options)
     {
-        std::cout << "[WASM] rmw_create_publisher(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(node, nullptr);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -113,13 +114,13 @@ extern "C"
             return nullptr;
         }
 
-        std::cout << "[WASM] rmw_create_publisher(end)\n"; // REMOVE
         return _create_publisher(topic_name, publisher_options, type_support);
     }
 
     static rmw_ret_t _destroy_publisher(rmw_publisher_t * publisher)
     {
-        std::cout << "[WASM] _destroy_publisher(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         auto rmw_wasm_pub = static_cast<rmw_wasm_pub_t *>(publisher->data);
         if (nullptr != rmw_wasm_pub) {
             auto wasm_pub = static_cast<wasm_cpp::Publisher *>(rmw_wasm_pub->wasm_pub);
@@ -128,7 +129,6 @@ extern "C"
 
         rmw_free(const_cast<char *>(publisher->topic_name));
         rmw_publisher_free(publisher);
-        std::cout << "[WASM] _destroy_publisher(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -136,7 +136,8 @@ extern "C"
         rmw_node_t * node, 
         rmw_publisher_t * publisher)
     {
-        std::cout << "[WASM] rmw_destroy_publisher(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -150,7 +151,6 @@ extern "C"
             rmw_wasm_cpp::identifier,
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
 
-        std::cout << "[WASM] rmw_destroy_publisher(end)\n"; // REMOVE
         return _destroy_publisher(publisher);
     }
 
@@ -158,8 +158,8 @@ extern "C"
         const rmw_publisher_t * publisher,
         size_t * subscription_count)
     {
-        std::cout << "[WASM] rmw_publisher_count_matched_subscriptions(start)"
-                  << '\n'; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             publisher,
@@ -170,8 +170,6 @@ extern "C"
             subscription_count, 
             RMW_RET_INVALID_ARGUMENT);
 
-        std::cout << "[WASM] rmw_publisher_count_matched_subscriptions(end)"
-                  << '\n'; // REMOVE
         // TODO: implement if needed
         // return _publisher_count_matched_subscriptions(
         //     publisher, 
@@ -181,7 +179,8 @@ extern "C"
 
     rmw_ret_t rmw_publisher_assert_liveliness(const rmw_publisher_t * publisher)
     {
-        std::cout << "[WASM] rmw_publisher_assert_liveliness(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             publisher,
@@ -189,7 +188,6 @@ extern "C"
             rmw_wasm_cpp::identifier,
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
 
-        std::cout << "[WASM] rmw_publisher_assert_liveliness(end)\n"; // REMOVE
         // TODO: implement if needed
         // return rmw_wasm_cpp::__rmw_publisher_assert_liveliness(
         //     rmw_wasm_cpp::identifier, 
@@ -201,7 +199,8 @@ extern "C"
         const rmw_publisher_t * publisher, 
         [[maybe_unused]] rmw_time_t wait_timeout)
     {
-        std::cout << "[WASM] rmw_publisher_wait_for_all_acked(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             publisher,
@@ -209,7 +208,6 @@ extern "C"
             rmw_wasm_cpp::identifier,
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
         
-        std::cout << "[WASM] rmw_publisher_wait_for_all_acked(end)\n"; // REMOVE
         // TODO: implement if needed
         // return rmw_wasm_cpp::__rmw_publisher_wait_for_all_acked(
         //     rmw_wasm_cpp::identifier, publisher, wait_timeout);
@@ -221,7 +219,6 @@ extern "C"
         [[maybe_unused]] const rosidl_message_type_support_t * type_support,
         [[maybe_unused]] void ** ros_message)
     {   
-        std::cout << "[WASM] rmw_borrow_loaned_message()\n"; // REMOVE
         RMW_SET_ERROR_MSG("rmw_borrow_loaned_message not implemented");
         return RMW_RET_UNSUPPORTED;
     }
@@ -230,7 +227,6 @@ extern "C"
         [[maybe_unused]] const rmw_publisher_t * publisher,
         [[maybe_unused]] void * loaned_message)
     {
-        std::cout << "[WASM] rmw_return_loaned_message_from_publisher()\n"; // REMOVE
         RMW_SET_ERROR_MSG("rmw_return_loaned_message_from_publisher not implemented");
         return RMW_RET_UNSUPPORTED;
     }

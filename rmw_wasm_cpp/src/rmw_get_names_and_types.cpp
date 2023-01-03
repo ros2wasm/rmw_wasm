@@ -12,6 +12,8 @@
 #include "rmw/validate_namespace.h"
 #include "rmw/sanity_checks.h"
 
+#include "rclcpp/logging.hpp"
+
 extern "C"
 {
 
@@ -23,7 +25,8 @@ extern "C"
         [[maybe_unused]] bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        std::cout << "[WASM] _get_names_and_types_by_node(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -63,7 +66,6 @@ extern "C"
 
         // TODO: figure out no_demangle
 
-        std::cout << "[WASM] _get_names_and_types_by_node(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -75,8 +77,7 @@ extern "C"
         bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        // TODO: verify if need to be different
-        std::cout << "[WASM] rmw_get_publisher_names_and_types_by_node()\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
         return _get_names_and_types_by_node(
             node,
             allocator,
@@ -94,8 +95,7 @@ extern "C"
         bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        // TODO: verify if need to be different
-        std::cout << "[WASM] rmw_get_subscriber_names_and_types_by_node()\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
         return _get_names_and_types_by_node(
             node,
             allocator,
@@ -112,8 +112,7 @@ extern "C"
         const char * node_namespace,
         rmw_names_and_types_t * names_and_types)
     {
-        // TODO: verify if need to be different
-        std::cout << "[WASM] rmw_get_service_names_and_types_by_node()\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
         bool no_demangle{ true };
         return _get_names_and_types_by_node(
             node,
@@ -131,8 +130,7 @@ extern "C"
         const char * node_namespace,
         rmw_names_and_types_t * names_and_types)
     {
-        // TODO: verify if need to be different
-        std::cout << "[WASM] rmw_get_client_names_and_types_by_node()\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
         bool no_demangle{ true };
         return _get_names_and_types_by_node(
             node,
@@ -149,7 +147,8 @@ extern "C"
         [[maybe_unused]] bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        std::cout << "[WASM] _get_names_and_types(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -162,7 +161,6 @@ extern "C"
         }
 
         // TODO: figure out if needed
-        std::cout << "[WASM] _get_names_and_types(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -172,8 +170,7 @@ extern "C"
         bool no_demangle,
         rmw_names_and_types_t * names_and_types)
     {
-        // TODO: verify if needs to be different
-        std::cout << "[WASM] rmw_get_topic_names_and_types()\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
         return _get_names_and_types(
             node,
             allocator,
@@ -186,8 +183,7 @@ extern "C"
         rcutils_allocator_t * allocator,
         rmw_names_and_types_t * names_and_types)
     {
-        // TODO: verify if needs to be different
-        std::cout << "[WASM] rmw_get_service_names_and_types\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
         bool no_demangle{ true };
         return _get_names_and_types(
             node,
@@ -201,7 +197,8 @@ extern "C"
         rcutils_string_array_t * node_names,
         rcutils_string_array_t * node_namespaces)
     {
-        std::cout << "[WASM] rmw_get_nodes_names(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -216,7 +213,7 @@ extern "C"
         }
 
         // TODO: figure out
-        std::cout << "[WASM] rmw_get_node_names(end)\n"; // REMOVE
+        
         return RMW_RET_OK;
     }
 
@@ -226,7 +223,8 @@ extern "C"
         rcutils_string_array_t * node_namespaces,
         rcutils_string_array_t * enclaves)
     {
-        std::cout << "[WASM] rmw_get_nodes_names_with_enclaves(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -244,7 +242,7 @@ extern "C"
         }
 
         // TODO: figure out
-        std::cout << "[WASM] rmw_get_node_names_with_enclaves(end)\n"; // REMOVE
+        
         return RMW_RET_OK;
     }
 

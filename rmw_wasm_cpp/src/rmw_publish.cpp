@@ -1,5 +1,3 @@
-#include <iostream> // REMOVE
-
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
 #include "rmw_wasm_cpp/rmw_wasm_yaml.hpp"
 #include "rmw_wasm_cpp/rmw_types.hpp"
@@ -11,7 +9,8 @@
 #include "rmw/error_handling.h"
 #include "rmw/impl/cpp/macros.hpp"
 
-#include "std_msgs/msg/string.hpp" // REMOVE
+#include "rclcpp/logging.hpp"
+#include "rcutils/logging_macros.h"
 
 extern "C"
 {
@@ -20,7 +19,9 @@ extern "C"
         const void * ros_message,
         [[maybe_unused]] rmw_publisher_allocation_t * allocation)
     {
-        std::cout << "[WASM] rmw_publish(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "WHATTT");
+
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             publisher,
             publisher->implementation_identifier,
@@ -47,19 +48,12 @@ extern "C"
             "wasm_pub is null",
             return RMW_RET_ERROR);
 
-        // TODO: convert to YAML but keep as string for now
-        // std::string message = static_cast<std::string *>(ros_message);
-
-        // Convert to yaml string and publish
         std::string message = rmw_wasm_cpp::msg_to_yaml(rmw_wasm_pub, ros_message);
-
         if (message.empty()) {
             message = "Empty string";
         } 
 
         wasm_pub->publish(message);
-
-        std::cout << "[WASM] rmw_publish(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
@@ -68,7 +62,8 @@ extern "C"
         const rmw_serialized_message_t * serialized_message,
         [[maybe_unused]] rmw_publisher_allocation_t * allocation)
     {
-        std::cout << "[WASM] rmw_publish_serialized_message(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             publisher,
             publisher->implementation_identifier,
@@ -85,8 +80,7 @@ extern "C"
 
         // TODO: implement when needed
 
-        std::cout << "[WASM] rmw_publish_serialized_message(start)\n"; // REMOVE
-        RMW_SET_ERROR_MSG("rmw_publish_serialized_message not implemented for rmw_wasm_cpp");
+        RMW_SET_ERROR_MSG("rmw_publish_serialized_message not implemented");
         return RMW_RET_UNSUPPORTED;
     }
 
@@ -95,8 +89,7 @@ extern "C"
         [[maybe_unused]] void * ros_message,
         [[maybe_unused]] rmw_publisher_allocation_t * allocation)
     {
-        std::cout << "[WASM] rmw_publish_loaned_message()\n"; // REMOVE
-        RMW_SET_ERROR_MSG("rmw_publish_loaned_message not implemented for rmw_wasm_cpp");
+        RMW_SET_ERROR_MSG("rmw_publish_loaned_message not implemented");
         return RMW_RET_UNSUPPORTED;
     }
 

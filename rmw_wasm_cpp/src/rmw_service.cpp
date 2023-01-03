@@ -1,16 +1,13 @@
-#include <iostream>
-
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
 
 #include "rmw/rmw.h"
-// #include "rmw/allocators.h"
 #include "rmw/error_handling.h"
 #include "rmw/impl/cpp/macros.hpp"
 
 
 #include "rcpputils/scope_exit.hpp"
-// #include "rcutils/error_handling.h"
-// #include "rcutils/logging_macros.h"
+
+#include "rclcpp/logging.hpp"
 
 extern "C"
 {
@@ -20,7 +17,8 @@ extern "C"
         const char * service_name, 
         const rmw_qos_profile_t * qos_policies)
     {
-        std::cout << "[WASM] rmw_create_service(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+        
         RMW_CHECK_ARGUMENT_FOR_NULL(node, nullptr);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,

@@ -3,6 +3,8 @@
 #include "rmw/rmw.h"
 #include "rmw/impl/cpp/macros.hpp"
 
+#include "rclcpp/logging.hpp"
+
 extern "C"
 {
 
@@ -11,6 +13,8 @@ extern "C"
         const char * topic_name,
         size_t * count)
     {
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -32,6 +36,7 @@ extern "C"
         const char * topic_name,
         size_t * count)
     {
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
         return _count_entities(node, topic_name, count);
     }
 
@@ -40,6 +45,7 @@ extern "C"
         const char * topic_name,
         size_t * count)
     {
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
         return _count_entities(node, topic_name, count);
     }
 

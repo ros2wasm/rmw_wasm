@@ -1,4 +1,3 @@
-#include <iostream> // REMOVE
 #include <string>
 
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
@@ -14,6 +13,8 @@
 
 #include "rcpputils/scope_exit.hpp"
 
+#include "rclcpp/logging.hpp"
+
 extern "C"
 {
     rmw_node_t * rmw_create_node(
@@ -21,7 +22,8 @@ extern "C"
         const char * name,
         const char * namespace_)
     {
-        std::cout << "[WASM] rmw_create_node(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(context, nullptr);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             context,
@@ -113,14 +115,14 @@ extern "C"
         cleanup_rmw_wasm_node.cancel();
         cleanup_rmw_node.cancel();
         cleanup_context.cancel();
-        std::cout << "[WASM] rmw_create_node(end)\n"; // REMOVE
         return rmw_node;
     }
 
     rmw_ret_t rmw_destroy_node(
         rmw_node_t * rmw_node)
     {
-        std::cout << "[WASM] rmw_destroy_node(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             rmw_node,
@@ -132,20 +134,19 @@ extern "C"
         rmw_free(const_cast<char *>(rmw_node->name));
         rmw_free(const_cast<char *>(rmw_node->namespace_));
         rmw_node_free(rmw_node);
-        std::cout << "[WASM] rmw_destroy_node(end)\n"; // REMOVE
         return RMW_RET_OK;
     }
 
     const rmw_guard_condition_t * rmw_node_get_graph_guard_condition(
         const rmw_node_t * rmw_node)
     {
-        std::cout << "[WASM] rmw_node_get_graph_guard_condition(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         auto node_impl = static_cast<rmw_wasm_node_t *>(rmw_node->data);
         if (!node_impl) {
             RMW_SET_ERROR_MSG("node_impl is nullptr");
             return nullptr;
         }
-        std::cout << "[WASM] rmw_node_get_graph_guard_condition(end)\n"; // REMOVE
         return rmw_node->context->impl->graph_guard_condition;
     }
 

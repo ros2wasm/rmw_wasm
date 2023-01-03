@@ -5,6 +5,8 @@
 #include "rmw/topic_endpoint_info_array.h"
 #include "rmw/get_topic_endpoint_info.h"
 
+#include "rclcpp/logging.hpp"
+
 extern "C"
 {
 
@@ -15,7 +17,8 @@ extern "C"
         [[maybe_unused]] bool no_mangle,
         rmw_topic_endpoint_info_array_t * publishers_info)
     {   
-        std::cout << "[WASM] _get_info_by_topic(start)\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
+
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             node,
@@ -29,7 +32,7 @@ extern "C"
         }
 
         // TODO: figure out
-        std::cout << "[WASM] _get_info_by_topic(end)\n"; // REMOVE
+
         return RMW_RET_OK;
     }
 
@@ -40,8 +43,7 @@ extern "C"
         bool no_mangle,
         rmw_topic_endpoint_info_array_t * subscriptions_info)
     {
-        // TODO: check if needs to be different
-        std::cout << "[WASM] rmw_get_publishers_info_by_topic()\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
         return _get_info_by_topic(
             node,
             allocator,
@@ -57,8 +59,7 @@ extern "C"
         bool no_mangle,
         rmw_topic_endpoint_info_array_t * subscriptions_info)
     {
-        // TODO: check if needs to be different
-        std::cout << "[WASM] rmw_get_subscriptions_info_by_topic()\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
         return _get_info_by_topic(
             node,
             allocator,
@@ -67,4 +68,4 @@ extern "C"
             subscriptions_info);
     }
 
-}
+} // extern "C"

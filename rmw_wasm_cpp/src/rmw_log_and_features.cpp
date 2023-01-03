@@ -5,13 +5,15 @@
 #include "rmw/rmw.h"
 #include "rmw/features.h"
 
+#include "rclcpp/logging.hpp"
+
 extern "C"
 {
     rmw_ret_t rmw_set_log_severity(
         [[maybe_unused]] rmw_log_severity_t severity)
     {
         // TODO: implement
-        std::cout << "[WASM] rmw_set_log_severity()\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
         return RMW_RET_OK;
     }
 
@@ -19,7 +21,7 @@ extern "C"
         [[maybe_unused]] rmw_feature_t feature)
     {
         // TODO: implement
-        std::cout << "[WASM] rmw_feature_supported()\n"; // REMOVE
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("wasm_log"), "trace");
         return true;
     }
 
