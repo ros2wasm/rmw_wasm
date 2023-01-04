@@ -3,6 +3,7 @@
 
 #include <memory> // std::shared_ptr
 #include <stdexcept>
+#include <string>
 
 #include "wasm_cpp/visibility_control.hpp"
 // #include "wasm_cpp/options.hpp"
