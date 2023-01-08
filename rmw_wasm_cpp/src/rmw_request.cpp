@@ -59,7 +59,7 @@ extern "C"
 
         // TODO: convert JSON? back to request
         // TODO: copy info to request header
-
+        *taken = true;
         return RMW_RET_OK;
     }
 

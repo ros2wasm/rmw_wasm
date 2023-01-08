@@ -69,10 +69,10 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 ament_export_dependencies(rmw)
 ament_export_libraries(${PROJECT_NAME})
 configure_rmw_library(${PROJECT_NAME})
-# register_rmw_implementation(
-#   "c:rosidl_typesupport_c:rosidl_typesupport_introspection_c"
-#   "cpp:rosidl_typesupport_cpp:rosidl_typesupport_introspection_cpp"
-# )
+register_rmw_implementation(
+  "c:rosidl_typesupport_c:rosidl_typesupport_introspection_c"
+  "cpp:rosidl_typesupport_cpp:rosidl_typesupport_introspection_cpp"
+)
 
 install(
   TARGETS ${PROJECT_NAME}
@@ -94,7 +94,7 @@ ament_target_dependencies(${PROJECT_NAME}
   rosidl_typesupport_introspection_cpp
 )
 
-ament_export_include_directories(include)
+# ament_export_include_directories(include)
 ament_export_dependencies(
   rmw
   wasm_cpp

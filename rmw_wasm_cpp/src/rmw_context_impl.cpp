@@ -19,7 +19,7 @@ extern "C"
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
 
-        wasm_cpp::shutdown();
+        wasm_cpp::fini();
 
         // Make sure we didn't get destroyed while there's still a node
         if (0u != this->node_count) {

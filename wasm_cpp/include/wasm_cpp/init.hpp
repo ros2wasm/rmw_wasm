@@ -12,7 +12,7 @@ namespace wasm_cpp
         int argc, 
         char const * const argv[]);
 
-    WASM_CPP_PUBLIC bool shutdown();
+    WASM_CPP_PUBLIC bool fini();
 
 } // namespace wasm_cpp
 
