@@ -69,7 +69,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
 )
 
-ament_export_dependencies(rmw)
 ament_export_libraries(${PROJECT_NAME})
 configure_rmw_library(${PROJECT_NAME})
 register_rmw_implementation(
