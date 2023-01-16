@@ -22,6 +22,7 @@ set(${PROJECT_NAME}_SOURCES
   src/publisher.cpp
   src/subscriber.cpp
   src/wait_set.cpp
+  src/pre.js
 )
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})
@@ -51,6 +52,16 @@ install(
 ament_target_dependencies(${PROJECT_NAME})
 
 ament_export_include_directories(include)
+
+target_compile_options(wasm_cpp
+  PUBLIC "SHELL: -fwasm-exceptions"
+)
+
+target_link_options(wasm_cpp
+  PUBLIC "SHELL: -lembind"
+  PUBLIC "SHELL: --pre-js pre.js"
+  PUBLIC "SHELL: -fwasm-exceptions"
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
