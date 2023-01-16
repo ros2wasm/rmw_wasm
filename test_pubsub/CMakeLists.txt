@@ -1,0 +1,54 @@
+cmake_minimum_required(VERSION 3.8)
+project(pubsub_test)
+
+set(CMAKE_EXECUTABLE_SUFFIX ".html")
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+# find dependencies
+find_package(ament_cmake REQUIRED)
+# uncomment the following section in order to fill in
+# further dependencies manually.
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+
+add_executable(talker src/publisher_member_function.cpp)
+ament_target_dependencies(talker rclcpp std_msgs)
+
+add_executable(listener src/subscriber_member_function.cpp)
+ament_target_dependencies(listener rclcpp std_msgs)
+
+add_compile_options("SHELL:-s USE_PTHREADS")
+
+add_link_options("SHELL:-s USE_PTHREADS")
+
+target_compile_options(talker
+  PUBLIC "SHELL: -fwasm-exceptions"
+  # PUBLIC "SHELL: -s FORCE_FILESYSTEM"
+)
+
+target_link_options(talker
+  PUBLIC "SHELL: -lembind"
+  PUBLIC "SHELL: -s DEMANGLE_SUPPORT=1"
+  PUBLIC "SHELL: -s ASSERTIONS=1"
+  PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
+  PUBLIC "SHELL: -s EXIT_RUNTIME=1"
+  PUBLIC "SHELL: -s WASM=1"
+  PUBLIC "SHELL: -s USE_PTHREADS=0"
+  PUBLIC "SHELL: -fwasm-exceptions"
+  # PUBLIC "SHELL: -s ENVIRONMENT=${ENVIRONMENT}"
+  PUBLIC "SHELL: -s TOTAL_STACK=16mb"
+  PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
+  # PUBLIC "SHELL: -s FORCE_FILESYSTEM"
+  # PUBLIC "SHELL: --pre-js pre.js"
+)
+
+# TODO: add listener
+install(
+  TARGETS talker listener
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+ament_package()
