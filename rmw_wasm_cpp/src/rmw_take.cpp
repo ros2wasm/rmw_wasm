@@ -123,4 +123,38 @@ extern "C"
         return RMW_RET_UNSUPPORTED;
     }
 
+    rmw_ret_t rmw_take_sequence(
+        const rmw_subscription_t * subscription,
+        size_t count,
+        rmw_message_sequence_t * message_sequence,
+        rmw_message_info_sequence_t * message_info_sequence,
+        size_t * taken,
+        [[maybe_unused]] rmw_subscription_allocation_t * allocation)
+    {
+        RMW_CHECK_ARGUMENT_FOR_NULL(subscription, RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
+            subscription handle,
+            subscription->implementation_identifier,
+            rmw_wasm_cpp::identifier,
+            return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
+        RMW_CHECK_ARGUMENT_FOR_NULL(message_sequence, RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_ARGUMENT_FOR_NULL(message_info_sequence, RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_ARGUMENT_FOR_NULL(taken, RMW_RET_INVALID_ARGUMENT);
+
+        if (0UL == count) {
+            return RMW_RET_INVALID_ARGUMENT;
+        }
+        if (count > message_sequence->capacity) {
+            RMW_SET_ERROR_MSG("insufficient capacity in message_sequence");
+            return RMW_RET_INVALID_ARGUMENT;
+        }
+        if (count > message_info_sequence->capacity) {
+            RMW_SET_ERROR_MSG("insufficient capacity in message_info_sequence");
+            return RMW_RET_INVALID_ARGUMENT;
+        }
+
+        // TODO: figure out
+        return RMW_RET_OK;
+    }
+
 }  // extern "C"
