@@ -9,7 +9,7 @@ extern "C"
 {
     const char * rmw_get_implementation_identifier()
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_get_implementation_identifier()");
         return rmw_wasm_cpp::identifier;
     } 
 } // extern "C"

@@ -25,7 +25,7 @@ extern "C"
         rmw_init_options_t * init_options, 
         rcutils_allocator_t allocator)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_init_options_init()");
         assert(rmw_wasm_cpp::identifier != NULL);
 
         RMW_CHECK_ARGUMENT_FOR_NULL(init_options, RMW_RET_INVALID_ARGUMENT);
@@ -49,7 +49,7 @@ extern "C"
         const rmw_init_options_t * src, 
         rmw_init_options_t * dst)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_init_options_copy()");
         assert(rmw_wasm_cpp::identifier != NULL);
 
         RMW_CHECK_ARGUMENT_FOR_NULL(src, RMW_RET_INVALID_ARGUMENT);
@@ -88,7 +88,7 @@ extern "C"
 
     rmw_ret_t rmw_init_options_fini(rmw_init_options_t * init_options)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_init_options_fini()");
         assert(rmw_wasm_cpp::identifier != NULL);
 
         RMW_CHECK_ARGUMENT_FOR_NULL(init_options, RMW_RET_INVALID_ARGUMENT);
@@ -115,7 +115,7 @@ extern "C"
         const rmw_init_options_t * options, 
         rmw_context_t * context)
     {   
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_init()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(options, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_ARGUMENT_FOR_NULL(context, RMW_RET_INVALID_ARGUMENT);
@@ -169,7 +169,7 @@ extern "C"
 
     rmw_ret_t rmw_shutdown(rmw_context_t * context)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_shutdown()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(context, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_FOR_NULL_WITH_MSG(
@@ -187,7 +187,7 @@ extern "C"
 
     rmw_ret_t rmw_context_fini(rmw_context_t * context)
     {   
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_context_fini()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(context, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_FOR_NULL_WITH_MSG(

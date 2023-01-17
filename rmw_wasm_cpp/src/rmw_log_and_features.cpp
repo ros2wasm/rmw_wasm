@@ -15,7 +15,7 @@ extern "C"
         [[maybe_unused]] rmw_log_severity_t severity)
     {
         // TODO: implement
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_set_log_severity()");
         return RMW_RET_OK;
     }
 
@@ -23,7 +23,7 @@ extern "C"
         [[maybe_unused]] rmw_feature_t feature)
     {
         // TODO: implement
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_feature_supported()");
         return true;
     }
 

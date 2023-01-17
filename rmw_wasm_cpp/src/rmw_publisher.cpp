@@ -43,7 +43,7 @@ extern "C"
         const rosidl_message_type_support_t * type_support
     )
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace _create_publisher()");
 
         auto wasm_pub = new (std::nothrow) wasm_cpp::Publisher(topic_name);
 
@@ -84,7 +84,7 @@ extern "C"
         const rmw_qos_profile_t * qos_profile,
         const rmw_publisher_options_t * publisher_options)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_create_publisher()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, nullptr);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -120,7 +120,7 @@ extern "C"
 
     static rmw_ret_t _destroy_publisher(rmw_publisher_t * publisher)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace _destroy_publisher()");
 
         auto rmw_wasm_pub = static_cast<rmw_wasm_pub_t *>(publisher->data);
         if (nullptr != rmw_wasm_pub) {
@@ -137,7 +137,7 @@ extern "C"
         rmw_node_t * node, 
         rmw_publisher_t * publisher)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_destroy_publisher()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
@@ -159,7 +159,7 @@ extern "C"
         const rmw_publisher_t * publisher,
         size_t * subscription_count)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_publisher_count_matched_subscriptions()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -180,7 +180,7 @@ extern "C"
 
     rmw_ret_t rmw_publisher_assert_liveliness(const rmw_publisher_t * publisher)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_publisher_assert_liveliness()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -200,7 +200,7 @@ extern "C"
         const rmw_publisher_t * publisher, 
         [[maybe_unused]] rmw_time_t wait_timeout)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_publisher_wait_for_all_acked()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(

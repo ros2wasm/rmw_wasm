@@ -19,7 +19,7 @@ extern "C"
         const void * ros_message,
         [[maybe_unused]] rmw_publisher_allocation_t * allocation)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_publish()");
 
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             publisher,
@@ -61,7 +61,7 @@ extern "C"
         const rmw_serialized_message_t * serialized_message,
         [[maybe_unused]] rmw_publisher_allocation_t * allocation)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_publish_serialized_message()");
         
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
             publisher,

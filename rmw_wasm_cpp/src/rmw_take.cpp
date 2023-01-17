@@ -16,7 +16,7 @@ extern "C"
         [[maybe_unused]] rmw_subscription_allocation_t * allocation,
         [[maybe_unused]] rmw_message_info_t * message_info)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace _take()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(subscription, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -32,7 +32,7 @@ extern "C"
 
         // auto msg_with_info_opt = wasm_sub->get_message_with_info();
         auto msg_with_info = wasm_sub->get_message();
-        *taken = false;
+        *taken = true;
         return RMW_RET_OK;
     }
 
@@ -42,7 +42,7 @@ extern "C"
         bool * taken,
         rmw_subscription_allocation_t * allocation)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_take()");
 
         // TODO: implement rmw_wasm_cpp::rmw_take()
         return _take(
@@ -60,7 +60,7 @@ extern "C"
         [[maybe_unused]] rmw_message_info_t * message_info,
         [[maybe_unused]] rmw_subscription_allocation_t * allocation)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_take_with_info()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(message_info, RMW_RET_INVALID_ARGUMENT);
         return _take(
@@ -77,7 +77,7 @@ extern "C"
         [[maybe_unused]] bool * taken,
         [[maybe_unused]] rmw_subscription_allocation_t * allocation)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_take_serialized_message()");
         // TODO: implement if needed
         return RMW_RET_OK;
     }
@@ -89,7 +89,7 @@ extern "C"
         [[maybe_unused]] rmw_message_info_t * message_info,
         [[maybe_unused]] rmw_subscription_allocation_t * allocation)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_take_serialized_message_with_info()");
         // TODO: implement if needed or reuse above
         return RMW_RET_OK;
     }

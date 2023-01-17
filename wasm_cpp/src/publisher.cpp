@@ -1,8 +1,8 @@
 #include <string>
 #include <iostream>
 
-#include <emscripten/emscripten.h>
-#include <emscripten/val.h>
+// #include <emscripten/emscripten.h>
+// #include <emscripten/val.h>
 
 #include "wasm_cpp/publisher.hpp"
 
@@ -25,14 +25,13 @@ namespace wasm_cpp
     void Publisher::publish(
         const std::string & message)
     {
-        // TODO: call js
         std::cout << " [PUB] Publishing a message\n"; // REMOVE
-        // std::cout << " [PUB] msg: " << message << '\n';
 
-        auto js_talker = emscripten::val::module_property("js_talker");
-        auto x = js_talker(message).as<int>();
+        // auto js_talker = emscripten::val::module_property("js_talker");
+        // auto x = js_talker(message).as<int>();
 
-        std::cout << " [PUB] JS returned " << x << '\n';
+        // std::cout << " [PUB] JS returned " << x << '\n';
+        std::cout << "[PUB] " << message << '\n';
     }
 
 } // namespace wasm_cpp

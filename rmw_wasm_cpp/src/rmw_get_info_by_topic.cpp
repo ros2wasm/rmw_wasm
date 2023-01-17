@@ -18,7 +18,7 @@ extern "C"
         [[maybe_unused]] bool no_mangle,
         rmw_topic_endpoint_info_array_t * publishers_info)
     {   
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace _get_info_by_topic()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -44,7 +44,7 @@ extern "C"
         bool no_mangle,
         rmw_topic_endpoint_info_array_t * subscriptions_info)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_get_publishers_info_by_topic()");
         return _get_info_by_topic(
             node,
             allocator,
@@ -60,7 +60,7 @@ extern "C"
         bool no_mangle,
         rmw_topic_endpoint_info_array_t * subscriptions_info)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_get_subscriptions_info_by_topic()");
         return _get_info_by_topic(
             node,
             allocator,

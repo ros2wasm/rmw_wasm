@@ -19,7 +19,7 @@ namespace rmw_wasm_cpp
 {
     bool is_valid_qos(const rmw_qos_profile_t * qos_profile)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace is_valid_qos()");
 
         return nullptr != qos_profile &&
             RMW_QOS_POLICY_HISTORY_UNKNOWN != qos_profile->history &&
@@ -30,7 +30,7 @@ namespace rmw_wasm_cpp
 
     bool is_valid_topic_name(const char * topic_name)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace is_valid_topic_name()");
 
         int validation_result = RMW_TOPIC_VALID;
         rmw_ret_t ret = rmw_validate_full_topic_name(
@@ -44,7 +44,7 @@ namespace rmw_wasm_cpp
     bool is_valid_type_support_message(
         const rosidl_message_type_support_t * type_support)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace is_valid_type_support_message()");
 
         const rosidl_message_type_support_t * ts = nullptr;
         ts = get_message_typesupport_handle(
@@ -78,7 +78,7 @@ namespace rmw_wasm_cpp
     bool is_valid_type_support_service(
         const rosidl_service_type_support_t * type_support)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace is_valid_type_support_service()");
         
         const rosidl_service_type_support_t * ts = nullptr;
         ts = get_service_typesupport_handle(

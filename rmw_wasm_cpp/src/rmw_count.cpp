@@ -14,7 +14,7 @@ extern "C"
         const char * topic_name,
         size_t * count)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace _count_entities()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -37,7 +37,7 @@ extern "C"
         const char * topic_name,
         size_t * count)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_count_publishers()");
         return _count_entities(node, topic_name, count);
     }
 
@@ -46,7 +46,7 @@ extern "C"
         const char * topic_name,
         size_t * count)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_count_subscribers()");
         return _count_entities(node, topic_name, count);
     }
 

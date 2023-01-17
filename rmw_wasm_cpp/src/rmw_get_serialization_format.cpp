@@ -8,7 +8,7 @@ extern "C"
 {
     const char * rmw_get_serialization_format()
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_get_serialization_format()");
         return rmw_wasm_cpp::serialization_format;
     }
 } // extern "C"
