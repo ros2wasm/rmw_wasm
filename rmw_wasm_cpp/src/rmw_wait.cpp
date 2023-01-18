@@ -72,8 +72,8 @@ extern "C"
 
         // TODO: create rmw_wasm_wait_set
         // TODO: create wasm_wait_set
-        // auto rmw_wasm_wait_set = static_cast<rmw_wait_set_t *>(wait_set->data);
-        // auto wasm_wait_set = static_cast<rmw_wait_set_t *>(wait_set->data);
+        auto rmw_wasm_wait_set = static_cast<rmw_wait_set_t *>(wait_set->data);
+        auto wasm_wait_set = static_cast<rmw_wait_set_t *>(wait_set->data);
 
         // TODO: add objects to wait set
         if (subscriptions) {
@@ -121,7 +121,7 @@ extern "C"
             wait_timeout_chrono_ms =
                 std::chrono::duration_cast<std::chrono::milliseconds>(wait_timeout_chrono);
         }
-        // TODO: const bool timedout = wasm_wait_set->wait(wait_timeout_chrono_ms);
+        // const bool timedout = wasm_wait_set->wait(wait_timeout_chrono_ms);
         const bool timedout{ false };
 
         // TODO: implement
@@ -167,10 +167,10 @@ extern "C"
         }
 
         if (events) {
-            // // Just set everything to nullptr since we didn't actually wait on these, so none are ready
-            // for (size_t i = 0u; i < events->event_count; i++) {
-            // events->events[i] = nullptr;
-            // }
+            // Not waiting on events, everything set to nullptr
+            for (size_t i = 0u; i < events->event_count; i++) {
+            events->events[i] = nullptr;
+            }
         }
 
         // TODO: clear wait set after checking results

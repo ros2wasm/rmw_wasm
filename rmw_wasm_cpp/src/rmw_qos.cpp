@@ -2,6 +2,7 @@
 
 #include "rmw/rmw.h"
 #include "rmw/impl/cpp/macros.hpp"
+#include "rmw/qos_string_conversions.h"
 
 #include "rcutils/logging_macros.h"
 
@@ -17,11 +18,12 @@ extern "C"
         qos->depth = 1000;
         qos->reliability = RMW_QOS_POLICY_RELIABILITY_RELIABLE;
         qos->durability = RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL;
-        qos->deadline = RMW_QOS_DEADLINE_DEFAULT;
-        qos->lifespan = RMW_QOS_LIFESPAN_DEFAULT;
+        qos->deadline = RMW_QOS_DEADLINE_DEFAULT; // {0.0}
+        qos->lifespan = RMW_QOS_LIFESPAN_DEFAULT; // {0.0}
         qos->liveliness = RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT;
         qos->liveliness_lease_duration = RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT;
         qos->avoid_ros_namespace_conventions = false;
+        
         return RMW_RET_OK;
     }
 
