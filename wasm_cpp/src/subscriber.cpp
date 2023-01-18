@@ -1,4 +1,4 @@
-#include <iostream>
+#include <iostream> // REMOVE
 #include <string>
 
 #include "wasm_cpp/subscriber.hpp"
@@ -23,8 +23,10 @@ namespace wasm_cpp
     {
         // TODO: get from some queue
         std::cout << "[TODO] Subscriber::get_message()\n"; // REMOVE
-        std::string fake_msg { "FAKE PUBLIC SERVICE ANNOUNCEMENT" };
+        std::string fake_msg { "data: FAKE PUBLIC SERVICE ANNOUNCEMENT" };
         return fake_msg;
     }
+
+    // TODO: register subscriber
 
 } // namespace wasm_cpp

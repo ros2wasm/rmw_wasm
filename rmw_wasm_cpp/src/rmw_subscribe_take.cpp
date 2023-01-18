@@ -1,5 +1,8 @@
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
 #include "rmw_wasm_cpp/rmw_types.hpp"
+#include "rmw_wasm_cpp/rmw_wasm_yaml.hpp"
+
+#include "wasm_cpp/subscriber.hpp"
 
 #include "rmw/rmw.h"
 #include "rmw/error_handling.h"
@@ -30,9 +33,24 @@ extern "C"
         auto rmw_wasm_sub = static_cast<rmw_wasm_sub_t *>(subscription->data);
         wasm_cpp::Subscriber * wasm_sub = rmw_wasm_sub->wasm_sub;
 
+        // TODO: get with info
         // auto msg_with_info_opt = wasm_sub->get_message_with_info();
-        auto msg_with_info = wasm_sub->get_message();
-        *taken = true;
+        auto msg_taken = wasm_sub->get_message();
+        if (msg_taken.empty()) {
+            *taken = false;
+        } else {
+            *taken = true;
+            // TODO: separate info and msg_yaml
+            const std::string & msg_yaml = msg_taken;
+
+            // Convert yaml to ros message
+            rcutils_allocator_t allocator = rcutils_get_default_allocator();
+            auto ros_msg = rmw_wasm_cpp::yaml_to_msg(rmw_wasm_sub, msg_yaml, ros_message, &allocator);
+            if (!ros_msg) {
+                return RMW_RET_ERROR;
+            }
+        }
+
         return RMW_RET_OK;
     }
 
@@ -44,7 +62,6 @@ extern "C"
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_take()");
 
-        // TODO: implement rmw_wasm_cpp::rmw_take()
         return _take(
             subscription, 
             ros_message, 

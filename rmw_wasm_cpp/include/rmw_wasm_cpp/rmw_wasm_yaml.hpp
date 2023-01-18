@@ -17,7 +17,11 @@ namespace rmw_wasm_cpp
     //     const bool is_service
     // );
 
-    // TODO: yaml_to_msg()
+    bool yaml_to_msg(
+        const rmw_wasm_sub_t * subscription,
+        const std::string & yaml,
+        void * ros_message,
+        rcutils_allocator_t * allocator);
 
     // TODO: yaml_to_msg_service()
 
