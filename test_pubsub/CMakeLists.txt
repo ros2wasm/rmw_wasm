@@ -46,7 +46,7 @@ target_link_options(talker
   # PUBLIC "SHELL: -s FORCE_FILESYSTEM"
   # PUBLIC "SHELL: --pre-js pre.js"
   PUBLIC "SHELL: -s ASYNCIFY=1"
-  PUBLIC "SHELL: -s ASYNCIFY_IMPORTS=[Subscriber::get_message]"
+  # PUBLIC "SHELL: -s ASYNCIFY_IMPORTS=[]"
   # PUBLIC "SHELL: --profiling"
   PUBLIC "SHELL: -O3"   # Optimize fo async
 )
@@ -69,7 +69,7 @@ target_link_options(listener
   PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
   PUBLIC "SHELL: -s ASYNCIFY=1"
   PUBLIC "SHELL: -O3"   # Optimize fo async
-  PUBLIC "SHELL: -s ASYNCIFY_IMPORTS=[Subscriber::get_message]"
+  # PUBLIC "SHELL: -s ASYNCIFY_IMPORTS=[]"
   # PUBLIC "SHELL: --profiling"
 )
 # else()
