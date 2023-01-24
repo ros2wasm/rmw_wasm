@@ -53,19 +53,22 @@ ament_target_dependencies(${PROJECT_NAME})
 
 ament_export_include_directories(include)
 
-if(DEFINED ENV{EMSDK})
-  target_compile_options(wasm_cpp
-    PUBLIC "SHELL: -fwasm-exceptions"
-  )
+# if(DEFINED ENV{EMSDK})
+target_compile_options(wasm_cpp
+  PUBLIC "SHELL: -fwasm-exceptions"
+  PUBLIC "SHELL: -O3"   # Optimize fo async
+)
 
-  target_link_options(wasm_cpp
-    PUBLIC "SHELL: -lembind"
-    PUBLIC "SHELL: --pre-js pre.js"
-    PUBLIC "SHELL: -fwasm-exceptions"
-  )
-else()
-  message("No EMSDK")
-endif()
+target_link_options(wasm_cpp
+  PUBLIC "SHELL: -lembind"
+  PUBLIC "SHELL: --pre-js pre.js"
+  PUBLIC "SHELL: -fwasm-exceptions"
+  PUBLIC "SHELL: -s ASYNCIFY=1"
+  PUBLIC "SHELL: -O3"   # Optimize for async
+)
+# else()
+#   message("No EMSDK")
+# endif()
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
