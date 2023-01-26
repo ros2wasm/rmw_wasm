@@ -26,60 +26,64 @@ add_link_options("SHELL:-s USE_PTHREADS")
 set(CMAKE_EXECUTABLE_SUFFIX ".html")
 
 target_compile_options(talker
-  PUBLIC "SHELL: -fwasm-exceptions" 
-  # PUBLIC "SHELL: -s FORCE_FILESYSTEM"
-  # PUBLIC "SHELL: -s ASYNCIFY=1"
+  PUBLIC "SHELL: -fexceptions" 
+  PUBLIC "SHELL: -s ASYNCIFY=1"
 )
 
 target_link_options(talker
   PUBLIC "SHELL: -lembind"
+  PUBLIC "SHELL: -fexceptions"
+  PUBLIC "SHELL: -s ASYNCIFY=1"
+  PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
   PUBLIC "SHELL: -s DEMANGLE_SUPPORT=1"
   PUBLIC "SHELL: -s ASSERTIONS=1"
-  PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
-  PUBLIC "SHELL: -s EXIT_RUNTIME=1"
+  PUBLIC "SHELL: -s EXIT_RUNTIME=1" 
   PUBLIC "SHELL: -s WASM=1"
   PUBLIC "SHELL: -s USE_PTHREADS=0"
-  PUBLIC "SHELL: -fwasm-exceptions"
-  # PUBLIC "SHELL: -s ENVIRONMENT=${ENVIRONMENT}"
   PUBLIC "SHELL: -s TOTAL_STACK=16mb"
   PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
-  # PUBLIC "SHELL: -s FORCE_FILESYSTEM"
-  # PUBLIC "SHELL: --pre-js pre.js"
-  PUBLIC "SHELL: -s ASYNCIFY=1"
-  # PUBLIC "SHELL: -s ASYNCIFY_IMPORTS=[]"
-  # PUBLIC "SHELL: --profiling"
-  PUBLIC "SHELL: -O3"   # Optimize fo async
+  PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
+  # PUBLIC "SHELL: -O3"   # Optimize fo async
 )
 
 target_compile_options(listener
-  PUBLIC "SHELL: -fwasm-exceptions" 
-  # PUBLIC "SHELL: -s ASYNCIFY=1"
+  PUBLIC "SHELL: -fexceptions" 
+  PUBLIC "SHELL: -s ASYNCIFY=1"
 )
 
 target_link_options(listener
   PUBLIC "SHELL: -lembind"
+  PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
+  PUBLIC "SHELL: -fexceptions"
+  PUBLIC "SHELL: -s ASYNCIFY=1"
+  # PUBLIC "SHELL: -s ASYNCIFY_IMPORTS=[\"do_fetch\"]"
   PUBLIC "SHELL: -s DEMANGLE_SUPPORT=1"
   PUBLIC "SHELL: -s ASSERTIONS=1"
-  PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
-  PUBLIC "SHELL: -s EXIT_RUNTIME=1"
+  PUBLIC "SHELL: -s EXIT_RUNTIME=1" 
   PUBLIC "SHELL: -s WASM=1"
   PUBLIC "SHELL: -s USE_PTHREADS=0"
-  PUBLIC "SHELL: -fwasm-exceptions"
   PUBLIC "SHELL: -s TOTAL_STACK=16mb"
   PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
-  PUBLIC "SHELL: -s ASYNCIFY=1"
-  PUBLIC "SHELL: -O3"   # Optimize fo async
-  # PUBLIC "SHELL: -s ASYNCIFY_IMPORTS=[]"
-  # PUBLIC "SHELL: --profiling"
+  PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
+  # PUBLIC "SHELL: -O3"   # Optimize fo async
 )
-# else()
-#   message("No EMSDK")
-# endif()
 
-# TODO: add listener
 install(
-  TARGETS talker listener
+  TARGETS listener talker
   DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_package()
+
+  # PUBLIC "SHELL: -s ASYNCIFY_IMPORTS=[\"do_fetch\"]"
+  # PUBLIC "SHELL: -s FORCE_FILESYSTEM"
+  # PUBLIC "SHELL: -s DEMANGLE_SUPPORT=1"
+  # PUBLIC "SHELL: -s ASSERTIONS=1"
+  # PUBLIC "SHELL: -s EXIT_RUNTIME=1" 
+  # PUBLIC "SHELL: -s WASM=1"
+  # PUBLIC "SHELL: -s USE_PTHREADS=0"
+  # PUBLIC "SHELL: -s TOTAL_STACK=16mb"
+  # PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
+  # PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
+  # PUBLIC "SHELL: -O3"   # Optimize fo async
+  # PUBLIC "SHELL: --profiling"

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <chrono>
+// #include <chrono>
 #include <functional>
 #include <memory>
 #include <string>
@@ -43,11 +43,11 @@ public:
   {
     auto message = std_msgs::msg::String();
     message.data = "Hello there! " + std::to_string(count_++);
-    // RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
+    RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
     std::string msg_str{ message.data };
     std::cout << " [MSG] " << msg_str << '\n';
     publisher_->publish(message);
-    usleep(500 * 1000); // microseconds
+    // usleep(500 * 1000); // microseconds
   }
 
   rclcpp::TimerBase::SharedPtr timer_;

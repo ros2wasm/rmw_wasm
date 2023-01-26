@@ -6,6 +6,17 @@
 
 #include "wasm_cpp/subscriber.hpp"
 
+// EM_JS(int, do_fetch, (), {
+//   return Asyncify.handleAsync(function () {
+//     out("waiting for a fetch");
+//     return fetch("a.html").then(function (response) {
+//       out("got the fetch response");
+//       // (normally you would do something with the fetch here)
+//       return 42;
+//     });
+//   });
+// });
+
 namespace wasm_cpp
 {
 
@@ -30,21 +41,17 @@ namespace wasm_cpp
 
         emscripten::val js_listener = emscripten::val::module_property("js_listener");
         emscripten::val js_response = js_listener().await();
-        auto js_message = js_response.as<std::string>();
 
-        std::cout << "[SUB] AWAITING\n";
+        try {
+            auto js_message = js_response.as<std::string>();
+            message = js_message;
+        }
+        catch (...) {
+            std::cout << "[SUB] could not convert js_message\n";
+            return nullptr;
+        }
 
-        // auto js_message = js_talker().await();
-
-        // std::cout << "[TYPE] " << typeid(js_message).name() << " typed\n";
-
-        // try {
-        //     message = js_message.as<std::string>();
-        //     throw exception;
-        // } 
-        // catch() {
-        //     std::cout << "[SUB] no message retrieved\n";
-        // }
+        std::cout << "[SUB] After trying to convert\n";
 
         return message;
     }
