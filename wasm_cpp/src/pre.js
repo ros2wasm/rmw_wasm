@@ -13,7 +13,6 @@ Module["js_talker"] = function js_talker(message)
 Module["js_listener"] = async function js_listener()
 {
     console.log("  [JS] Listening for messages");
-    // let js_message = "FAKE JS MESSAGE";
     await sleep(10);
     return lastMessage;
 }

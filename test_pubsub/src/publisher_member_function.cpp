@@ -47,7 +47,6 @@ public:
     std::string msg_str{ message.data };
     std::cout << " [MSG] " << msg_str << '\n';
     publisher_->publish(message);
-    // usleep(500 * 1000); // microseconds
   }
 
   rclcpp::TimerBase::SharedPtr timer_;

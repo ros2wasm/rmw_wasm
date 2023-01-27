@@ -56,8 +56,6 @@ ament_export_include_directories(include)
 # if(DEFINED ENV{EMSDK})
 target_compile_options(wasm_cpp
   PUBLIC "SHELL: -fexceptions"
-  PUBLIC "SHELL: -s ASYNCIFY=1"
-  PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
 )
 
 target_link_options(wasm_cpp
@@ -90,8 +88,3 @@ if(BUILD_TESTING)
 endif()
 
 ament_package()
-
-  # PUBLIC "SHELL: -O3"   # Optimize fo async
-  # PUBLIC "SHELL: -s ASYNCIFY=1"
-  # PUBLIC "SHELL: -O3"   # Optimize for async
-  # PUBLIC "SHELL: -s ASYNCIFY_IMPORTS=[\"do_fetch\"]"

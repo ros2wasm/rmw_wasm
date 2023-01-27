@@ -1,5 +1,6 @@
 #include <iostream> // REMOVE
 #include <string>
+#include <optional>
 
 #include <emscripten/emscripten.h>
 #include <emscripten/val.h>
@@ -35,23 +36,22 @@ namespace wasm_cpp
 
     std::string Subscriber::get_message()
     {
-        std::string message{ "data: empty message" };
-
-        std::cout << "[SUB] GET MESSAGE\n";
+        std::string message;
 
         emscripten::val js_listener = emscripten::val::module_property("js_listener");
         emscripten::val js_response = js_listener().await();
 
         try {
             auto js_message = js_response.as<std::string>();
-            message = js_message;
+            std::cout << "[SUB] Received: " << js_message << '\n';
+            if (!js_message.empty()) {
+                message = js_message;
+                std::cout << "[SUB] Message is: " << message << '\n';
+            } 
         }
         catch (...) {
             std::cout << "[SUB] could not convert js_message\n";
-            return nullptr;
         }
-
-        std::cout << "[SUB] After trying to convert\n";
 
         return message;
     }

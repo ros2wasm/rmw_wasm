@@ -27,7 +27,6 @@ set(CMAKE_EXECUTABLE_SUFFIX ".html")
 
 target_compile_options(talker
   PUBLIC "SHELL: -fexceptions" 
-  PUBLIC "SHELL: -s ASYNCIFY=1"
 )
 
 target_link_options(talker
@@ -43,12 +42,10 @@ target_link_options(talker
   PUBLIC "SHELL: -s TOTAL_STACK=16mb"
   PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
   PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
-  # PUBLIC "SHELL: -O3"   # Optimize fo async
 )
 
 target_compile_options(listener
   PUBLIC "SHELL: -fexceptions" 
-  PUBLIC "SHELL: -s ASYNCIFY=1"
 )
 
 target_link_options(listener
@@ -56,7 +53,6 @@ target_link_options(listener
   PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
   PUBLIC "SHELL: -fexceptions"
   PUBLIC "SHELL: -s ASYNCIFY=1"
-  # PUBLIC "SHELL: -s ASYNCIFY_IMPORTS=[\"do_fetch\"]"
   PUBLIC "SHELL: -s DEMANGLE_SUPPORT=1"
   PUBLIC "SHELL: -s ASSERTIONS=1"
   PUBLIC "SHELL: -s EXIT_RUNTIME=1" 
@@ -65,7 +61,6 @@ target_link_options(listener
   PUBLIC "SHELL: -s TOTAL_STACK=16mb"
   PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
   PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
-  # PUBLIC "SHELL: -O3"   # Optimize fo async
 )
 
 install(
