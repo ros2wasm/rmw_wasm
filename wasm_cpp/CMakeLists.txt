@@ -68,7 +68,7 @@ target_link_options(wasm_cpp
   PUBLIC "SHELL: -lembind"
   PUBLIC "SHELL: --pre-js pre.js"
   PUBLIC "SHELL: -fexceptions"
-  PUBLIC "SHELL: -s ASYNCIFY=1"
+  # PUBLIC "SHELL: -s ASYNCIFY=1"
   PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
   PUBLIC "SHELL: -s DEMANGLE_SUPPORT=1"
   PUBLIC "SHELL: -s ASSERTIONS=1"
@@ -77,8 +77,8 @@ target_link_options(wasm_cpp
   PUBLIC "SHELL: -s USE_PTHREADS=0"
   PUBLIC "SHELL: -s TOTAL_STACK=16mb"
   PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
-  PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
-  PUBLIC "SHELL: -O3"   # Optimize fo async
+  # PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
+  # PUBLIC "SHELL: -O3"   # Optimize fo async
 )
 
 if(BUILD_TESTING)
