@@ -11,26 +11,40 @@ namespace wasm_cpp
 
     Publisher::Publisher(const std::string & topic_name)
     {
-        // TODO: create publisher
-        std::cout << " [PUB] Publisher created\n"; // REMOVE
-        std::cout << " [PUB] topic: " << topic_name << '\n';
+        auto js_registration = emscripten::val::module_property("registerParticipant");
+        // TODO: get new random gid
+        std::string gid { "123" };
+        std::string participant_type { "publisher" };
+        auto is_registered = js_registration(participant_type, topic_name, gid).as<bool>();
+
+        if (!is_registered) {
+            // TODO: handle or return error
+            std::cout << " [PUB] Failed to register publisher\n";
+        }
+
+        std::cout << " [PUB] Publisher created for topic " << topic_name << '\n';
     }
 
     Publisher::~Publisher()
     {
-        // TODO: destroy publisher
+        auto js_deregistration = emscripten::val::module_property("deregisterParticipant");
+        // TODO: get publisher gid to destroy
+        std::string gid { "123" };
+        js_deregistration(gid);
+
         std::cout << " [PUB] Publisher destroyed\n"; // REMOVE
     }
 
     void Publisher::publish(
         const std::string & message)
     {
-        std::cout << " [PUB] Publishing a message\n"; // REMOVE
+        auto js_publish = emscripten::val::module_property("publishMessage");
+        auto is_published = js_publish(message).as<bool>();
 
-        auto js_talker = emscripten::val::module_property("js_talker");
-        auto x = js_talker(message).as<int>();
-
-        std::cout << " [PUB] JS returned " << x << '\n';
+        if (!is_published) {
+            // TODO: handle error
+            std::cout << " [PUB] Error when publishing message\n";
+        }
     }
 
 } // namespace wasm_cpp

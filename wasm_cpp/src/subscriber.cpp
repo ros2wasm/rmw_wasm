@@ -7,16 +7,6 @@
 
 #include "wasm_cpp/subscriber.hpp"
 
-// EM_JS(int, do_fetch, (), {
-//   return Asyncify.handleAsync(function () {
-//     out("waiting for a fetch");
-//     return fetch("a.html").then(function (response) {
-//       out("got the fetch response");
-//       // (normally you would do something with the fetch here)
-//       return 42;
-//     });
-//   });
-// });
 
 namespace wasm_cpp
 {
