@@ -24,9 +24,10 @@ namespace wasm_cpp
     std::string Subscriber::get_message()
     {
         std::string message;
+        std::string topic_name{ get_name() };
 
         emscripten::val js_retrieve = emscripten::val::module_property("retrieveMessage");
-        emscripten::val js_response = js_retrieve().await();
+        emscripten::val js_response = js_retrieve(topic_name).await();
 
         try {
             auto js_message = js_response.as<std::string>();
@@ -42,7 +43,5 @@ namespace wasm_cpp
 
         return message;
     }
-
-    // TODO: register subscriber
 
 } // namespace wasm_cpp

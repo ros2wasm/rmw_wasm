@@ -1,20 +1,29 @@
-let lastMessage = "data: pre-js empty message";
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-Module["js_talker"] = function js_talker(message)
+Module["registerParticipant"] = function registerParticipant(name, role)
+{
+
+    return gid;
+}
+
+Module["deregisterParticipant"] = function deregisterParticipant(gid)
+{
+    return;
+}
+
+Module["publishMessage"] = function publishMessage(message, topic_name)
 {
     console.log("  [JS] Received " + message);
     return 0;
 }
 
-Module["js_listener"] = async function js_listener()
+Module["retrieveMessage"] = async function retrieveMessage(topic_name)
 {
     console.log("  [JS] Listening for messages");
     await sleep(10);
-    return lastMessage;
+    return "lastMessage";
 }
 
-globalThis.js_listener = js_listener;
