@@ -28,7 +28,7 @@ namespace wasm_cpp
 
         const std::string m_name;
         const std::string m_role;
-        const std::string m_gid;
+        std::string m_gid;
 
         void is_valid_name() const;
         void is_valid_role() const;

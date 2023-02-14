@@ -22,6 +22,7 @@ set(${PROJECT_NAME}_SOURCES
   src/publisher.cpp
   src/subscriber.cpp
   src/wait_set.cpp
+  src/participant.cpp
   src/pre.js
 )
 

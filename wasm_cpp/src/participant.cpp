@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "wasm_cpp/participant.hpp"
 
@@ -74,11 +75,11 @@ namespace wasm_cpp
         auto js_registration = emscripten::val::module_property("registerParticipant");
 
         // A unique identifier is returned if registration is successful
-        m_gid = js_registration(name, role).as<std::string>();
+        m_gid = js_registration(m_name, m_role).as<std::string>();
 
         if (m_gid.empty()) {
             // TODO: handle error
-            std::cout << "[WASM] Failed to register participant " << name << '\n';
+            std::cout << "[WASM] Failed to register participant " << m_name << '\n';
         }
 
     }
