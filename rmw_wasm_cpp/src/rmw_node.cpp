@@ -23,7 +23,7 @@ extern "C"
         const char * name,
         const char * namespace_)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_create_node()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_create_node()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(context, nullptr);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -122,7 +122,7 @@ extern "C"
     rmw_ret_t rmw_destroy_node(
         rmw_node_t * rmw_node)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_destroy_node()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_destroy_node()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -141,7 +141,7 @@ extern "C"
     const rmw_guard_condition_t * rmw_node_get_graph_guard_condition(
         const rmw_node_t * rmw_node)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_node_get_graph_guard_condition()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_node_get_graph_guard_condition()");
 
         auto node_impl = static_cast<rmw_wasm_node_t *>(rmw_node->data);
         if (!node_impl) {

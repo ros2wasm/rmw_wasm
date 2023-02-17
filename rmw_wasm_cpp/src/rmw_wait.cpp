@@ -17,7 +17,7 @@ extern "C"
         rmw_context_t * context, 
         [[maybe_unused]] size_t max_conditions)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_create_wait_set()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_create_wait_set()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(context, nullptr);
 
@@ -34,7 +34,7 @@ extern "C"
 
     rmw_ret_t rmw_destroy_wait_set(rmw_wait_set_t * wait_set)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_destroy_wait_set()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_destroy_wait_set()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(wait_set, RMW_RET_ERROR);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -61,7 +61,7 @@ extern "C"
         rmw_wait_set_t * wait_set,
         const rmw_time_t * wait_timeout)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_wait()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_wait()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(wait_set, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(

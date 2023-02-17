@@ -18,7 +18,7 @@ extern "C"
         const char * implementation_identifier,
         void * data)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace _event_init()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace _event_init()");
         
         RMW_CHECK_ARGUMENT_FOR_NULL(data, RMW_RET_INVALID_ARGUMENT);
 
@@ -33,7 +33,7 @@ extern "C"
         const rmw_publisher_t * publisher,
         rmw_event_type_t event_type)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_publisher_event_init()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_publisher_event_init()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_event, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -54,7 +54,7 @@ extern "C"
         const rmw_subscription_t * subscription,
         rmw_event_type_t event_type)
     {   
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_subscription_event_init()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_subscription_event_init()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(subscription, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -75,7 +75,7 @@ extern "C"
         [[maybe_unused]] rmw_event_callback_t callback,
         [[maybe_unused]] const void * user_data)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_event_set_callback()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_event_set_callback()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_event, RMW_RET_INVALID_ARGUMENT);
         // TODO: implement if needed
@@ -87,7 +87,7 @@ extern "C"
         void * event_info,
         bool * taken)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_take_event()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_take_event()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(event_handle, RMW_RET_ERROR);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(

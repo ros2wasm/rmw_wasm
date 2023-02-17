@@ -12,12 +12,12 @@ extern "C"
 {
     rmw_context_impl_s::rmw_context_impl_s()
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_context_impl_s()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_context_impl_s()");
     }
 
     rmw_context_impl_s::~rmw_context_impl_s()
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace ~rmw_context_impl_s()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace ~rmw_context_impl_s()");
 
         wasm_cpp::fini();
 
@@ -34,7 +34,7 @@ extern "C"
         [[maybe_unused]] rmw_init_options_t * options, 
         [[maybe_unused]] size_t domain_id)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_context_impl_s::init()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_context_impl_s::init()");
         
         // If this isn't the first node, just increment the node counter;
         // we only do the rest if this was the first node
@@ -46,7 +46,7 @@ extern "C"
 
         this->graph_guard_condition = rmw_wasm_cpp::create_guard_condition();
         if (nullptr == this->graph_guard_condition) {
-            RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "graph_guard_condition not allocated");
+            RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "graph_guard_condition not allocated");
             cleanup();
             return RMW_RET_BAD_ALLOC;
         }
@@ -66,7 +66,7 @@ extern "C"
 
     rmw_ret_t rmw_context_impl_s::fini()
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_context_impl_s::fini()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_context_impl_s::fini()");
 
         std::scoped_lock<std::mutex> lock(mutex_initialization);
         if (0u != --this->node_count) {
@@ -79,7 +79,7 @@ extern "C"
 
     void rmw_context_impl_s::cleanup()
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_context_impl_s::cleanup()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_context_impl_s::cleanup()");
 
         if (this->graph_guard_condition) {
             rmw_wasm_cpp::destroy_guard_condition(this->graph_guard_condition);

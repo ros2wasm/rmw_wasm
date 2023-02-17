@@ -15,7 +15,7 @@ extern "C"
         void * ros_response,
         bool * taken)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_take_response()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_take_response()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(client, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -44,7 +44,7 @@ extern "C"
         rmw_request_id_t * request_header,
         void * ros_response)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_send_response()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_send_response()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(service, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(

@@ -30,7 +30,7 @@ namespace rmw_wasm_cpp
                 const rosidl_typesupport_introspection_c__MessageMembers * members,
                 const void * msg)
             {
-                RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace conversion::c::msg_to_yaml()");
+                RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace conversion::c::msg_to_yaml()");
 
                 RosMessage ros_msg{ };
                 ros_msg.type_info = members;
@@ -47,7 +47,7 @@ namespace rmw_wasm_cpp
                 void * ros_message,
                 rcutils_allocator_t * allocator)
             {
-                RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace conversion::c::yaml_to_msg()");
+                RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace conversion::c::yaml_to_msg()");
 
                 RosMessage ros_msg = dynmsg::c::yaml_and_typeinfo_to_rosmsg(members, yaml, allocator);
                 if (!ros_msg.data && !ros_msg.type_info) {
@@ -67,7 +67,7 @@ namespace rmw_wasm_cpp
                 const rosidl_typesupport_introspection_cpp::MessageMembers * members,
                 const void * msg)
             {
-                RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace conversion::cpp::msg_to_yaml()");
+                RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace conversion::cpp::msg_to_yaml()");
 
                 RosMessage_Cpp ros_msg{ };
                 ros_msg.type_info = members;
@@ -83,7 +83,7 @@ namespace rmw_wasm_cpp
                 const std::string & yaml,
                 void * ros_message)
             {
-                RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace conversion::cpp::yaml_to_msg()");
+                RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace conversion::cpp::yaml_to_msg()");
 
                 dynmsg::cpp::yaml_and_typeinfo_to_rosmsg(members, yaml, ros_message);
                 return true;
@@ -97,7 +97,7 @@ namespace rmw_wasm_cpp
         const rmw_wasm_pub_t * publisher, 
         const void * msg)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace msg_to_yaml()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace msg_to_yaml()");
 
         const rosidl_message_type_support_t * ts = nullptr;
         ts = get_message_typesupport_handle(
@@ -135,7 +135,7 @@ namespace rmw_wasm_cpp
         void * ros_message,
         rcutils_allocator_t * allocator)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace yaml_to_msg()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace yaml_to_msg()");
 
         const rosidl_message_type_support_t * ts = nullptr;
         ts = get_message_typesupport_handle(

@@ -11,7 +11,7 @@ extern "C"
 {
     static rmw_ret_t _get_actual_qos(rmw_qos_profile_t * qos)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace _get_actual_qos()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace _get_actual_qos()");
 
         // Based on rcl_qos_profile_rosout_default
         qos->history = RMW_QOS_POLICY_HISTORY_KEEP_LAST;
@@ -31,7 +31,7 @@ extern "C"
         const rmw_publisher_t * publisher,
         rmw_qos_profile_t * qos)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_publisher_get_actual_qos()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_publisher_get_actual_qos()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -48,7 +48,7 @@ extern "C"
         const rmw_subscription_t * subscription,
         rmw_qos_profile_t * qos)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_subscription_get_actual_qos()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_subscription_get_actual_qos()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(subscription, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -65,7 +65,7 @@ extern "C"
         const rmw_service_t * service,
         rmw_qos_profile_t * qos)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_service_response_publisher_get_actual_qos()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_service_response_publisher_get_actual_qos()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(service, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -82,7 +82,7 @@ extern "C"
         const rmw_client_t * client,
         rmw_qos_profile_t * qos)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_client_response_subscription_get_actual_qos()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_client_response_subscription_get_actual_qos()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(client, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -99,7 +99,7 @@ extern "C"
         const rmw_client_t * client,
         rmw_qos_profile_t * qos)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_client_request_publisher_get_actual_qos()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_client_request_publisher_get_actual_qos()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(client, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -116,7 +116,7 @@ extern "C"
         const rmw_service_t * service,
         rmw_qos_profile_t * qos)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_service_request_subscription_get_actual_qos()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_service_request_subscription_get_actual_qos()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(service, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -136,7 +136,7 @@ extern "C"
         char * reason,
         size_t reason_size)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_qos_profile_check_compatible()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_qos_profile_check_compatible()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(compatibility, RMW_RET_INVALID_ARGUMENT);
         if (!reason && 0u != reason_size) {

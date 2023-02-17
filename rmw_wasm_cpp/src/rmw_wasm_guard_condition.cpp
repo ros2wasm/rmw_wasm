@@ -15,7 +15,7 @@ namespace rmw_wasm_cpp
 
     rmw_guard_condition_t * create_guard_condition()
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace create_guard_condition()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace create_guard_condition()");
 
         auto wasm_guard_condition = new (std::nothrow) wasm_cpp::GuardCondition();
         if (nullptr == wasm_guard_condition) {
@@ -43,7 +43,7 @@ namespace rmw_wasm_cpp
 
     rmw_ret_t destroy_guard_condition(rmw_guard_condition_t * rmw_guard_condition)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace destroy_guard_condition()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace destroy_guard_condition()");
 
         auto rmw_wasm_guard_condition = static_cast<rmw_wasm_guard_condition_t *>(
             rmw_guard_condition->data);
