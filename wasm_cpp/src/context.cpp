@@ -1,4 +1,4 @@
-#include <iostream> // REMOVE
+#include "rcutils/logging_macros.h"
 
 #include "wasm_cpp/context.hpp"
 
@@ -17,19 +17,17 @@ namespace wasm_cpp
 
     Context::Context() : m_is_valid(false)
     {
-        // TODO: log info
-        std::cout << "[WASM] Context created\n"; // REMOVE
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::Context()");
     }
 
     Context::~Context()
     {
-        // TODO: log info
-        std::cout << "[WASM] Context destroyed\n"; // REMOVE
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::~Context()");
     }
 
     void Context::init()
     {
-        std::cout << "[WASM] Context initializing\n"; // REMOVE
+        RCUTILS_LOG_INFO_NAMED("wasm_cpp", "Context initializing.");
 
         if (is_valid()) {
             throw ContextAlreadyInitializedError();
@@ -40,24 +38,20 @@ namespace wasm_cpp
 
     bool Context::fini()
     {
-        std::cout << "[WASM] Context shutdown\n"; // REMOVE
-        m_is_valid = false;
-
-        // TODO: 
-        // - log info
-        // - shutdown pub/sub
-        
-        return m_is_valid;
+        RCUTILS_LOG_INFO_NAMED("wasm_cpp", "Context shutdown.");
+        m_is_valid = false;        
+        return true;
     }
 
     void Context::init_context()
     {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::init_context()");
         m_is_valid = true;
-        // TODO: add pub/sub init
     }
 
     bool Context::is_valid() const
     {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::is_valid()");
         return m_is_valid;
     }
 

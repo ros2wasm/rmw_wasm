@@ -4,7 +4,6 @@
 #include "rmw/error_handling.h"
 #include "rmw/impl/cpp/macros.hpp"
 
-
 #include "rcpputils/scope_exit.hpp"
 
 #include "rcutils/logging_macros.h"

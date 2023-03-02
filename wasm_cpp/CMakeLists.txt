@@ -11,6 +11,7 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(rcutils REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -50,7 +51,9 @@ install(
   INCLUDES DESTINATION include
 )
 
-ament_target_dependencies(${PROJECT_NAME})
+ament_target_dependencies(${PROJECT_NAME}
+  rcutils
+)
 
 ament_export_include_directories(include)
 

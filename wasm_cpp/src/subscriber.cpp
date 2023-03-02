@@ -1,6 +1,7 @@
-#include <iostream> // REMOVE
 #include <string>
 #include <optional>
+
+#include "rcutils/logging_macros.h"
 
 #include <emscripten/emscripten.h>
 #include <emscripten/val.h>
@@ -15,14 +16,18 @@ namespace wasm_cpp
     Subscriber::Subscriber(const std::string & topic_name)
         : Participant(topic_name, "subscriber")
     {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Subscriber::Subscriber()");
     }
 
     Subscriber::~Subscriber()
     {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Subscriber::~Subscriber()");
     }
 
     std::string Subscriber::get_message()
     {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Subscriber::get_message()");
+
         std::string message;
         std::string topic_name{ get_name() };
 
@@ -31,14 +36,12 @@ namespace wasm_cpp
 
         try {
             auto js_message = js_response.as<std::string>();
-            std::cout << "[SUB] Received: " << js_message << '\n';
             if (!js_message.empty()) {
                 message = js_message;
-                std::cout << "[SUB] Message is: " << message << '\n';
             } 
         }
         catch (...) {
-            std::cout << "[SUB] could not convert js_message\n";
+            RCUTILS_LOG_ERROR_NAMED("wasm_cpp", "Unable to convert js message.");
         }
 
         return message;

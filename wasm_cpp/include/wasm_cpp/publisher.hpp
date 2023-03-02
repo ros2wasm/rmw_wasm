@@ -6,6 +6,7 @@
 #include "wasm_cpp/visibility_control.hpp"
 #include "wasm_cpp/participant.hpp"
 
+
 namespace wasm_cpp
 {
 

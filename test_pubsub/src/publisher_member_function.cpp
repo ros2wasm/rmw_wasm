@@ -45,7 +45,6 @@ public:
     message.data = "Hello there! " + std::to_string(count_++);
     RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
     std::string msg_str{ message.data };
-    std::cout << " [MSG] " << msg_str << '\n';
     publisher_->publish(message);
   }
 
