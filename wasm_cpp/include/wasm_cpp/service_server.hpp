@@ -15,11 +15,8 @@ namespace wasm_cpp
         ServiceServer(const std::string & service_name);
 
         ~ServiceServer();
-
-        
         
     }
-
 
 } // namespace wasm_cpp
 
