@@ -15,8 +15,12 @@ namespace wasm_cpp
         ServiceServer(const std::string & service_name);
 
         ~ServiceServer();
-        
-    }
+
+        void send_response(const std::string & response);
+
+        void get_request();
+
+    };
 
 } // namespace wasm_cpp
 

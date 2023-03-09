@@ -1,4 +1,7 @@
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
+#include "rmw_wasm_cpp/rmw_types.hpp"
+
+#include "wasm_cpp/service_server.hpp"
 
 #include "rmw/rmw.h"
 #include "rmw/error_handling.h"
@@ -15,7 +18,7 @@ extern "C"
         const rmw_node_t * node,
         const rosidl_service_type_support_t * type_support,
         const char * service_name, 
-        const rmw_qos_profile_t * qos_policies)
+        const rmw_qos_profile_t * qos_profile)
     {
         RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_create_service()");
         
@@ -31,11 +34,11 @@ extern "C"
         RMW_CHECK_ARGUMENT_FOR_NULL(service_name, nullptr);
         // TODO: validate service_name rmw_wasm_cpp::is_valid_service_name()
 
-        RMW_CHECK_ARGUMENT_FOR_NULL(qos_policies, nullptr);
+        RMW_CHECK_ARGUMENT_FOR_NULL(qos_profile, nullptr);
         // TODO: check if qos is valid rmw_wasm_cpp::is_valid_qos()
 
-        // TODO: create wasm_server and cleaner
-        rmw_service_t * wasm_server{ }; // wasm_cpp::ServiceServer
+        // Create wasm service server
+        auto wasm_server = new (std::nothrow) wasm_cpp::ServiceServer(service_name);
         auto cleanup_wasm_server = rcpputils::make_scope_exit(
             [wasm_server]() {
                 delete wasm_server;
@@ -43,15 +46,15 @@ extern "C"
         );
 
         // TODO: create rmw_wasm_server and cleaner
-        rmw_service_t * rmw_wasm_server{ }; // rmw_wasm_server_t
+        rmw_wasm_service_t * rmw_wasm_server = new (std::nothrow) rmw_wasm_server_t;
         auto cleanup_rmw_wasm_server = rcpputils::make_scope_exit(
             [rmw_wasm_server]() {
                 delete rmw_wasm_server;
             }
         );
 
-        // rmw_wasm_server->wasm_server = wasm_server;
-        // rmw_wasm_server->type_supports = *valid_type_support;
+        rmw_wasm_server->wasm_server = wasm_server;
+        // TODO: rmw_wasm_server->type_supports = *valid_type_support;
 
         // TODO: verify this
         rmw_service_t * rmw_service = rmw_service_allocate();

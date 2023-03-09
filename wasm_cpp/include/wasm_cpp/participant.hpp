@@ -4,6 +4,7 @@
 #include <string>
 #include <optional>
 
+
 namespace wasm_cpp
 {
     class Participant
@@ -36,7 +37,6 @@ namespace wasm_cpp
         void deregistration();
 
     };
-
 
 } // namespace wasm_cpp
 

@@ -1,4 +1,7 @@
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
+#include "rmw_wasm_cpp/rmw_types.hpp"
+
+#include "wasm_cpp/service_client.hpp"
 
 #include "rmw/rmw.h"
 #include "rmw/allocators.h"
@@ -51,9 +54,22 @@ extern "C"
         // - create request topic
         // - create client
 
-        // wasm_client
-        // rmw_wasm_client
-        // rmw_client
+        auto wasm_client = new (std::nothrow) wasm_cpp::ServiceClient(service_name);
+        auto cleanup_wasm_client = rcpputils::make_scope_exit(
+            [wasm_client]() {
+                delete wasm_client;
+            }
+        )
+
+        auto rmw_wasm_client = new (std::nothrow) rmw_wasm_client_t;
+        auto cleanup_rmw_wasm_client = rcpputils::make_scope_exit(
+            [rmw_wasm_client]() {
+                delete rmw_wasm_client;
+            }
+        )
+
+        rmw_wasm_client->wasm_client = wasm_client;
+        // TODO: add valid type support
 
         rmw_client_t * rmw_client{ };
         auto cleanup_rmw_client = rcpputils::make_scope_exit(
@@ -63,12 +79,14 @@ extern "C"
         );
 
         rmw_client->implementation_identifier = rmw_wasm_cpp::identifier;
-        // rmw_client->data = rmw_wasm_client;
+        rmw_client->data = rmw_wasm_client;
         rmw_client->service_name = reinterpret_cast<const char *>(
             rmw_allocate(strlen(service_name) + 1));
 
 
-        cleanup_rmw_client.cancel(); // TODO: clean up other clients
+        cleanup_rmw_client.cancel();
+        cleanup_rmw_wasm_client.cancel();
+        clenaup_wasm_client.cancel();
         return rmw_client;
     }
 
