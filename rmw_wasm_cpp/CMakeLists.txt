@@ -41,16 +41,14 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_context_impl.cpp
   src/rmw_init.cpp
   src/rmw_node.cpp
-  src/rmw_publisher.cpp
-  src/rmw_publish.cpp
+  src/rmw_topic_publisher.cpp
+  src/rmw_topic_publish.cpp
+  src/rmw_topic_subscriber.cpp
+  src/rmw_topic_take.cpp
   src/rmw_event.cpp
   src/rmw_serialize.cpp
-  src/rmw_subscriber.cpp
-  src/rmw_subscribe_take.cpp
-  src/rmw_client.cpp
-  src/rmw_request.cpp
-  src/rmw_response.cpp
-  src/rmw_service.cpp
+  src/rmw_service_client.cpp
+  src/rmw_service_server.cpp
   src/rmw_guard_condition.cpp
   src/rmw_wait.cpp
   src/rmw_get_names_and_types.cpp
