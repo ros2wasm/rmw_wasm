@@ -38,6 +38,7 @@ extern "C"
         auto msg_taken = wasm_sub->get_message();
         if (msg_taken.empty()) {
             *taken = false;
+            RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "message could not be taken");
         } else {
             *taken = true;
             // TODO: separate info and msg_yaml
@@ -45,8 +46,8 @@ extern "C"
 
             // Convert yaml to ros message
             rcutils_allocator_t allocator = rcutils_get_default_allocator();
-            auto ros_msg = rmw_wasm_cpp::yaml_to_msg(rmw_wasm_sub, msg_yaml, ros_message, &allocator);
-            if (!ros_msg) {
+            bool is_converted = rmw_wasm_cpp::yaml_to_msg(rmw_wasm_sub, msg_yaml, ros_message, &allocator);
+            if (!is_converted) {
                 return RMW_RET_ERROR;
             }
         }

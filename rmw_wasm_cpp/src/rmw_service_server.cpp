@@ -45,7 +45,6 @@ extern "C"
             }
         );
 
-        // TODO: create rmw_wasm_server and cleaner
         rmw_wasm_service_t * rmw_wasm_server = new (std::nothrow) rmw_wasm_server_t;
         auto cleanup_rmw_wasm_server = rcpputils::make_scope_exit(
             [rmw_wasm_server]() {
@@ -54,6 +53,7 @@ extern "C"
         );
 
         rmw_wasm_server->wasm_server = wasm_server;
+        rmw_wasm_server->type_support = *type_support;
         // TODO: rmw_wasm_server->type_supports = *valid_type_support;
 
         // TODO: verify this
@@ -146,7 +146,7 @@ extern "C"
 
     rmw_ret_t rmw_take_request(
         const rmw_service_t * service,
-        rmw_service_info_t * request_header,
+        rmw_service_info_t * service_info,
         void * ros_request,
         bool * taken)
     {
@@ -158,18 +158,39 @@ extern "C"
             service->implementation_identifier,
             rmw_wasm_cpp::identifier,
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
-        RMW_CHECK_ARGUMENT_FOR_NULL(request_header, RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_ARGUMENT_FOR_NULL(service_info, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_ARGUMENT_FOR_NULL(ros_request, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_ARGUMENT_FOR_NULL(taken, RMW_RET_INVALID_ARGUMENT);
 
-        // TODO: create rmw_wasm_server
-        // TODO: create wasm_server
-        
-        // TODO: take request and info
+        auto rmw_wasm_server = static_cast<rmw_wasm_server_t *>(service->data);
+        wasm_cpp::ServiceServer * wasm_server = rmw_wasm_server->wasm_server;
 
-        // TODO: convert JSON? back to request
-        // TODO: copy info to request header
-        *taken = true;
+        // TODO: Take request with info
+
+        auto request_taken = wasm_server->take_request();
+        if (request_taken.empty()) {
+            *taken = false;
+            RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "request could not be taken");
+        } else {
+            *taken = true;
+            // TODO: separate info and request_yaml
+            const std::string & request_yaml = request_taken;
+
+            // Conver yaml to ros request
+            rcutils_allocator_t allocator = rcutils_get_default_allocator();
+            bool is_server { true };
+            bool is_converted = rmw_wasm_cpp::yaml_to_service(
+                rmw_wasm_server, 
+                request_yaml, 
+                ros_request,
+                allocator,
+                is_server
+            );
+            if (!is_converted) {
+                return RMW_RET_ERROR;
+            }
+        }
+
         return RMW_RET_OK;
     }
 

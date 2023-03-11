@@ -17,7 +17,7 @@ extern "C"
 {
     rmw_client_t * rmw_create_client(
         const rmw_node_t * node,
-        const rosidl_service_type_support_t * type_supports,
+        const rosidl_service_type_support_t * type_support,
         const char * service_name,
         const rmw_qos_profile_t * qos_profile)
     {
@@ -29,7 +29,7 @@ extern "C"
             node->implementation_identifier,
             rmw_wasm_cpp::identifier,
             return nullptr);
-        RMW_CHECK_ARGUMENT_FOR_NULL(type_supports, nullptr);
+        RMW_CHECK_ARGUMENT_FOR_NULL(type_support, nullptr);
         RMW_CHECK_ARGUMENT_FOR_NULL(service_name, nullptr);
         if (0 == strlen(service_name)) {
             RMW_SET_ERROR_MSG("service_name argument is an empty string");
