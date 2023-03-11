@@ -2,6 +2,8 @@
 #define WASM_CPP__SERVICE_CLIENT_HPP_
 
 #include "wasm_cpp/participant.hpp"
+#include "wasm_cpp/publisher.hpp"
+#include "wasm_cpp/subscriber.hpp"
 
 
 namespace wasm_cpp
@@ -19,7 +21,18 @@ namespace wasm_cpp
 
         void get_response();
 
+        bool has_response();
+
+    private:
+
+        Publisher m_publisher;
+        Subscriber m_subscriber;
+
+        std::string m_response;
+
     };
+
+    
 
 
 } // namespace wasm_cpp

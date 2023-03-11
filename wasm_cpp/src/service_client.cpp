@@ -8,6 +8,8 @@ namespace wasm_cpp
 
     ServiceClient::ServiceClient(const std::string & service_name)
         : Participant(service_name, "service_server")
+        , m_publisher("request_" + service_name)
+        , m_subscriber("response_" + service_name)
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace: ServiceClient::ServiceClient()");
     }
@@ -30,6 +32,13 @@ namespace wasm_cpp
     ServiceClient::get_response()
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace: ServiceClient::get_response()");
+    }
+
+    ServiceClient::has_response()
+    {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace: ServiceClient::has_response()");
+
+        return !m_response.empty();
     }
 
 } // namespace wasm_cpp

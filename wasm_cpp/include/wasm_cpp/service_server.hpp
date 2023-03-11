@@ -4,12 +4,15 @@
 #include <string>
 
 #include "wasm_cpp/participant.hpp"
+#include "wasm_cpp/publisher.hpp"
+#include "wasm_cpp/subscriber.hpp"
 
 
 namespace wasm_cpp
 {
     class ServiceServer : public Participant
     {
+
     public:
 
         ServiceServer(const std::string & service_name);
@@ -18,7 +21,16 @@ namespace wasm_cpp
 
         void send_response(const std::string & response);
 
-        void get_request();
+        void take_request();
+
+        bool has_request();
+
+    private:
+
+        Publisher m_publisher;
+        Subscriber m_subscriber;
+
+        std::string m_request;
 
     };
 
