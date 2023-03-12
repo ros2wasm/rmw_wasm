@@ -173,15 +173,15 @@ extern "C"
             RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "request could not be taken");
         } else {
             *taken = true;
-            // TODO: separate info and request_yaml
-            const std::string & request_yaml = request_taken;
+            // TODO: separate info and yaml_request
+            const std::string & yaml_request = request_taken;
 
             // Conver yaml to ros request
             rcutils_allocator_t allocator = rcutils_get_default_allocator();
             bool is_server { true };
-            bool is_converted = rmw_wasm_cpp::yaml_to_service(
+            bool is_converted = rmw_wasm_cpp::yaml_to_msg_service(
                 rmw_wasm_server, 
-                request_yaml, 
+                yaml_request, 
                 ros_request,
                 allocator,
                 is_server
@@ -196,7 +196,7 @@ extern "C"
 
     rmw_ret_t rmw_send_response(
         const rmw_service_t * service,
-        rmw_request_id_t * request_header,
+        rmw_request_id_t * request_id,
         void * ros_response)
     {
         RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_send_response()");
@@ -207,16 +207,26 @@ extern "C"
             service->implementation_identifier,
             rmw_wasm_cpp::identifier,
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
-        RMW_CHECK_ARGUMENT_FOR_NULL(request_header, RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_ARGUMENT_FOR_NULL(request_id, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_ARGUMENT_FOR_NULL(ros_response, RMW_RET_INVALID_ARGUMENT);
 
-        // TODO: create rmw_wasm_client
-        // TODO: create wasm_client
+        auto rmw_wasm_server = static_cast<rmw_wasm_server_t *>(service->data);
+        wasm_cpp::ServiceServer * wasm_server = rmw_wasm_server->wasm_server;
+
+        // Convert response to yaml string
+        bool is_server { true };
+        const std::string response = rmw_wasm_cpp::msg_to_yaml_service(
+            &rmw_wasm_server->type_support,
+            ros_response,
+            is_server
+        );
+
+        RCUTILS_LOG_INFO_NAMED("REMOVE", "response " + response);
         
-        // TODO: convert response to JSON
-        // TODO: convert request header to request ID
+        // TODO: handle request ID (client gid)
   
-        // TODO: send request and response
+        // TODO: send response with ID
+        wasm_server->send_response(response);
         
         return RMW_RET_OK;
     }

@@ -129,6 +129,53 @@ namespace rmw_wasm_cpp
                 "  C++: " + std::string(error_cpp.str));
     }
 
+    std::string msg_to_yaml_service(
+        const rosidl_service_type_support_t * type_support,
+        const void * ros_request_or_response,
+        const bool is_server)
+    {
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace msg_to_yaml_service()");
+
+        const rosidl_service_type_support_t * ts = nullptr;
+        ts = get_service_typesupport_handle(
+            type_support,
+            rosidl_typesupport_introspection_c__identifier);
+        if (ts) {
+            auto service_members = 
+                static_cast<const rosidl_typesupport_introspection_c__ServiceMembers *>(
+                    ts->data);
+            // If this is a server, msg->yaml converts a response
+            const rosidl_typesupport_introspection_c__MessageMembers * members =
+                is_server ? 
+                service_members->response_members_ : 
+                service_members->request_members_;
+            return conversion::c::msg_to_yaml(members, ros_request_or_response);
+        }
+        rcutils_error_string_t error_c = rcutils_get_error_string();
+        rcutils_reset_error();
+
+        ts = get_service_typesupport_handle(
+            type_support,
+            rosidl_typesupport_introspection_cpp::typesupport_identifier);
+        if (ts) {
+            auto service_members =
+                static_cast<const rosidl_typesupport_introspection_cpp::ServiceMembers *>(
+                    ts->data);
+            const rosidl_typesupport_introspection_cpp::MessageMembers * members =
+                is_server ? 
+                service_members->response_members_ : 
+                service_members->request_members_;
+            return conversion::cpp::msg_to_yaml(members, ros_request_or_response);
+        }
+        rcutils_error_string_t error_cpp = rcutils_get_error_string();
+        rcutils_reset_error();
+
+        throw std::runtime_error(
+                "msg_to_yaml_service unable to find type support:\n"
+                "    C: " + std::string(error_c.str) + "\n"
+                "  C++: " + std::string(error_cpp.str));
+    }
+
     bool yaml_to_msg(
         const rmw_wasm_sub_t * subscription,
         const std::string & yaml,
@@ -166,7 +213,7 @@ namespace rmw_wasm_cpp
                 "  C++: " + std::string(error_cpp.str));
     }
 
-    bool yaml_to_service(
+    bool yaml_to_msg_service(
         const rosidl_service_type_support_t * type_support,
         const std::string & yaml,
         void * ros_request_or_response,
