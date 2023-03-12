@@ -1,9 +1,11 @@
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
+#include "rmw_wasm_cpp/rmw_wasm_yaml.hpp"
 #include "rmw_wasm_cpp/rmw_types.hpp"
 
 #include "wasm_cpp/service_server.hpp"
 
 #include "rmw/rmw.h"
+#include "rmw/allocators.h"
 #include "rmw/error_handling.h"
 #include "rmw/impl/cpp/macros.hpp"
 
