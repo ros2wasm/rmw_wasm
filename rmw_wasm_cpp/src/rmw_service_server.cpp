@@ -97,8 +97,11 @@ extern "C"
             rmw_wasm_cpp::identifier,
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
 
-        // TODO: create and delete rmw_wasm_server
-        // TODO: create and delete wasm_server
+        auto rmw_wasm_server = static_cast<rmw_wasm_server_t *>(service->data);
+        wasm_cpp::ServiceServer * wasm_server = rmw_wasm_server->wasm_server;
+
+        delete wasm_server;
+        deleter rmw_wasm_server;
         
         rmw_free(const_cast<char *>(service->service_name));
         rmw_service_free(service);
@@ -180,15 +183,13 @@ extern "C"
             rcutils_allocator_t allocator = rcutils_get_default_allocator();
             bool is_server { true };
             bool is_converted = rmw_wasm_cpp::yaml_to_msg_service(
-                rmw_wasm_server, 
+                &rmw_wasm_server->type_support, 
                 yaml_request, 
                 ros_request,
                 allocator,
                 is_server
             );
-            if (!is_converted) {
-                return RMW_RET_ERROR;
-            }
+            if (!is_converted) { return RMW_RET_ERROR; }
         }
 
         return RMW_RET_OK;

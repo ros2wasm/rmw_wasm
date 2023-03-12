@@ -40,20 +40,6 @@ extern "C"
         RMW_CHECK_ARGUMENT_FOR_NULL(qos_profile, nullptr);
         // TODO: validate qos policy rmw_wasm_cpp::is_valid_qos()
 
-        // TODO: get type support from rmw if needed
-
-        // TODO: (suggestion)
-        // - find and check existing topics and types
-        // - create Topic and Type names
-        // - get request topic and type
-        // - get response topic and type
-        // - create the custom Client struct (info)
-        // - create Listeners
-        // - create and register Topics
-        // - create response topic
-        // - create request topic
-        // - create client
-
         auto wasm_client = new (std::nothrow) wasm_cpp::ServiceClient(service_name);
         auto cleanup_wasm_client = rcpputils::make_scope_exit(
             [wasm_client]() {
@@ -83,7 +69,6 @@ extern "C"
         rmw_client->service_name = reinterpret_cast<const char *>(
             rmw_allocate(strlen(service_name) + 1));
 
-
         cleanup_rmw_client.cancel();
         cleanup_rmw_wasm_client.cancel();
         clenaup_wasm_client.cancel();
@@ -109,7 +94,11 @@ extern "C"
             rmw_wasm_cpp::identifier,
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
 
-        // TODO: delete wasm_client and rmw_wasm_client
+        auto rmw_wasm_client = static_cast<rmw_wasm_client_t *>(client->data);
+        wasm_cpp::ServiceClient * wasm_client = rmw_wasm_client->wasm_client;
+
+        delete wasm_client;
+        delete rmw_wasm_client;
 
         rmw_free(const_cast<char *>(client->service_name));
         rmw_client_free(client);
@@ -144,11 +133,21 @@ extern "C"
         RMW_CHECK_ARGUMENT_FOR_NULL(ros_request, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_ARGUMENT_FOR_NULL(sequence_id, RMW_RET_INVALID_ARGUMENT);
 
-        // TODO: create rmw_wasm_client
-        // TODO: create wasm_client
-        
-        // TODO: conver message to JSON???
-        // TODO: send request
+        auto rmw_wasm_client = static_cast<rmw_wasm_client_t *>(client->data);
+        wasm_cpp::ServiceClient * wasm_client = rmw_wasm_client->wasm_client;
+
+        // Convert request to yaml string
+        bool is_server { false };
+        const std::string request = rmw_wasm_cpp::msg_to_yaml_service(
+            &rmw_wasm_client->type_support,
+            ros_request,
+            is_server
+        );
+
+        RCUTILS_LOG_INFO_NAMED("REMOVE", "request " + request);
+
+        // Send request
+        wasm_client->send_request(request);
         
         return RMW_RET_OK;
     }
@@ -171,14 +170,33 @@ extern "C"
         RMW_CHECK_ARGUMENT_FOR_NULL(ros_response, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_ARGUMENT_FOR_NULL(taken, RMW_RET_INVALID_ARGUMENT);
 
-        // TODO: create rmw_wasm_client
-        // TODO: create wasm_client
+        auto rmw_wasm_client = static_cast<rmw_wasm_client_t *>(client->data);
+        wasm_cpp::ServiceClient * wasm_client = rmw_wasm_client->wasm_client;
         
-        // TODO: get info 
-        // suggetion: wasm_client->get_response_with_info()
+        // TODO: Take response with info 
+        // suggestion: wasm_client->get_response_with_info()
         
-        // TODO: convert JSON back to response
-        // TODO: copy info to response header
+        auto response_taken = wasm_client->take_response();
+        if (response_taken.empty()) {
+            *taken = false;
+            RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "response could not be taken");
+        } else {
+            *taken = true;
+            // TODO: separate info and yaml_response
+            const std::string & yaml_response = request_taken;
+
+            // Convert yaml to ros response
+            rcutils_allocator_t allocator = rcutils_get_default_allocator();
+            bool is_server { false };
+            bool is_converted = rmw_wasm_cpp::yaml_to_msg_service(
+                &rmw_wasm_client->type_support,
+                yaml_response,
+                ros_response,
+                allocator,
+                is_server
+            );
+            if (!is_converted) { return RMW_RET_ERROR; }
+        }
         
         return RMW_RET_OK;
     }
