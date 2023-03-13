@@ -46,14 +46,14 @@ extern "C"
             [wasm_client]() {
                 delete wasm_client;
             }
-        )
+        );
 
         auto rmw_wasm_client = new (std::nothrow) rmw_wasm_client_t;
         auto cleanup_rmw_wasm_client = rcpputils::make_scope_exit(
             [rmw_wasm_client]() {
                 delete rmw_wasm_client;
             }
-        )
+        );
 
         rmw_wasm_client->wasm_client = wasm_client;
         // TODO: add valid type support
@@ -72,7 +72,7 @@ extern "C"
 
         cleanup_rmw_client.cancel();
         cleanup_rmw_wasm_client.cancel();
-        clenaup_wasm_client.cancel();
+        cleanup_wasm_client.cancel();
         return rmw_client;
     }
 
@@ -145,7 +145,8 @@ extern "C"
             is_server
         );
 
-        RCUTILS_LOG_INFO_NAMED("REMOVE", "request " + request);
+        // REMOVE
+        std::cout << "[RMW CLIENT] request " << request << '\n';
 
         // Send request
         wasm_client->send_request(request);
@@ -184,7 +185,7 @@ extern "C"
         } else {
             *taken = true;
             // TODO: separate info and yaml_response
-            const std::string & yaml_response = request_taken;
+            const std::string & yaml_response = response_taken;
 
             // Convert yaml to ros response
             rcutils_allocator_t allocator = rcutils_get_default_allocator();
@@ -193,7 +194,7 @@ extern "C"
                 &rmw_wasm_client->type_support,
                 yaml_response,
                 ros_response,
-                allocator,
+                &allocator,
                 is_server
             );
             if (!is_converted) { return RMW_RET_ERROR; }

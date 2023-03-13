@@ -47,7 +47,7 @@ extern "C"
             }
         );
 
-        rmw_wasm_service_t * rmw_wasm_server = new (std::nothrow) rmw_wasm_server_t;
+        rmw_wasm_server_t * rmw_wasm_server = new (std::nothrow) rmw_wasm_server_t;
         auto cleanup_rmw_wasm_server = rcpputils::make_scope_exit(
             [rmw_wasm_server]() {
                 delete rmw_wasm_server;
@@ -103,7 +103,7 @@ extern "C"
         wasm_cpp::ServiceServer * wasm_server = rmw_wasm_server->wasm_server;
 
         delete wasm_server;
-        deleter rmw_wasm_server;
+        delete rmw_wasm_server;
         
         rmw_free(const_cast<char *>(service->service_name));
         rmw_service_free(service);
@@ -188,7 +188,7 @@ extern "C"
                 &rmw_wasm_server->type_support, 
                 yaml_request, 
                 ros_request,
-                allocator,
+                &allocator,
                 is_server
             );
             if (!is_converted) { return RMW_RET_ERROR; }
@@ -224,7 +224,8 @@ extern "C"
             is_server
         );
 
-        RCUTILS_LOG_INFO_NAMED("REMOVE", "response " + response);
+        // REMOVE
+        std::cout << "[RMW SERVER] response " << response << '\n';
         
         // TODO: handle request ID (client gid)
   
