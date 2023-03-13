@@ -21,7 +21,7 @@ namespace wasm_cpp
 
         void send_response(const std::string & response);
 
-        void take_request();
+        std::string take_request();
 
         bool has_request();
 

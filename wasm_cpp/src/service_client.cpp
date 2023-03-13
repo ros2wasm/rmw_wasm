@@ -1,3 +1,5 @@
+#include <iostream> // REMOVE
+
 #include "rcutils/logging_macros.h"
 
 #include "wasm_cpp/service_client.hpp"
@@ -19,26 +21,26 @@ namespace wasm_cpp
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::~ServiceClient()");
     }
 
-    ServiceClient::send_request(const std::string & request)
+    void ServiceClient::send_request(const std::string & request)
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::send_request()");
         
         m_publisher.publish(request);
     }
 
-    ServiceClient::take_response()
+    std::string ServiceClient::take_response()
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::take_response()");
 
         std::string response { m_subscriber.get_message() };
 
         // REMOVE
-        RCUTILS_LOG_INFO_NAMED("RESPONSE", response);
+        std::cout << "[CLIENT] " << response << '\n';
 
         return response;
     }
 
-    ServiceClient::has_response()
+    bool ServiceClient::has_response()
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::has_response()");
 

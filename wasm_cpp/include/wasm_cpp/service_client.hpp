@@ -28,6 +28,8 @@ namespace wasm_cpp
         Publisher m_publisher;
         Subscriber m_subscriber;
 
+        std::string m_response;
+
     };
 
     
