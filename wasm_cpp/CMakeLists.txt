@@ -24,6 +24,8 @@ set(${PROJECT_NAME}_SOURCES
   src/subscriber.cpp
   src/wait_set.cpp
   src/participant.cpp
+  src/service_server.cpp
+  src/service_client.cpp
   src/pre.js
 )
 

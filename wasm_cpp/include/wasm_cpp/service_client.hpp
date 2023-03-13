@@ -19,7 +19,7 @@ namespace wasm_cpp
 
         void send_request(const std::string & request);
 
-        void get_response();
+        std::string take_response();
 
         bool has_response();
 
@@ -27,8 +27,6 @@ namespace wasm_cpp
 
         Publisher m_publisher;
         Subscriber m_subscriber;
-
-        std::string m_response;
 
     };
 

@@ -177,7 +177,7 @@ extern "C"
         // TODO: Take response with info 
         // suggestion: wasm_client->get_response_with_info()
         
-        auto response_taken = wasm_client->take_response();
+        std::string response_taken = wasm_client->take_response();
         if (response_taken.empty()) {
             *taken = false;
             RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "response could not be taken");
