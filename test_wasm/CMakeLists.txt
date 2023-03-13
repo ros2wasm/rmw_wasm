@@ -11,6 +11,7 @@ find_package(ament_cmake REQUIRED)
 # further dependencies manually.
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(example_interfaces REQUIRED)
 
 add_executable(talker src/test_publisher.cpp)
 ament_target_dependencies(talker rclcpp std_msgs)
@@ -55,6 +56,44 @@ target_compile_options(listener
 )
 
 target_link_options(listener
+  PUBLIC "SHELL: -lembind"
+  PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
+  PUBLIC "SHELL: -fexceptions"
+  PUBLIC "SHELL: -s ASYNCIFY=1"
+  PUBLIC "SHELL: -s DEMANGLE_SUPPORT=1"
+  PUBLIC "SHELL: -s ASSERTIONS=1"
+  PUBLIC "SHELL: -s EXIT_RUNTIME=1" 
+  PUBLIC "SHELL: -s WASM=1"
+  PUBLIC "SHELL: -s USE_PTHREADS=0"
+  PUBLIC "SHELL: -s TOTAL_STACK=16mb"
+  PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
+  PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
+)
+
+target_compile_options(server
+  PUBLIC "SHELL: -fexceptions" 
+)
+
+target_link_options(server
+  PUBLIC "SHELL: -lembind"
+  PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
+  PUBLIC "SHELL: -fexceptions"
+  PUBLIC "SHELL: -s ASYNCIFY=1"
+  PUBLIC "SHELL: -s DEMANGLE_SUPPORT=1"
+  PUBLIC "SHELL: -s ASSERTIONS=1"
+  PUBLIC "SHELL: -s EXIT_RUNTIME=1" 
+  PUBLIC "SHELL: -s WASM=1"
+  PUBLIC "SHELL: -s USE_PTHREADS=0"
+  PUBLIC "SHELL: -s TOTAL_STACK=16mb"
+  PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
+  PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
+)
+
+target_compile_options(client
+  PUBLIC "SHELL: -fexceptions" 
+)
+
+target_link_options(client
   PUBLIC "SHELL: -lembind"
   PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
   PUBLIC "SHELL: -fexceptions"
