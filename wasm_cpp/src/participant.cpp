@@ -101,14 +101,24 @@ namespace wasm_cpp
 
     void Participant::deregistration()
     {
+        if (m_gid.empty()) {
+            RCUTILS_LOG_DEBUG_NAMED(
+                "wasm_cpp", 
+                "Participant is not registered '%s'.",
+                m_name.c_str()
+            );
+            return;
+        }
+
         auto js_deregistration = emscripten::val::module_property("deregisterParticipant");
         bool is_deregistered = js_deregistration(m_gid).as<bool>();
 
         if (!is_deregistered) {
             RCUTILS_LOG_ERROR_NAMED(
                 "wasm_cpp", 
-                "Failed to deregister participant '%s'.",
-                m_name.c_str()
+                "Failed to deregister participant '%s' with gid '%s'.",
+                m_name.c_str(),
+                m_gid.c_str()
             );
         }
     }

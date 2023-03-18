@@ -23,6 +23,8 @@ namespace wasm_cpp
 
         bool has_response();
 
+        bool is_service_available();
+
     private:
 
         Publisher m_publisher;
@@ -31,9 +33,6 @@ namespace wasm_cpp
         std::string m_response;
 
     };
-
-    
-
 
 } // namespace wasm_cpp
 

@@ -10,8 +10,8 @@ namespace wasm_cpp
 
     ServiceServer::ServiceServer(const std::string & service_name)
         : Participant(service_name, "service_server")
-        , m_publisher("response_" + service_name)
-        , m_subscriber("request_" + service_name)
+        , m_publisher("response" + service_name)
+        , m_subscriber("request" + service_name)
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceServer::ServiceServer()");
     }
@@ -25,6 +25,9 @@ namespace wasm_cpp
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceServer::send_response()");
 
+        // REMOVE
+        std::cout << "[SERVER] send_response " << response << '\n';
+
         m_publisher.publish(response);
     }
 
@@ -32,10 +35,10 @@ namespace wasm_cpp
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceServer::take_request()");
     
-        std::string request { m_subscriber.get_message() };
+        std::string request = m_subscriber.get_message();
 
         // REMOVE
-        std::cout << "[SERVER] " << request << '\n';
+        std::cout << "[SERVER] take_request" << request << '\n';
 
         return request;
     }

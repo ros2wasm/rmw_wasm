@@ -110,33 +110,6 @@ extern "C"
         return RMW_RET_OK;
     }
 
-    rmw_ret_t rmw_service_server_is_available(
-        const rmw_node_t * node,
-        const rmw_client_t * client,
-        bool * is_available)
-    {
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_service_server_is_available()");
-
-        RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_ERROR);
-        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
-            node,
-            node->implementation_identifier,
-            rmw_wasm_cpp::identifier,
-            return RMW_RET_INVALID_ARGUMENT);
-        RMW_CHECK_ARGUMENT_FOR_NULL(client, RMW_RET_ERROR);
-        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
-            client,
-            client->implementation_identifier,
-            rmw_wasm_cpp::identifier,
-            return RMW_RET_INVALID_ARGUMENT);
-        RMW_CHECK_ARGUMENT_FOR_NULL(is_available, RMW_RET_ERROR);
-
-        // TODO: figure out
-
-        *is_available = true;
-        return RMW_RET_OK;
-    }
-
     rmw_ret_t rmw_service_set_on_new_request_callback(
         rmw_service_t * rmw_service,
         [[maybe_unused]] rmw_event_callback_t callback,

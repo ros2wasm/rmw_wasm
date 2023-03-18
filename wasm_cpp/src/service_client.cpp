@@ -9,9 +9,9 @@ namespace wasm_cpp
 {
 
     ServiceClient::ServiceClient(const std::string & service_name)
-        : Participant(service_name, "service_server")
-        , m_publisher("request_" + service_name)
-        , m_subscriber("response_" + service_name)
+        : Participant(service_name, "service_client")
+        , m_publisher("request" + service_name)
+        , m_subscriber("response" + service_name)
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::ServiceClient()");
     }
@@ -25,6 +25,9 @@ namespace wasm_cpp
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::send_request()");
         
+        // REMOVE
+        std::cout << "[CLIENT] send_request " << request << '\n';
+
         m_publisher.publish(request);
     }
 
@@ -32,10 +35,10 @@ namespace wasm_cpp
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::take_response()");
 
-        std::string response { m_subscriber.get_message() };
+        std::string response = m_subscriber.get_message();
 
         // REMOVE
-        std::cout << "[CLIENT] " << response << '\n';
+        std::cout << "[CLIENT] take_response" << response << '\n';
 
         return response;
     }
@@ -45,6 +48,16 @@ namespace wasm_cpp
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::has_response()");
 
         return !m_response.empty();
+    }
+
+    bool ServiceClient::is_service_available()
+    {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", 
+            "trace ServiceClient::is_service_available()");
+
+        // TODO: call JS and ask if service name is in a queue
+        // return m_service_available;
+        return true;
     }
 
 } // namespace wasm_cpp
