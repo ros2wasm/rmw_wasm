@@ -70,17 +70,7 @@ extern "C"
             event_type,
             subscription->implementation_identifier,
             subscription->data);
-    }
-
-    // REMOVE: duplicate symbols with rmw
-    // // Finalize an rmw event
-    // rmw_ret_t rmw_event_fini (rmw_event_t *event)
-    // {
-    //     RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_event_fini()");
-
-    //     // TODO:
-    //     return RMW_RET_OK;
-    // } 	
+    }	
 
     // TODO: add to rmw docs
     rmw_ret_t rmw_event_set_callback(

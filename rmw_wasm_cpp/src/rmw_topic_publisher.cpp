@@ -48,47 +48,6 @@ extern "C"
         return RMW_RET_UNSUPPORTED;
     }
 
-    // REMOVE:
-    // static rmw_publisher_t * _create_publisher(
-    //     const char * topic_name,
-    //     const rmw_publisher_options_t * publisher_options,
-    //     const rosidl_message_type_support_t * type_support
-    // )
-    // {
-    //     RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace _create_publisher()");
-
-    //     auto wasm_pub = new (std::nothrow) wasm_cpp::Publisher(topic_name);
-
-    //     rmw_wasm_pub_t * rmw_wasm_pub = new (std::nothrow) rmw_wasm_pub_t();
-    //     rmw_wasm_pub->type_support = *type_support;
-    //     rmw_wasm_pub->wasm_pub = wasm_pub;
-
-    //     // TODO: implement 
-    //     // rmw_wasm_pub->gid = rmw_wasm_cpp::convert_gid(wasm_pub->get_gid())
-
-    //     rmw_publisher_t * publisher = rmw_publisher_allocate();
-    //     auto cleanup_publisher = rcpputils::make_scope_exit(
-    //         [publisher]() {
-    //             rmw_free(const_cast<char *>(publisher->topic_name));
-    //             rmw_publisher_free(publisher);
-    //         }
-    //     );
-
-    //     publisher->implementation_identifier = rmw_wasm_cpp::identifier;
-    //     publisher->data = rmw_wasm_pub;
-    //     publisher->topic_name = reinterpret_cast<char *>(
-    //         rmw_allocate(strlen(topic_name) + 1));
-    //     memcpy(
-    //         const_cast<char *>(publisher->topic_name), 
-    //         topic_name, 
-    //         strlen(topic_name) + 1);
-    //     publisher->options = *publisher_options;
-    //     publisher->can_loan_messages = false;
-
-    //     cleanup_publisher.cancel();
-    //     return publisher;
-    // }
-
     // Create and return an rmw publisher.
     //
     // The argument publisher_options must not be nullptr.
@@ -161,22 +120,6 @@ extern "C"
         cleanup_publisher.cancel();
         return publisher;
     }
-
-    // REMOVE:
-    // static rmw_ret_t _destroy_publisher(rmw_publisher_t * publisher)
-    // {
-    //     RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace _destroy_publisher()");
-
-    //     auto rmw_wasm_pub = static_cast<rmw_wasm_pub_t *>(publisher->data);
-    //     if (nullptr != rmw_wasm_pub) {
-    //         auto wasm_pub = static_cast<wasm_cpp::Publisher *>(rmw_wasm_pub->wasm_pub);
-    //         delete wasm_pub;
-    //     }
-
-    //     rmw_free(const_cast<char *>(publisher->topic_name));
-    //     rmw_publisher_free(publisher);
-    //     return RMW_RET_OK;
-    // }
 
     // Destroy publisher.
     rmw_ret_t rmw_destroy_publisher(
@@ -259,26 +202,6 @@ extern "C"
         //     publisher);
         return RMW_RET_OK;
     }
-
-    // REMOVE:
-    // rmw_ret_t rmw_publisher_wait_for_all_acked(
-    //     const rmw_publisher_t * publisher, 
-    //     [[maybe_unused]] rmw_time_t wait_timeout)
-    // {
-    //     RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_publisher_wait_for_all_acked()");
-
-    //     RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
-    //     RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
-    //         publisher,
-    //         publisher->implementation_identifier,
-    //         rmw_wasm_cpp::identifier,
-    //         return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
-        
-    //     // TODO: implement if needed
-    //     // return rmw_wasm_cpp::__rmw_publisher_wait_for_all_acked(
-    //     //     rmw_wasm_cpp::identifier, publisher, wait_timeout);
-    //     return RMW_RET_OK;
-    // }
 
     // Borrow a loaned message.
     //

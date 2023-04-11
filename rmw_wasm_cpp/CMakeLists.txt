@@ -52,11 +52,9 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_get_identifier.cpp
   src/rmw_get_names_and_types.cpp
   src/rmw_get_info_by_topic.cpp
-  src/rmw_count.cpp
   src/rmw_gid.cpp
   src/rmw_qos.cpp
-  src/rmw_log_and_features.cpp
-  src/rmw_network.cpp
+  src/rmw_log.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})

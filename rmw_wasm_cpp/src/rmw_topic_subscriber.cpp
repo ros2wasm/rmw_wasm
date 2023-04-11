@@ -41,45 +41,6 @@ extern "C"
         return RMW_RET_UNSUPPORTED;
     }
 
-    // REMOVE:
-    // static rmw_subscription_t * _create_subscriber(
-    //     const char * topic_name,
-    //     const rmw_subscription_options_t * subscriber_options,
-    //     const rosidl_message_type_support_t * type_support)
-    // {
-    //     RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace _create_subscriber()");
-
-    //     auto wasm_sub = new (std::nothrow) wasm_cpp::Subscriber(topic_name);
-
-    //     rmw_wasm_sub_t * rmw_wasm_sub = new (std::nothrow) rmw_wasm_sub_t();
-    //     rmw_wasm_sub->type_support = *type_support;
-    //     rmw_wasm_sub->wasm_sub = wasm_sub;
-
-    //     // TODO: get gid for subscriber
-
-    //     rmw_subscription_t * subscriber = rmw_subscription_allocate();
-    //     auto cleanup_subscriber = rcpputils::make_scope_exit(
-    //         [subscriber]() {
-    //             rmw_free(const_cast<char *>(subscriber->topic_name));
-    //             rmw_subscription_free(subscriber);
-    //         }
-    //     );
-
-    //     subscriber->implementation_identifier = rmw_wasm_cpp::identifier;
-    //     subscriber->data = rmw_wasm_sub;
-    //     subscriber->topic_name = reinterpret_cast<char *>(
-    //         rmw_allocate(strlen(topic_name) + 1));
-    //     memcpy(
-    //         const_cast<char *>(subscriber->topic_name), 
-    //         topic_name, 
-    //         strlen(topic_name) + 1);
-    //     subscriber->options = *subscriber_options;
-    //     subscriber->can_loan_messages = false;
-
-    //     cleanup_subscriber.cancel();
-    //     return subscriber;
-    // }
-
     // Create and return an rmw subscription.
     //
     // The argument subscription_options must not be nullptr.
@@ -140,22 +101,6 @@ extern "C"
         cleanup_subscriber.cancel();
         return subscriber;
     }
-
-    // REMOVE:
-    // static rmw_ret_t _destroy_subscriber(
-    //     rmw_subscription_t * subscriber)
-    // {
-    //     RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace _destroy_subscriber()");
-
-    //     rmw_wasm_sub_t * rmw_wasm_sub = static_cast<rmw_wasm_sub_t *>(subscriber->data);
-    //     wasm_cpp::Subscriber * wasm_sub = rmw_wasm_sub->wasm_sub;
-
-    //     delete wasm_sub;
-    //     delete rmw_wasm_sub;
-    //     rmw_free(const_cast<char *>(subscriber->topic_name));
-    //     rmw_subscription_free(subscriber);
-    //     return RMW_RET_OK;
-    // }
 
     // Destroy subscription.
     rmw_ret_t rmw_destroy_subscription(
@@ -233,48 +178,6 @@ extern "C"
         *count = 1u;
         return RMW_RET_OK;
     }
-
-    // REMOVE:
-    // rmw_ret_t rmw_subscription_set_content_filter(
-    //     rmw_subscription_t * subscriber,
-    //     const rmw_subscription_content_filter_options_t * options)
-    // {
-    //     RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_subscription_set_content_filter()");
-
-    //     RMW_CHECK_ARGUMENT_FOR_NULL(subscriber, RMW_RET_INVALID_ARGUMENT);
-    //     RMW_CHECK_ARGUMENT_FOR_NULL(options, RMW_RET_INVALID_ARGUMENT);
-    //     RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
-    //         subscriber,
-    //         subscriber->implementation_identifier,
-    //         rmw_wasm_cpp::identifier,
-    //         return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
-
-    //     // TODO: implement if needed
-
-    //     return RMW_RET_OK;
-    // }
-
-    // REMOVE:
-    // rmw_ret_t rmw_subscription_get_content_filter(
-    //     const rmw_subscription_t * subscriber,
-    //     rcutils_allocator_t * allocator,
-    //     rmw_subscription_content_filter_options_t * options)
-    // {
-    //     RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_subscription_get_content_filter()");
-
-    //     RMW_CHECK_ARGUMENT_FOR_NULL(subscriber, RMW_RET_INVALID_ARGUMENT);
-    //     RMW_CHECK_ARGUMENT_FOR_NULL(allocator, RMW_RET_INVALID_ARGUMENT);
-    //     RMW_CHECK_ARGUMENT_FOR_NULL(options, RMW_RET_INVALID_ARGUMENT);
-    //     RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
-    //         subscriber,
-    //         subscriber->implementation_identifier,
-    //         rmw_wasm_cpp::identifier,
-    //         return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
-
-    //     // TODO: implement if needed
-
-    //     return RMW_RET_OK;
-    // }
 
     // TODO: add to rmw docs
     rmw_ret_t rmw_subscription_set_on_new_message_callback(
