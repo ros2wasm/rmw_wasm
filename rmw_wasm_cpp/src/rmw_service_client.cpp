@@ -16,6 +16,8 @@
 
 extern "C"
 {
+
+    // Create an rmw client to communicate with the specified service. 
     rmw_client_t * rmw_create_client(
         const rmw_node_t * node,
         const rosidl_service_type_support_t * type_support,
@@ -76,6 +78,7 @@ extern "C"
         return rmw_client;
     }
 
+    // Destroy and unregister a service client. 
     rmw_ret_t rmw_destroy_client(
         rmw_node_t * node, 
         rmw_client_t * client)
@@ -106,6 +109,7 @@ extern "C"
         return RMW_RET_OK;
     }
 
+    // TODO: add to rmw docs
     rmw_ret_t rmw_client_set_on_new_response_callback(
         rmw_client_t * client,
         [[maybe_unused]] rmw_event_callback_t callback,
@@ -118,6 +122,19 @@ extern "C"
         return RMW_RET_OK;
     }
 
+    // Check if a service server is available for the given service client.
+    //
+    // This function will return true for is_available if there is a service 
+    // server available for the given client.
+    // The node parameter must not be NULL, and must point to a valid node.
+    // The client parameter must not be NULL, and must point to a valid client.
+    // The given client and node must match, i.e. the client must have been 
+    // created using the given node.
+    // The is_available parameter must not be NULL, and must point to a bool 
+    // variable. The result of the check will be stored in the is_available 
+    // parameter.
+    // This function does manipulate heap memory. 
+    // This function is not thread-safe. This function is lock-free.
     rmw_ret_t rmw_service_server_is_available(
         const rmw_node_t * node,
         const rmw_client_t * client,
@@ -147,6 +164,7 @@ extern "C"
         return RMW_RET_OK;
     }
 
+    // Send a service request to the rmw server.
     rmw_ret_t rmw_send_request(
         const rmw_client_t * client,
         const void * ros_request,
@@ -174,15 +192,13 @@ extern "C"
             is_server
         );
 
-        // REMOVE
-        std::cout << "[RMW CLIENT] request " << request << '\n';
-
         // Send request
         wasm_client->send_request(request);
         
         return RMW_RET_OK;
     }
 
+    // Attempt to get the response from a service request.
     rmw_ret_t rmw_take_response(
         const rmw_client_t * client,
         rmw_service_info_t * request_header,
@@ -204,16 +220,12 @@ extern "C"
         auto rmw_wasm_client = static_cast<rmw_wasm_client_t *>(client->data);
         wasm_cpp::ServiceClient * wasm_client = rmw_wasm_client->wasm_client;
         
-        // TODO: Take response with info 
-        // suggestion: wasm_client->get_response_with_info()
-        
         std::string response_taken = wasm_client->take_response();
         if (response_taken.empty()) {
             *taken = false;
             RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "response could not be taken");
         } else {
             *taken = true;
-            // TODO: separate info and yaml_response
             const std::string & yaml_response = response_taken;
 
             // Convert yaml to ros response

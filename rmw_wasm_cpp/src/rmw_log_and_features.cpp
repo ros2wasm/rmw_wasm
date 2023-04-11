@@ -11,6 +11,7 @@
 extern "C"
 {
     
+    // Set the current log severity
     rmw_ret_t rmw_set_log_severity(
         [[maybe_unused]] rmw_log_severity_t severity)
     {
@@ -19,12 +20,13 @@ extern "C"
         return RMW_RET_OK;
     }
 
-    bool rmw_feature_supported(
-        [[maybe_unused]] rmw_feature_t feature)
-    {
-        // TODO: implement
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_feature_supported()");
-        return true;
-    }
+    // REMOVE
+    // bool rmw_feature_supported(
+    //     [[maybe_unused]] rmw_feature_t feature)
+    // {
+    //     // TODO: implement
+    //     RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_feature_supported()");
+    //     return true;
+    // }
 
 } // extern "C"

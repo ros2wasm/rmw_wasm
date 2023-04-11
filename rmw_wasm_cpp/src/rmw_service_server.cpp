@@ -16,6 +16,7 @@
 
 extern "C"
 {
+    // Create an rmw service server that responds to requests. 
     rmw_service_t * rmw_create_service(
         const rmw_node_t * node,
         const rosidl_service_type_support_t * type_support,
@@ -80,6 +81,7 @@ extern "C"
         return rmw_service;
     }
 
+    // Destroy and unregister the service from this node. 
     rmw_ret_t rmw_destroy_service(
         rmw_node_t * node, 
         rmw_service_t * service)
@@ -110,6 +112,7 @@ extern "C"
         return RMW_RET_OK;
     }
 
+    // TODO: add to rmw docs
     rmw_ret_t rmw_service_set_on_new_request_callback(
         rmw_service_t * rmw_service,
         [[maybe_unused]] rmw_event_callback_t callback,
@@ -122,6 +125,7 @@ extern "C"
         return RMW_RET_OK;
     }
 
+    // Attempt to take a request from this service's request buffer. 
     rmw_ret_t rmw_take_request(
         const rmw_service_t * service,
         rmw_service_info_t * service_info,
@@ -170,6 +174,7 @@ extern "C"
         return RMW_RET_OK;
     }
 
+    // Send response to a client's request. 
     rmw_ret_t rmw_send_response(
         const rmw_service_t * service,
         rmw_request_id_t * request_id,
@@ -196,9 +201,6 @@ extern "C"
             ros_response,
             is_server
         );
-
-        // REMOVE
-        std::cout << "[RMW SERVER] response " << response << '\n';
         
         // TODO: handle request ID (client gid)
   

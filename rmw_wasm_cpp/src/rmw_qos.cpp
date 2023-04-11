@@ -9,6 +9,13 @@
 
 extern "C"
 {
+    // Query the underlying middleware to determine the qos settings of the 
+    // participant. The actual configuration applied when using RMW_*_SYSTEM_DEFAULT 
+    // can only be resolved after the creation of the participant, and it depends 
+    // on the underlying rmw implementation. If the underlying setting in use 
+    // can't be represented in ROS terms, it will be set to RMW_*_UNKNOWN. 
+    // The value of avoid_ros_namespace_conventions field is not resolved with 
+    // this function. The rcl function rcl_<participant>_get_actual_qos resolves it.
     static rmw_ret_t _get_actual_qos(rmw_qos_profile_t * qos)
     {
         RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace _get_actual_qos()");
@@ -27,11 +34,13 @@ extern "C"
         return RMW_RET_OK;
     }
 
+    // Retrieve the actual qos settings of the publisher.
     rmw_ret_t rmw_publisher_get_actual_qos(
         const rmw_publisher_t * publisher,
         rmw_qos_profile_t * qos)
     {
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_publisher_get_actual_qos()");
+        RCUTILS_LOG_DEBUG_NAMED(
+            "rmw_wasm_cpp", "trace rmw_publisher_get_actual_qos()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -44,6 +53,7 @@ extern "C"
         return _get_actual_qos(qos);
     }
 
+    // Retrieve the actual qos settings of the subscriber.
     rmw_ret_t rmw_subscription_get_actual_qos(
         const rmw_subscription_t * subscription,
         rmw_qos_profile_t * qos)
@@ -61,6 +71,7 @@ extern "C"
         return _get_actual_qos(qos);
     }
 
+    // TODO: add to rmw docs
     rmw_ret_t rmw_service_response_publisher_get_actual_qos(
         const rmw_service_t * service,
         rmw_qos_profile_t * qos)
@@ -78,6 +89,7 @@ extern "C"
         return _get_actual_qos(qos);
     }
 
+    // TODO: add to rmw docs
     rmw_ret_t rmw_client_response_subscription_get_actual_qos(
         const rmw_client_t * client,
         rmw_qos_profile_t * qos)
@@ -95,6 +107,7 @@ extern "C"
         return _get_actual_qos(qos);
     }
 
+    // TODO: add to rmw docs
     rmw_ret_t rmw_client_request_publisher_get_actual_qos(
         const rmw_client_t * client,
         rmw_qos_profile_t * qos)
@@ -112,6 +125,7 @@ extern "C"
         return _get_actual_qos(qos);
     }
 
+    // TODO: add to rmw docs
     rmw_ret_t rmw_service_request_subscription_get_actual_qos(
         const rmw_service_t * service,
         rmw_qos_profile_t * qos)
@@ -129,6 +143,7 @@ extern "C"
         return _get_actual_qos(qos);
     }
 
+    // TODO: add to rmw docs
     rmw_ret_t rmw_qos_profile_check_compatible(
         [[maybe_unused]] const rmw_qos_profile_t publisher_profile,
         [[maybe_unused]] const rmw_qos_profile_t subscription_profile,

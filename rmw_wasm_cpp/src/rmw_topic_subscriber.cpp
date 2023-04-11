@@ -13,6 +13,15 @@
 
 extern "C"
 {
+
+    // Initialize a subscription allocation to be used with later takes.
+    //
+    // This creates an allocation object that can be used in conjunction with 
+    // the rmw_take method to perform more carefully control memory allocations.
+    // This will allow the middleware to preallocate the correct amount of 
+    // memory for a given message type and message bounds. As allocation is 
+    // performed in this method, it will not be necessary to allocate in the 
+    // rmw_take method.
     rmw_ret_t rmw_init_subscription_allocation(
         [[maybe_unused]] const rosidl_message_type_support_t * type_support,
         [[maybe_unused]] const rosidl_runtime_c__Sequence__bound * message_bounds,
@@ -22,6 +31,9 @@ extern "C"
         return RMW_RET_UNSUPPORTED;
     }
 
+    // Destroy a publisher allocation object.
+    //
+    // This deallocates memory allocated by rmw_init_subscription_allocation.
     rmw_ret_t rmw_fini_subscription_allocation(
         [[maybe_unused]] rmw_subscription_allocation_t * allocation)
     {
@@ -29,12 +41,74 @@ extern "C"
         return RMW_RET_UNSUPPORTED;
     }
 
-    static rmw_subscription_t * _create_subscriber(
+    // REMOVE:
+    // static rmw_subscription_t * _create_subscriber(
+    //     const char * topic_name,
+    //     const rmw_subscription_options_t * subscriber_options,
+    //     const rosidl_message_type_support_t * type_support)
+    // {
+    //     RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace _create_subscriber()");
+
+    //     auto wasm_sub = new (std::nothrow) wasm_cpp::Subscriber(topic_name);
+
+    //     rmw_wasm_sub_t * rmw_wasm_sub = new (std::nothrow) rmw_wasm_sub_t();
+    //     rmw_wasm_sub->type_support = *type_support;
+    //     rmw_wasm_sub->wasm_sub = wasm_sub;
+
+    //     // TODO: get gid for subscriber
+
+    //     rmw_subscription_t * subscriber = rmw_subscription_allocate();
+    //     auto cleanup_subscriber = rcpputils::make_scope_exit(
+    //         [subscriber]() {
+    //             rmw_free(const_cast<char *>(subscriber->topic_name));
+    //             rmw_subscription_free(subscriber);
+    //         }
+    //     );
+
+    //     subscriber->implementation_identifier = rmw_wasm_cpp::identifier;
+    //     subscriber->data = rmw_wasm_sub;
+    //     subscriber->topic_name = reinterpret_cast<char *>(
+    //         rmw_allocate(strlen(topic_name) + 1));
+    //     memcpy(
+    //         const_cast<char *>(subscriber->topic_name), 
+    //         topic_name, 
+    //         strlen(topic_name) + 1);
+    //     subscriber->options = *subscriber_options;
+    //     subscriber->can_loan_messages = false;
+
+    //     cleanup_subscriber.cancel();
+    //     return subscriber;
+    // }
+
+    // Create and return an rmw subscription.
+    //
+    // The argument subscription_options must not be nullptr.
+    rmw_subscription_t * rmw_create_subscription(
+        const rmw_node_t * node,
+        const rosidl_message_type_support_t * type_support,
         const char * topic_name,
-        const rmw_subscription_options_t * subscriber_options,
-        const rosidl_message_type_support_t * type_support)
+        const rmw_qos_profile_t * qos_policies,
+        const rmw_subscription_options_t * subscriber_options)
     {
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace _create_subscriber()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_create_subscription()");
+
+        RMW_CHECK_ARGUMENT_FOR_NULL(node, nullptr);
+        RMW_CHECK_ARGUMENT_FOR_NULL(type_support, nullptr);
+        // TODO: valdate type support if needed
+
+        RMW_CHECK_ARGUMENT_FOR_NULL(topic_name, nullptr);
+         if (0 == strlen(topic_name)) {
+            RMW_SET_ERROR_MSG("topic_name argument is an empty string");
+            return nullptr;
+        }
+        // TODO: validate topic name if needed 
+
+        RMW_CHECK_ARGUMENT_FOR_NULL(qos_policies, nullptr);
+        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
+            node,
+            node->implementation_identifier,
+            rmw_wasm_cpp::identifier,
+            return nullptr);
 
         auto wasm_sub = new (std::nothrow) wasm_cpp::Subscriber(topic_name);
 
@@ -67,54 +141,23 @@ extern "C"
         return subscriber;
     }
 
-    rmw_subscription_t * rmw_create_subscription(
-        const rmw_node_t * node,
-        const rosidl_message_type_support_t * type_support,
-        const char * topic_name,
-        const rmw_qos_profile_t * qos_policies,
-        const rmw_subscription_options_t * subscriber_options)
-    {
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_create_subscription()");
+    // REMOVE:
+    // static rmw_ret_t _destroy_subscriber(
+    //     rmw_subscription_t * subscriber)
+    // {
+    //     RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace _destroy_subscriber()");
 
-        RMW_CHECK_ARGUMENT_FOR_NULL(node, nullptr);
-        RMW_CHECK_ARGUMENT_FOR_NULL(type_support, nullptr);
-        // TODO: valdate type support if needed
+    //     rmw_wasm_sub_t * rmw_wasm_sub = static_cast<rmw_wasm_sub_t *>(subscriber->data);
+    //     wasm_cpp::Subscriber * wasm_sub = rmw_wasm_sub->wasm_sub;
 
-        RMW_CHECK_ARGUMENT_FOR_NULL(topic_name, nullptr);
-         if (0 == strlen(topic_name)) {
-            RMW_SET_ERROR_MSG("topic_name argument is an empty string");
-            return nullptr;
-        }
-        // TODO: validate topic name if needed 
+    //     delete wasm_sub;
+    //     delete rmw_wasm_sub;
+    //     rmw_free(const_cast<char *>(subscriber->topic_name));
+    //     rmw_subscription_free(subscriber);
+    //     return RMW_RET_OK;
+    // }
 
-        RMW_CHECK_ARGUMENT_FOR_NULL(qos_policies, nullptr);
-        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
-            node,
-            node->implementation_identifier,
-            rmw_wasm_cpp::identifier,
-            return nullptr);
-
-        return _create_subscriber(
-            topic_name,
-            subscriber_options,
-            type_support);
-    }
-
-    static rmw_ret_t _destroy_subscriber(
-        rmw_subscription_t * subscriber)
-    {
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace _destroy_subscriber()");
-
-        rmw_wasm_sub_t * rmw_wasm_sub = static_cast<rmw_wasm_sub_t *>(subscriber->data);
-        wasm_cpp::Subscriber * wasm_sub = rmw_wasm_sub->wasm_sub;
-
-        delete wasm_sub;
-        delete rmw_wasm_sub;
-        rmw_free(const_cast<char *>(subscriber->topic_name));
-        rmw_subscription_free(subscriber);
-        return RMW_RET_OK;
-    }
-
+    // Destroy subscription.
     rmw_ret_t rmw_destroy_subscription(
         rmw_node_t * node, 
         rmw_subscription_t * subscriber)
@@ -134,9 +177,19 @@ extern "C"
             rmw_wasm_cpp::identifier,
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
 
-        return _destroy_subscriber(subscriber);
+        rmw_wasm_sub_t * rmw_wasm_sub = static_cast<rmw_wasm_sub_t *>(subscriber->data);
+        wasm_cpp::Subscriber * wasm_sub = rmw_wasm_sub->wasm_sub;
+
+        delete wasm_sub;
+        delete rmw_wasm_sub;
+        rmw_free(const_cast<char *>(subscriber->topic_name));
+        rmw_subscription_free(subscriber);
+        return RMW_RET_OK;
     }
 
+    // Retrieve the number of matched publishers to a subscription.
+    //
+    // Query the underlying middleware to determine how many publishers are matched to a given subscription.
     rmw_ret_t rmw_subscription_count_matched_publishers(
         const rmw_subscription_t * subscriber,
         size_t * publisher_count)
@@ -151,51 +204,79 @@ extern "C"
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher_count, RMW_RET_INVALID_ARGUMENT);
 
-        // TODO: implement if needed
+        // TODO: implement
         // *publisher_count = 1u; // always listening
         return RMW_RET_OK;
     }
 
-    rmw_ret_t rmw_subscription_set_content_filter(
-        rmw_subscription_t * subscriber,
-        const rmw_subscription_content_filter_options_t * options)
+    // Count the number of subscribers matching a topic name
+    rmw_ret_t rmw_count_subscribers(
+        const rmw_node_t * node,
+        const char * topic_name,
+        size_t * count)
     {
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_subscription_set_content_filter()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_count_subscribers()");
 
-        RMW_CHECK_ARGUMENT_FOR_NULL(subscriber, RMW_RET_INVALID_ARGUMENT);
-        RMW_CHECK_ARGUMENT_FOR_NULL(options, RMW_RET_INVALID_ARGUMENT);
+        RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
-            subscriber,
-            subscriber->implementation_identifier,
+            node,
+            node->implementation_identifier,
             rmw_wasm_cpp::identifier,
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
+        RMW_CHECK_ARGUMENT_FOR_NULL(topic_name, RMW_RET_INVALID_ARGUMENT);
+        // TODO: validate topic name - rmw_wasm_cpp::is_valid_topic_name()
 
-        // TODO: implement if needed
-
+        RMW_CHECK_ARGUMENT_FOR_NULL(count, RMW_RET_INVALID_ARGUMENT);
+        // TODO: figure out if needed
+        
+        // RE-TODO:
+        *count = 1u;
         return RMW_RET_OK;
     }
 
-    rmw_ret_t rmw_subscription_get_content_filter(
-        const rmw_subscription_t * subscriber,
-        rcutils_allocator_t * allocator,
-        rmw_subscription_content_filter_options_t * options)
-    {
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_subscription_get_content_filter()");
+    // REMOVE:
+    // rmw_ret_t rmw_subscription_set_content_filter(
+    //     rmw_subscription_t * subscriber,
+    //     const rmw_subscription_content_filter_options_t * options)
+    // {
+    //     RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_subscription_set_content_filter()");
 
-        RMW_CHECK_ARGUMENT_FOR_NULL(subscriber, RMW_RET_INVALID_ARGUMENT);
-        RMW_CHECK_ARGUMENT_FOR_NULL(allocator, RMW_RET_INVALID_ARGUMENT);
-        RMW_CHECK_ARGUMENT_FOR_NULL(options, RMW_RET_INVALID_ARGUMENT);
-        RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
-            subscriber,
-            subscriber->implementation_identifier,
-            rmw_wasm_cpp::identifier,
-            return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
+    //     RMW_CHECK_ARGUMENT_FOR_NULL(subscriber, RMW_RET_INVALID_ARGUMENT);
+    //     RMW_CHECK_ARGUMENT_FOR_NULL(options, RMW_RET_INVALID_ARGUMENT);
+    //     RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
+    //         subscriber,
+    //         subscriber->implementation_identifier,
+    //         rmw_wasm_cpp::identifier,
+    //         return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
 
-        // TODO: implement if needed
+    //     // TODO: implement if needed
 
-        return RMW_RET_OK;
-    }
+    //     return RMW_RET_OK;
+    // }
 
+    // REMOVE:
+    // rmw_ret_t rmw_subscription_get_content_filter(
+    //     const rmw_subscription_t * subscriber,
+    //     rcutils_allocator_t * allocator,
+    //     rmw_subscription_content_filter_options_t * options)
+    // {
+    //     RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_subscription_get_content_filter()");
+
+    //     RMW_CHECK_ARGUMENT_FOR_NULL(subscriber, RMW_RET_INVALID_ARGUMENT);
+    //     RMW_CHECK_ARGUMENT_FOR_NULL(allocator, RMW_RET_INVALID_ARGUMENT);
+    //     RMW_CHECK_ARGUMENT_FOR_NULL(options, RMW_RET_INVALID_ARGUMENT);
+    //     RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
+    //         subscriber,
+    //         subscriber->implementation_identifier,
+    //         rmw_wasm_cpp::identifier,
+    //         return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
+
+    //     // TODO: implement if needed
+
+    //     return RMW_RET_OK;
+    // }
+
+    // TODO: add to rmw docs
     rmw_ret_t rmw_subscription_set_on_new_message_callback(
         rmw_subscription_t * subscriber,
         [[maybe_unused]] rmw_event_callback_t callback,

@@ -14,6 +14,8 @@
 
 extern "C"
 {
+
+    // Publish a given ROS message via a publisher.
     rmw_ret_t rmw_publish(
         const rmw_publisher_t * publisher,
         const void * ros_message,
@@ -56,6 +58,10 @@ extern "C"
         return RMW_RET_OK;
     }
 
+    // Publish an already serialized message.
+    //
+    // The publisher must already be registered with the correct message type 
+    // support so that it can send serialized data corresponding to that type. This function sends the serialized byte stream directly over the wire without having to serialize the message first. A ROS message can be serialized manually using the rmw_serialize() function.
     rmw_ret_t rmw_publish_serialized_message(
         const rmw_publisher_t * publisher,
         const rmw_serialized_message_t * serialized_message,
@@ -77,12 +83,14 @@ extern "C"
             "serialized_message handle is null",
             return RMW_RET_INVALID_ARGUMENT);
 
-        // TODO: implement when needed
+        // TODO:
 
         RMW_SET_ERROR_MSG("rmw_publish_serialized_message not implemented");
         return RMW_RET_UNSUPPORTED;
     }
 
+    // Publish a loaned ROS message via a publisher and return ownership of the 
+    // loaned message back to the middleware.
     rmw_ret_t rmw_publish_loaned_message(
         [[maybe_unused]] const rmw_publisher_t * publisher,
         [[maybe_unused]] void * ros_message,

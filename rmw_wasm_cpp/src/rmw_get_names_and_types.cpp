@@ -17,7 +17,13 @@
 
 extern "C"
 {
-
+    
+    // This function returns a list of participant topic names and their types.
+    // The node parameter must not be NULL, and must point to a valid node.
+    // The topic_names_and_types parameter must be allocated and zero initialized. 
+    // The topic_names_and_types is the output for this function, and contains 
+    // allocated memory. Therefore, it should be passed to rmw_names_and_types_fini() 
+    // when it is no longer needed. Failing to do so will result in leaked memory.
     static rmw_ret_t _get_names_and_types_by_node(
         const rmw_node_t * node,
         rcutils_allocator_t * allocator,
@@ -70,6 +76,7 @@ extern "C"
         return RMW_RET_OK;
     }
 
+    // Return a list of published topic names and their types.
     rmw_ret_t rmw_get_publisher_names_and_types_by_node(
         const rmw_node_t * node,
         rcutils_allocator_t * allocator,
@@ -88,6 +95,7 @@ extern "C"
             names_and_types);
     }
 
+    // Return a list of subscribed topic names and their types.
     rmw_ret_t rmw_get_subscriber_names_and_types_by_node(
         const rmw_node_t * node,
         rcutils_allocator_t * allocator,
@@ -106,6 +114,7 @@ extern "C"
             names_and_types);
     }
 
+    // Return a list of service topic names and their types.
     rmw_ret_t rmw_get_service_names_and_types_by_node(
         const rmw_node_t * node,
         rcutils_allocator_t * allocator,
@@ -124,6 +133,7 @@ extern "C"
             names_and_types);
     }
 
+    // Return a list of service client topic names and their types. 
     rmw_ret_t rmw_get_client_names_and_types_by_node(
         const rmw_node_t * node,
         rcutils_allocator_t * allocator,
@@ -142,6 +152,8 @@ extern "C"
             names_and_types);
     }
 
+
+    
     static rmw_ret_t _get_names_and_types(
         const rmw_node_t * node,
         rcutils_allocator_t * allocator,
@@ -161,10 +173,36 @@ extern "C"
             return RMW_RET_INVALID_ARGUMENT;
         }
 
-        // TODO: figure out if needed
-        return RMW_RET_OK;
+        // TODO:
+
+        return RMW_RET_UNSUPPORTED;
     }
 
+    // Return a list of topic names and their types.
+    // 
+    // This function returns a list of topic names in the ROS graph 
+    // and their types.
+    // The node parameter must not be NULL, and must point to a valid node.
+    // The topic_names_and_types parameter must be allocated and zero initialized. 
+    // The topic_names_and_types is the output for this function, and contains 
+    // allocated memory. Therefore, it should be passed to rmw_names_and_types_fini() 
+    // when it is no longer needed. Failing to do so will result in leaked memory.
+    // There may be some demangling that occurs when listing the topics
+    // from the middleware implementation. This is the mechanism by which this 
+    // function can discriminate between ROS topics, non-ROS topics, and topics 
+    // which may be used to implement other concepts like ROS Services.
+    // For example, if the underlying implementation is DDS or RTPS, ROS specific 
+    // prefixes may be prepended to the user namespace, and the namespace may be 
+    // stripped of leading and trailing slashes, see:
+    // http://design.ros2.org/articles/topic_and_service_names.html#ros-namespaces-with-dds-partitions
+    // As well as:
+    // http://design.ros2.org/articles/topic_and_service_names.html#communicating-with-non-ros-topics
+    // If the no_demangle argument is true, then the topic names given by the 
+    // middleware will be returned without any demangling or filtering. 
+    // For example, the ROS topic /foo may be returned as rt/foo or the 
+    // DDS topic (non-ROS topic) with a partition list ‘['foo’, 'bar']and 
+    // topicbaz may be returned asfoo/baz` (note that only the first partition 
+    // is used but it is still concatenated to the topic).
     rmw_ret_t rmw_get_topic_names_and_types(
         const rmw_node_t * node,
         rcutils_allocator_t * allocator,
@@ -179,10 +217,20 @@ extern "C"
             names_and_types);
     }
 
+    // Return a list of service names and their types.
+    //
+    // This function returns a list of service names in the ROS graph and 
+    // their types.
+    // The node parameter must not be NULL, and must point to a valid node.
+    // The service_names_and_types parameter must be allocated and zero 
+    // initialized. The service_names_and_types is the output for this function, 
+    // and contains allocated memory. Therefore, it should be passed to 
+    // rmw_names_and_types_fini() when it is no longer needed. Failing to do so 
+    // will result in leaked memory.
     rmw_ret_t rmw_get_service_names_and_types(
         const rmw_node_t * node,
         rcutils_allocator_t * allocator,
-        rmw_names_and_types_t * names_and_types)
+        rmw_names_and_types_t * service_names_and_types)
     {
         RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_get_service_names_and_types()");
         bool no_demangle{ true };
@@ -190,9 +238,23 @@ extern "C"
             node,
             allocator,
             no_demangle,
-            names_and_types);
+            service_names_and_types);
     }
 
+    // Return a list of node name and namespaces discovered via a node.
+    //
+    // This function will return a list of node names and a list of node 
+    // namespaces that are discovered via the middleware. The two lists represent 
+    // pairs of namespace and name for each discovered node. The lists will be 
+    // the same length and the same position will refer to the same node across 
+    // lists.
+    // The node parameter must not be NULL, and must point to a valid node.
+    // The node_names parameter must not be NULL, and must point to a valid 
+    // string array.
+    // The node_namespaces parameter must not be NULL, and must point to a valid 
+    // string array.
+    // This function does manipulate heap memory. This function is not 
+    // thread-safe. This function is lock-free.
     rmw_ret_t rmw_get_node_names(
         const rmw_node_t * node,
         rcutils_string_array_t * node_names,
@@ -213,11 +275,14 @@ extern "C"
             return RMW_RET_INVALID_ARGUMENT;
         }
 
-        // TODO: figure out
+        // TODO: 
         
-        return RMW_RET_OK;
+        return RMW_RET_UNSUPPORTED;
     }
 
+    // Return a list of node name and namespaces discovered via a node with 
+    // its enclave.
+    // Similar to rmw_get_node_names, but it also provides the enclave name.
     rmw_ret_t rmw_get_node_names_with_enclaves(
         const rmw_node_t * node,
         rcutils_string_array_t * node_names,
@@ -242,9 +307,9 @@ extern "C"
             return RMW_RET_INVALID_ARGUMENT;
         }
 
-        // TODO: figure out
+        // TODO:
         
-        return RMW_RET_OK;
+        return RMW_RET_UNSUPPORTED;
     }
 
 } // extern "C"

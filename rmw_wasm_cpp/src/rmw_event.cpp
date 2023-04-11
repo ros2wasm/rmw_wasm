@@ -28,6 +28,7 @@ extern "C"
         return RMW_RET_OK;
     }
 
+    // Initialize an rmw publisher event
     rmw_ret_t rmw_publisher_event_init(
         rmw_event_t * rmw_event,
         const rmw_publisher_t * publisher,
@@ -49,6 +50,7 @@ extern "C"
             publisher->data);
     }
 
+    // Initialize an rmw subscription event
     rmw_ret_t rmw_subscription_event_init(
         rmw_event_t * rmw_event,
         const rmw_subscription_t * subscription,
@@ -70,6 +72,17 @@ extern "C"
             subscription->data);
     }
 
+    // REMOVE: duplicate symbols with rmw
+    // // Finalize an rmw event
+    // rmw_ret_t rmw_event_fini (rmw_event_t *event)
+    // {
+    //     RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_event_fini()");
+
+    //     // TODO:
+    //     return RMW_RET_OK;
+    // } 	
+
+    // TODO: add to rmw docs
     rmw_ret_t rmw_event_set_callback(
         rmw_event_t * rmw_event,
         [[maybe_unused]] rmw_event_callback_t callback,
@@ -78,10 +91,11 @@ extern "C"
         RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_event_set_callback()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_event, RMW_RET_INVALID_ARGUMENT);
-        // TODO: implement if needed
+        // TODO: 
         return RMW_RET_OK;
     }
 
+    // Take an event from the event handle
     rmw_ret_t rmw_take_event(
         const rmw_event_t * event_handle,
         void * event_info,
@@ -98,7 +112,7 @@ extern "C"
         RMW_CHECK_ARGUMENT_FOR_NULL(event_info, RMW_RET_ERROR);
         RMW_CHECK_ARGUMENT_FOR_NULL(taken, RMW_RET_ERROR);
 
-        // TODO: implement if needed
+        // TODO: 
 
         // To avoid error: 
         // [rclcpp]: Couldn't take event info: error not set

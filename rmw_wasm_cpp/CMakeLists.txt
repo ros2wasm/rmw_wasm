@@ -35,10 +35,8 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_wasm_guard_condition.cpp
   src/rmw_wasm_validation.cpp
   src/rmw_wasm_yaml.cpp
-  src/rmw_get_implementation_identifier.cpp
-  src/rmw_serialization_format.cpp
-  src/rmw_get_serialization_format.cpp
-  src/rmw_context_impl.cpp
+  src/rmw_wasm_context_impl.cpp
+  src/rmw_wasm_serialization_format.cpp
   src/rmw_init.cpp
   src/rmw_node.cpp
   src/rmw_topic_publisher.cpp
@@ -51,12 +49,13 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_service_server.cpp
   src/rmw_guard_condition.cpp
   src/rmw_wait.cpp
+  src/rmw_get_identifier.cpp
   src/rmw_get_names_and_types.cpp
+  src/rmw_get_info_by_topic.cpp
   src/rmw_count.cpp
   src/rmw_gid.cpp
   src/rmw_qos.cpp
   src/rmw_log_and_features.cpp
-  src/rmw_get_info_by_topic.cpp
   src/rmw_network.cpp
 )
 
