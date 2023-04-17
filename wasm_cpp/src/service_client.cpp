@@ -10,8 +10,8 @@ namespace wasm_cpp
 
     ServiceClient::ServiceClient(const std::string & service_name)
         : Participant(service_name, "service_client")
-        , m_publisher("request" + service_name)
-        , m_subscriber("response" + service_name)
+        , m_publisher("/request" + service_name)
+        , m_subscriber("/response" + service_name)
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::ServiceClient()");
     }
@@ -57,6 +57,8 @@ namespace wasm_cpp
 
         // TODO: call JS and ask if service name is in a queue
         // return m_service_available;
+
+        std::cout << "[REMOVE] I'M AVAILABLE\n";
         return true;
     }
 

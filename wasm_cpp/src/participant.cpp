@@ -111,7 +111,7 @@ namespace wasm_cpp
         }
 
         auto js_deregistration = emscripten::val::module_property("deregisterParticipant");
-        bool is_deregistered = js_deregistration(m_gid).as<bool>();
+        bool is_deregistered = js_deregistration(m_gid, m_role).as<bool>();
 
         if (!is_deregistered) {
             RCUTILS_LOG_ERROR_NAMED(
