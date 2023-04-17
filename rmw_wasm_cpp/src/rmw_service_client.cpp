@@ -161,6 +161,8 @@ extern "C"
 
         *is_available = wasm_client->is_service_available();
 
+        std::cout << "[REMOVE] IS SRV AVAIL: " << is_available << '\n';
+
         return RMW_RET_OK;
     }
 

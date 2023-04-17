@@ -22,7 +22,7 @@ extern "C"
 
         // Based on rcl_qos_profile_rosout_default
         qos->history = RMW_QOS_POLICY_HISTORY_KEEP_LAST;
-        qos->depth = 1000;
+        qos->depth = 10;
         qos->reliability = RMW_QOS_POLICY_RELIABILITY_RELIABLE;
         qos->durability = RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL;
         qos->deadline = RMW_QOS_DEADLINE_DEFAULT; // {0.0}
