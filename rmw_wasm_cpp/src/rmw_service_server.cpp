@@ -23,7 +23,7 @@ extern "C"
         const char * service_name, 
         const rmw_qos_profile_t * qos_profile)
     {
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_create_service()");
+        RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace rmw_create_service()");
         
         RMW_CHECK_ARGUMENT_FOR_NULL(node, nullptr);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -59,7 +59,6 @@ extern "C"
         rmw_wasm_server->type_support = *type_support;
         // TODO: rmw_wasm_server->type_supports = *valid_type_support;
 
-        // TODO: verify this
         rmw_service_t * rmw_service = rmw_service_allocate();
         auto cleanup_rmw_service = rcpputils::make_scope_exit(
             [rmw_service]() {
@@ -86,7 +85,7 @@ extern "C"
         rmw_node_t * node, 
         rmw_service_t * service)
     {   
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_destroy_service()");
+        RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace rmw_destroy_service()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -118,7 +117,7 @@ extern "C"
         [[maybe_unused]] rmw_event_callback_t callback,
         [[maybe_unused]] const void * user_data)
     {
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_service_set_on_new_request_callback()");
+        RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace rmw_service_set_on_new_request_callback()");
         
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_service, RMW_RET_INVALID_ARGUMENT);
         // TODO: implement if needed
@@ -152,24 +151,27 @@ extern "C"
         auto request_taken = wasm_server->take_request();
         if (request_taken.empty()) {
             *taken = false;
-            RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "request could not be taken");
         } else {
             *taken = true;
             // TODO: separate info and yaml_request
             const std::string & yaml_request = request_taken;
 
+            std::cout << "YAML REQUEST SSS: " << yaml_request.c_str() << '\n';
+
             // Conver yaml to ros request
             rcutils_allocator_t allocator = rcutils_get_default_allocator();
-            bool is_server { true };
+            bool is_request { true };
             bool is_converted = rmw_wasm_cpp::yaml_to_msg_service(
                 &rmw_wasm_server->type_support, 
                 yaml_request, 
                 ros_request,
                 &allocator,
-                is_server
+                is_request
             );
             if (!is_converted) { return RMW_RET_ERROR; }
         }
+
+        // TODO: copy service info    
 
         return RMW_RET_OK;
     }
@@ -180,7 +182,7 @@ extern "C"
         rmw_request_id_t * request_id,
         void * ros_response)
     {
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_send_response()");
+        RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace rmw_send_response()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(service, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -195,12 +197,14 @@ extern "C"
         wasm_cpp::ServiceServer * wasm_server = rmw_wasm_server->wasm_server;
 
         // Convert response to yaml string
-        bool is_server { true };
+        bool is_request { false };
         const std::string response = rmw_wasm_cpp::msg_to_yaml_service(
             &rmw_wasm_server->type_support,
             ros_response,
-            is_server
+            is_request
         );
+
+        std::cout << "[REMOVE] converted response " << response.c_str() << '\n';
         
         // TODO: handle request ID (client gid)
   

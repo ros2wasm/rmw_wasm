@@ -8,7 +8,7 @@ function sleep(ms) {
   
   self.onmessage = function(event) {
     // When a new message is received from main
-    lastMessage = event.data;
+    lastMessage = event.data.replaceAll(", ", "\n");
     receivedNewMessage = true;
   }
   
@@ -28,28 +28,28 @@ function sleep(ms) {
     return gid;
   }
   
-  Module["deregisterParticipant"] = function deregisterParticipant(gid)
+  Module["deregisterParticipant"] = function deregisterParticipant(gid, role)
   {
     // Deregister participant from main
     self.postMessage({
       command: "deregister",
       topic:   topic,
+      role:    role,
       gid:     gid
     });
   
-    return;
+    // TODO: check deregristration
+    return true;
   }
   
   Module["publishMessage"] = function publishMessage(message, topic_name)
   {
     // Send message to main
-    if (message.startsWith("data:")) {
-      self.postMessage({
-        command: "publish",
-        topic:    topic_name,
-        message: message
-      });
-    }
+    self.postMessage({
+      command: "publish",
+      topic:   topic_name,
+      message: message
+    });
   
     // Assume it gets published
     return true;

@@ -13,7 +13,7 @@ namespace rmw_wasm_cpp
     std::string msg_to_yaml_service(
         const rosidl_service_type_support_t * type_support,
         const void * ros_request_or_response,
-        const bool is_server
+        const bool is_request
     );
 
     bool yaml_to_msg(
@@ -27,7 +27,7 @@ namespace rmw_wasm_cpp
         const std::string & yaml,
         void * ros_request_or_response,
         rcutils_allocator_t * allocator,
-        const bool is_server);
+        const bool is_request);
 
 } // namespace rmw_wasm_cpp
 

@@ -38,7 +38,7 @@ extern "C"
         auto msg_taken = wasm_sub->get_message();
         if (msg_taken.empty()) {
             *taken = false;
-            RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "message could not be taken");
+            RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "message could not be taken");
         } else {
             *taken = true;
             // TODO: separate info and msg_yaml

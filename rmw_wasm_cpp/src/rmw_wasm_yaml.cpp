@@ -1,4 +1,6 @@
 #include <string>
+// REMOVE
+#include <iostream>
 
 #include "rmw_wasm_cpp/rmw_wasm_yaml.hpp"
 #include "rmw_wasm_cpp/rmw_types.hpp"
@@ -32,14 +34,14 @@ namespace rmw_wasm_cpp
                 const rosidl_typesupport_introspection_c__MessageMembers * members,
                 const void * msg)
             {
-                RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace conversion::c::msg_to_yaml()");
+                RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace conversion::c::msg_to_yaml()");
 
                 RosMessage ros_msg{ };
                 ros_msg.type_info = members;
                 ros_msg.data = const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(msg));
                 YAML::Node yaml = dynmsg::c::message_to_yaml(ros_msg);
                 const auto & yaml_str = yaml_to_string(yaml);
-                RCUTILS_LOG_DEBUG_NAMED("MSG", "C: %s", yaml_str.c_str());
+                RCUTILS_LOG_WARN_NAMED("MSG", "C: %s", yaml_str.c_str());
                 return yaml_str;
             }
 
@@ -49,7 +51,7 @@ namespace rmw_wasm_cpp
                 void * ros_message,
                 rcutils_allocator_t * allocator)
             {
-                RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace conversion::c::yaml_to_msg()");
+                RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace conversion::c::yaml_to_msg()");
 
                 RosMessage ros_msg = dynmsg::c::yaml_and_typeinfo_to_rosmsg(members, yaml, allocator);
                 if (!ros_msg.data && !ros_msg.type_info) {
@@ -69,14 +71,14 @@ namespace rmw_wasm_cpp
                 const rosidl_typesupport_introspection_cpp::MessageMembers * members,
                 const void * msg)
             {
-                RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace conversion::cpp::msg_to_yaml()");
+                RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace conversion::cpp::msg_to_yaml()");
 
                 RosMessage_Cpp ros_msg{ };
                 ros_msg.type_info = members;
                 ros_msg.data = const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(msg));
                 YAML::Node yaml = dynmsg::cpp::message_to_yaml(ros_msg);
                 const auto & yaml_str = yaml_to_string(yaml);
-                RCUTILS_LOG_DEBUG_NAMED("MSG", "C++: %s", yaml_str.c_str());
+                RCUTILS_LOG_WARN_NAMED("MSG", "C++: %s", yaml_str.c_str());
                 return yaml_str;
             }
 
@@ -85,7 +87,7 @@ namespace rmw_wasm_cpp
                 const std::string & yaml,
                 void * ros_message)
             {
-                RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace conversion::cpp::yaml_to_msg()");
+                RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace conversion::cpp::yaml_to_msg()");
 
                 dynmsg::cpp::yaml_and_typeinfo_to_rosmsg(members, yaml, ros_message);
                 return true;
@@ -99,7 +101,7 @@ namespace rmw_wasm_cpp
         const rmw_wasm_pub_t * publisher, 
         const void * msg)
     {
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace msg_to_yaml()");
+        RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace msg_to_yaml()");
 
         const rosidl_message_type_support_t * ts = nullptr;
         ts = get_message_typesupport_handle(
@@ -134,23 +136,26 @@ namespace rmw_wasm_cpp
     std::string msg_to_yaml_service(
         const rosidl_service_type_support_t * type_support,
         const void * ros_request_or_response,
-        const bool is_server)
+        const bool is_request)
     {
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace msg_to_yaml_service()");
+        RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace msg_to_yaml_service()");
 
         const rosidl_service_type_support_t * ts = nullptr;
         ts = get_service_typesupport_handle(
             type_support,
             rosidl_typesupport_introspection_c__identifier);
+
+        std::cout << "REMOVE: ts\n";
         if (ts) {
             auto service_members = 
                 static_cast<const rosidl_typesupport_introspection_c__ServiceMembers *>(
                     ts->data);
             // If this is a server, msg->yaml converts a response
             const rosidl_typesupport_introspection_c__MessageMembers * members =
-                is_server ? 
-                service_members->response_members_ : 
-                service_members->request_members_;
+                is_request ? 
+                service_members->request_members_ : 
+                service_members->response_members_;
+            std::cout << "REMOVE c conversion\n";
             return conversion::c::msg_to_yaml(members, ros_request_or_response);
         }
         rcutils_error_string_t error_c = rcutils_get_error_string();
@@ -159,18 +164,22 @@ namespace rmw_wasm_cpp
         ts = get_service_typesupport_handle(
             type_support,
             rosidl_typesupport_introspection_cpp::typesupport_identifier);
+        std::cout << "REMOVE ts again\n";
         if (ts) {
             auto service_members =
                 static_cast<const rosidl_typesupport_introspection_cpp::ServiceMembers *>(
                     ts->data);
             const rosidl_typesupport_introspection_cpp::MessageMembers * members =
-                is_server ? 
-                service_members->response_members_ : 
-                service_members->request_members_;
+                is_request ? 
+                service_members->request_members_ : 
+                service_members->response_members_;
+            std::cout << "REMOVE cpp conversion\n";
             return conversion::cpp::msg_to_yaml(members, ros_request_or_response);
         }
         rcutils_error_string_t error_cpp = rcutils_get_error_string();
         rcutils_reset_error();
+
+        std::cout << "REMOVE made it out\n";
 
         throw std::runtime_error(
                 "msg_to_yaml_service unable to find type support:\n"
@@ -184,7 +193,8 @@ namespace rmw_wasm_cpp
         void * ros_message,
         rcutils_allocator_t * allocator)
     {
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace yaml_to_msg()");
+        RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace yaml_to_msg()");
+        std::cout << "Yaml to message: " << yaml.c_str() << '\n';
 
         const rosidl_message_type_support_t * ts = nullptr;
         ts = get_message_typesupport_handle(
@@ -220,9 +230,10 @@ namespace rmw_wasm_cpp
         const std::string & yaml,
         void * ros_request_or_response,
         rcutils_allocator_t * allocator,
-        const bool is_server)
+        const bool is_request)
     {
-        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace yaml_to_service()");
+        RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace yaml_to_msg_service()");
+        std::cout << "YAML TO CONVERT: " << yaml.c_str() << '\n';
 
         const rosidl_service_type_support_t * ts = nullptr;
         ts = get_service_typesupport_handle(
@@ -234,7 +245,7 @@ namespace rmw_wasm_cpp
                     ts->data);
             // If this is a server, yaml->msg converts a request
             const rosidl_typesupport_introspection_c__MessageMembers * members =
-                is_server ? 
+                is_request ? 
                 service_members->request_members_ : 
                 service_members->response_members_;
             return conversion::c::yaml_to_msg(members, yaml, ros_request_or_response, allocator);
@@ -250,7 +261,7 @@ namespace rmw_wasm_cpp
                 static_cast<const rosidl_typesupport_introspection_cpp::ServiceMembers *>(
                     ts->data);
             const rosidl_typesupport_introspection_cpp::MessageMembers * members =
-                is_server ? 
+                is_request ? 
                 service_members->request_members_ : 
                 service_members->response_members_;
             return conversion::cpp::yaml_to_msg(members, yaml, ros_request_or_response);
