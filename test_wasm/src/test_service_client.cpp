@@ -12,7 +12,7 @@ int main(int argc, char **argv)
   rclcpp::init(argc, argv);
 
   if (argc != 3) {
-      RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "usage: add_two_ints_client X Y");
+      RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "[client] add_two_ints_client X Y");
       // return 1;
   }
 
@@ -36,12 +36,16 @@ int main(int argc, char **argv)
     RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "[client] Service not available, waiting again...");
   }
 
+  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), 
+    "[client] Send request X: %ld  Y: %ld", 
+    (long int)request->a, (long int)request->b
+  );
   auto result = client->async_send_request(request);
   // Wait for the result.
   if (rclcpp::spin_until_future_complete(node, result) ==
     rclcpp::FutureReturnCode::SUCCESS)
   {
-    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "[client] Sum: %ld", result.get()->sum);
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "[client] Sum: %lld", result.get()->sum);
   } else {
     RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "[client] Failed to call service add_two_ints");
   }

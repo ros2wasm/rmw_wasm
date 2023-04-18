@@ -6,12 +6,10 @@ const msgMap = {};
 
 // When a new message is received from main
 self.onmessage = function(event) {
-  if (!(event.data.topic in msgMap)) {
-    msgMap[event.data.topic] = {
-      message: event.data.message.replaceAll(", ", "\n"),
-      isStale: false
-    };
-  }
+  msgMap[event.data.topic] = {
+    message: event.data.message.replaceAll(", ", "\n"),
+    isStale: false
+  };  
 }
 
 Module["registerParticipant"] = function registerParticipant(topic_name, role)
@@ -70,7 +68,7 @@ Module["retrieveMessage"] = async function retrieveMessage(topic_name)
       topic:    topic_name
     });
 
-    await sleep(100);
+    await sleep(10);
     return "";
   }
 }

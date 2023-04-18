@@ -27,7 +27,7 @@ namespace wasm_cpp
 
     void Context::init()
     {
-        RCUTILS_LOG_INFO_NAMED("wasm_cpp", "Context initializing.");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::init()");
 
         if (is_valid()) {
             throw ContextAlreadyInitializedError();
@@ -38,7 +38,7 @@ namespace wasm_cpp
 
     bool Context::fini()
     {
-        RCUTILS_LOG_INFO_NAMED("wasm_cpp", "Context shutdown.");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::fini()");
         m_is_valid = false;        
         return true;
     }
