@@ -89,6 +89,8 @@ namespace rmw_wasm_cpp
             {
                 RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace conversion::cpp::yaml_to_msg()");
 
+                // REMOVE
+                std::cout << "CONVERT THIS YAML FOO: " << yaml.c_str() << '\n';
                 dynmsg::cpp::yaml_and_typeinfo_to_rosmsg(members, yaml, ros_message);
                 return true;
             }
