@@ -38,7 +38,7 @@ namespace wasm_cpp
         std::string response = m_subscriber.get_message();
 
         // REMOVE
-        std::cout << "[CLIENT] take_response" << response << '\n';
+        std::cout << "[CLIENT] take_response" << response.c_str() << '\n';
 
         return response;
     }
