@@ -1,5 +1,3 @@
-#include <iostream> // REMOVE
-
 #include "rcutils/logging_macros.h"
 
 #include "wasm_cpp/service_client.hpp"
@@ -13,52 +11,45 @@ namespace wasm_cpp
         , m_publisher("/request" + service_name)
         , m_subscriber("/response" + service_name)
     {
-        RCUTILS_LOG_WARN_NAMED("wasm_cpp", "trace ServiceClient::ServiceClient()");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::ServiceClient()");
     }
 
     ServiceClient::~ServiceClient()
     {
-        RCUTILS_LOG_WARN_NAMED("wasm_cpp", "trace ServiceClient::~ServiceClient()");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::~ServiceClient()");
     }
 
     void ServiceClient::send_request(const std::string & request)
     {
-        RCUTILS_LOG_WARN_NAMED("wasm_cpp", "trace ServiceClient::send_request()");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::send_request()");
         
-        // REMOVE
-        std::cout << "[CLIENT] send_request " << request << '\n';
-
         m_publisher.publish(request);
     }
 
     std::string ServiceClient::take_response()
     {
-        RCUTILS_LOG_WARN_NAMED("wasm_cpp", "trace ServiceClient::take_response()");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::take_response()");
 
         std::string response = m_subscriber.get_message();
-
-        // REMOVE
-        std::cout << "[CLIENT] take_response" << response.c_str() << '\n';
 
         return response;
     }
 
     bool ServiceClient::has_response()
     {
-        RCUTILS_LOG_WARN_NAMED("wasm_cpp", "trace ServiceClient::has_response()");
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::has_response()");
 
         return !m_response.empty();
     }
 
     bool ServiceClient::is_service_available()
     {
-        RCUTILS_LOG_WARN_NAMED("wasm_cpp", 
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", 
             "trace ServiceClient::is_service_available()");
 
         // TODO: call JS and ask if service name is in a queue
         // return m_service_available;
 
-        std::cout << "[REMOVE] I'M AVAILABLE\n";
         return true;
     }
 

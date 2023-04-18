@@ -30,10 +30,10 @@ int main(int argc, char **argv)
 
   while (!client->wait_for_service(1s)) {
     if (!rclcpp::ok()) {
-      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
+      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "[client] Interrupted while waiting for the service. Exiting.");
       return 0;
     }
-    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "[client] Service not available, waiting again...");
   }
 
   auto result = client->async_send_request(request);
@@ -41,9 +41,9 @@ int main(int argc, char **argv)
   if (rclcpp::spin_until_future_complete(node, result) ==
     rclcpp::FutureReturnCode::SUCCESS)
   {
-    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Sum: %ld", result.get()->sum);
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "[client] Sum: %ld", result.get()->sum);
   } else {
-    RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service add_two_ints");
+    RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "[client] Failed to call service add_two_ints");
   }
 
   rclcpp::shutdown();

@@ -24,7 +24,7 @@ extern "C"
         const char * service_name,
         const rmw_qos_profile_t * qos_profile)
     {
-        RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace rmw_create_client()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_create_client()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, nullptr);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -83,7 +83,7 @@ extern "C"
         rmw_node_t * node, 
         rmw_client_t * client)
     {
-        RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace rmw_destroy_client()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_destroy_client()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -115,7 +115,7 @@ extern "C"
         [[maybe_unused]] rmw_event_callback_t callback,
         [[maybe_unused]] const void * user_data)
     {
-        RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace rmw_client_set_on_new_response_callback()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_client_set_on_new_response_callback()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(client, RMW_RET_INVALID_ARGUMENT);
         // TODO: implement if needed
@@ -140,7 +140,7 @@ extern "C"
         const rmw_client_t * client,
         bool * is_available)
     {
-        RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace rmw_service_server_is_available()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_service_server_is_available()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(node, RMW_RET_ERROR);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -161,8 +161,6 @@ extern "C"
 
         *is_available = wasm_client->is_service_available();
 
-        std::cout << "[REMOVE] IS SRV AVAIL: " << *is_available << '\n';
-
         return RMW_RET_OK;
     }
 
@@ -172,7 +170,7 @@ extern "C"
         const void * ros_request,
         int64_t * sequence_id)
     {
-        RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "trace rmw_send_request()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_send_request()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(client, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -193,8 +191,6 @@ extern "C"
             ros_request,
             is_request
         );
-
-        std::cout << "REMOVE request converted " << request.c_str() << '\n';
 
         // Send request
         wasm_client->send_request(request);
@@ -227,7 +223,7 @@ extern "C"
         std::string response_taken = wasm_client->take_response();
         if (response_taken.empty()) {
             *taken = false;
-            RCUTILS_LOG_WARN_NAMED("rmw_wasm_cpp", "response could not be taken");
+            RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "response could not be taken");
         } else {
             *taken = true;
             const std::string & yaml_response = response_taken;

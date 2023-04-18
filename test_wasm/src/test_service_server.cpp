@@ -7,12 +7,10 @@
 void add(const std::shared_ptr<example_interfaces::srv::AddTwoInts::Request> request,
           std::shared_ptr<example_interfaces::srv::AddTwoInts::Response> response)
 {
-  std::cout << "GETTING REQUEST\n"; 
   response->sum = request->a + request->b;
-  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Incoming request\na: %ld" " b: %ld",
+  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "[server] Incoming request\na: %ld" " b: %ld",
                 request->a, request->b);
-  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "sending back response: [%ld]", (long int)response->sum);
-  std::cout << "RESPINSE SENF\n";
+  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "[server] Sending back response: [%ld]", (long int)response->sum);
 }
 
 int main(int argc, char **argv)
@@ -24,7 +22,7 @@ int main(int argc, char **argv)
   rclcpp::Service<example_interfaces::srv::AddTwoInts>::SharedPtr service =
     node->create_service<example_interfaces::srv::AddTwoInts>("add_two_ints", &add);
 
-  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Ready to add two ints.");
+  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "[server] Ready to add two ints.");
 
   rclcpp::spin(node);
   rclcpp::shutdown();
