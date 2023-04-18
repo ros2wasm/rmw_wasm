@@ -11,6 +11,7 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(rcutils REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -22,6 +23,9 @@ set(${PROJECT_NAME}_SOURCES
   src/publisher.cpp
   src/subscriber.cpp
   src/wait_set.cpp
+  src/participant.cpp
+  src/service_server.cpp
+  src/service_client.cpp
   src/pre.js
 )
 
@@ -49,7 +53,9 @@ install(
   INCLUDES DESTINATION include
 )
 
-ament_target_dependencies(${PROJECT_NAME})
+ament_target_dependencies(${PROJECT_NAME}
+  rcutils
+)
 
 ament_export_include_directories(include)
 

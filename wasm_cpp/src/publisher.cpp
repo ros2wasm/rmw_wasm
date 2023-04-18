@@ -1,36 +1,38 @@
 #include <string>
-#include <iostream>
+
+#include "rcutils/logging_macros.h"
 
 #include <emscripten/emscripten.h>
 #include <emscripten/val.h>
 
 #include "wasm_cpp/publisher.hpp"
 
+
 namespace wasm_cpp
 {
 
     Publisher::Publisher(const std::string & topic_name)
+        : Participant(topic_name, "publisher")
     {
-        // TODO: create publisher
-        std::cout << " [PUB] Publisher created\n"; // REMOVE
-        std::cout << " [PUB] topic: " << topic_name << '\n';
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Publisher::Publisher()");
     }
 
     Publisher::~Publisher()
     {
-        // TODO: destroy publisher
-        std::cout << " [PUB] Publisher destroyed\n"; // REMOVE
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Publisher::~Publisher()");
     }
 
-    void Publisher::publish(
-        const std::string & message)
+    void Publisher::publish(const std::string & message)
     {
-        std::cout << " [PUB] Publishing a message\n"; // REMOVE
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Publisher::publish()");
 
-        auto js_talker = emscripten::val::module_property("js_talker");
-        auto x = js_talker(message).as<int>();
+        std::string topic_name{ get_name() };
+        auto js_publish = emscripten::val::module_property("publishMessage");
+        bool is_published = js_publish(message, topic_name).as<bool>();
 
-        std::cout << " [PUB] JS returned " << x << '\n';
+        if (!is_published) {
+            RCUTILS_LOG_ERROR_NAMED("wasm_cpp", "Unable to publish message.");
+        }
     }
 
 } // namespace wasm_cpp

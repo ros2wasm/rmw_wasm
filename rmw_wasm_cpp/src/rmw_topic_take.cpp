@@ -19,7 +19,7 @@ extern "C"
         [[maybe_unused]] rmw_subscription_allocation_t * allocation,
         [[maybe_unused]] rmw_message_info_t * message_info)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace _take()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace _take()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(subscription, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -38,6 +38,7 @@ extern "C"
         auto msg_taken = wasm_sub->get_message();
         if (msg_taken.empty()) {
             *taken = false;
+            RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "message could not be taken");
         } else {
             *taken = true;
             // TODO: separate info and msg_yaml
@@ -45,8 +46,8 @@ extern "C"
 
             // Convert yaml to ros message
             rcutils_allocator_t allocator = rcutils_get_default_allocator();
-            auto ros_msg = rmw_wasm_cpp::yaml_to_msg(rmw_wasm_sub, msg_yaml, ros_message, &allocator);
-            if (!ros_msg) {
+            bool is_converted = rmw_wasm_cpp::yaml_to_msg(rmw_wasm_sub, msg_yaml, ros_message, &allocator);
+            if (!is_converted) {
                 return RMW_RET_ERROR;
             }
         }
@@ -54,13 +55,14 @@ extern "C"
         return RMW_RET_OK;
     }
 
+    // Take an incoming ROS message from a given subscription.
     rmw_ret_t rmw_take(
         const rmw_subscription_t * subscription,
         void * ros_message,
         bool * taken,
         rmw_subscription_allocation_t * allocation)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_take()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_take()");
 
         return _take(
             subscription, 
@@ -70,6 +72,8 @@ extern "C"
             nullptr);
     }
 
+    // Take an incoming ROS message from a given subscription with 
+    // additional metadata.
     rmw_ret_t rmw_take_with_info(
         [[maybe_unused]] const rmw_subscription_t * subscription,
         [[maybe_unused]] void * ros_message,
@@ -77,7 +81,7 @@ extern "C"
         [[maybe_unused]] rmw_message_info_t * message_info,
         [[maybe_unused]] rmw_subscription_allocation_t * allocation)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_take_with_info()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_take_with_info()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(message_info, RMW_RET_INVALID_ARGUMENT);
         return _take(
@@ -88,17 +92,30 @@ extern "C"
             message_info);
     }
 
+    // Take a message without deserializing it.
+    //
+    // The message is taken in its serialized form. In contrast to rmw_take, 
+    // the message is not deserialized in its ROS type but rather returned as a 
+    // byte stream. The subscriber has to be registered for a specific type. 
+    // But instead of receiving the message as its corresponding message type, 
+    // it is taken as a byte stream. If needed, this byte stream can then be 
+    // deserialized in a ROS message with a call to rmw_deserialize.
     rmw_ret_t rmw_take_serialized_message(
         [[maybe_unused]] const rmw_subscription_t * subscription,
         [[maybe_unused]] rmw_serialized_message_t * serialized_message,
         [[maybe_unused]] bool * taken,
         [[maybe_unused]] rmw_subscription_allocation_t * allocation)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_take_serialized_message()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_take_serialized_message()");
         // TODO: implement if needed
         return RMW_RET_OK;
     }
 
+    // Take a message without deserializing it and with its additional 
+    // message information.
+    //
+    // The same as rmw_take_serialized_message(), except it also includes the 
+    // rmw_message_info_t.
     rmw_ret_t rmw_take_serialized_message_with_info(
         [[maybe_unused]] const rmw_subscription_t * subscription,
         [[maybe_unused]] rmw_serialized_message_t * serialized_message,
@@ -106,11 +123,16 @@ extern "C"
         [[maybe_unused]] rmw_message_info_t * message_info,
         [[maybe_unused]] rmw_subscription_allocation_t * allocation)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_take_serialized_message_with_info()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_take_serialized_message_with_info()");
         // TODO: implement if needed or reuse above
         return RMW_RET_OK;
     }
 
+    // Take a loaned message.
+    //
+    // If capable, the middleware can loan messages containing incoming messages. 
+    // The message is owned by the middleware and thus has to be returned with a 
+    // call to rmw_return_loaned_message_from_subscription.
     rmw_ret_t rmw_take_loaned_message(
         [[maybe_unused]] const rmw_subscription_t * subscription,
         [[maybe_unused]] void ** loaned_message,
@@ -121,6 +143,7 @@ extern "C"
         return RMW_RET_UNSUPPORTED;
     }
 
+    // Take a loaned message with its additional message information.
     rmw_ret_t rmw_take_loaned_message_with_info(
         [[maybe_unused]] const rmw_subscription_t * subscription,
         [[maybe_unused]] void ** loaned_message,
@@ -132,6 +155,14 @@ extern "C"
         return RMW_RET_UNSUPPORTED;
     }
 
+    // Return a loaned message previously taken from a subscription.
+    //
+    // After the taking a loaned message from the middleware, the middleware has 
+    // to keep the memory for the loaned message alive and valid as long as the 
+    // user is working with that loan. In order to indicate that the loaned 
+    // message is no longer needed, the call to 
+    // rmw_return_loaned_message_from_subscription tells the middleware that 
+    // memory can be deallocated/destroyed.
     rmw_ret_t rmw_return_loaned_message_from_subscription(
         [[maybe_unused]] const rmw_subscription_t * subscription,
         [[maybe_unused]] void * loaned_message)
@@ -140,6 +171,20 @@ extern "C"
         return RMW_RET_UNSUPPORTED;
     }
 
+    // Take multiple incoming messages from a subscription with additional metadata.
+    //
+    // Take a sequence of ROS messgages from a given subscription.
+    // While count messages may be requested, fewer messages may be available 
+    // on the subscription. In this case, only the currently available messages 
+    // will be returned. The taken flag indicates the number of messages actually 
+    // taken. The method will return RMW_RET_OK even in the case that fewer 
+    // (or zero) messages were retrieved. from the subscription, and will 
+    // RMW_RET_ERROR in the case of unexpected errors. In the case that count is 
+    // zero, the function will return RMW_RET_INVALID_ARGUMENT.
+    // message_sequence and message_info_sequence should be initialized and have 
+    // sufficient capacity. It is not critical that the sequence sizes match, 
+    // and they may be reused from previous calls. Both must be valid (not NULL) 
+    // for the method to run successfully.
     rmw_ret_t rmw_take_sequence(
         const rmw_subscription_t * subscription,
         size_t count,

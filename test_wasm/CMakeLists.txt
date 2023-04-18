@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(test_pubsub)
+project(test_wasm)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -11,12 +11,19 @@ find_package(ament_cmake REQUIRED)
 # further dependencies manually.
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(example_interfaces REQUIRED)
 
-add_executable(talker src/publisher_member_function.cpp)
+add_executable(talker src/test_publisher.cpp)
 ament_target_dependencies(talker rclcpp std_msgs)
 
-add_executable(listener src/subscriber_member_function.cpp)
+add_executable(listener src/test_subscriber.cpp)
 ament_target_dependencies(listener rclcpp std_msgs)
+
+add_executable(server src/test_service_server.cpp)
+ament_target_dependencies(server rclcpp example_interfaces)
+
+add_executable(client src/test_service_client.cpp)
+ament_target_dependencies(client rclcpp example_interfaces)
 
 add_compile_options("SHELL:-s USE_PTHREADS")
 
@@ -31,6 +38,7 @@ target_compile_options(talker
 
 target_link_options(talker
   PUBLIC "SHELL: -lembind"
+  PUBLIC "SHELL: --pre-js ${CMAKE_SOURCE_DIR}/pre.js"
   PUBLIC "SHELL: -fexceptions"
   PUBLIC "SHELL: -s ASYNCIFY=1"
   PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
@@ -50,6 +58,47 @@ target_compile_options(listener
 
 target_link_options(listener
   PUBLIC "SHELL: -lembind"
+  PUBLIC "SHELL: --pre-js ${CMAKE_SOURCE_DIR}/pre.js"
+  PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
+  PUBLIC "SHELL: -fexceptions"
+  PUBLIC "SHELL: -s ASYNCIFY=1"
+  PUBLIC "SHELL: -s DEMANGLE_SUPPORT=1"
+  PUBLIC "SHELL: -s ASSERTIONS=1"
+  PUBLIC "SHELL: -s EXIT_RUNTIME=1" 
+  PUBLIC "SHELL: -s WASM=1"
+  PUBLIC "SHELL: -s USE_PTHREADS=0"
+  PUBLIC "SHELL: -s TOTAL_STACK=16mb"
+  PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
+  PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
+)
+
+target_compile_options(server
+  PUBLIC "SHELL: -fexceptions" 
+)
+
+target_link_options(server
+  PUBLIC "SHELL: -lembind"
+  PUBLIC "SHELL: --pre-js ${CMAKE_SOURCE_DIR}/pre.js"
+  PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
+  PUBLIC "SHELL: -fexceptions"
+  PUBLIC "SHELL: -s ASYNCIFY=1"
+  PUBLIC "SHELL: -s DEMANGLE_SUPPORT=1"
+  PUBLIC "SHELL: -s ASSERTIONS=1"
+  PUBLIC "SHELL: -s EXIT_RUNTIME=1" 
+  PUBLIC "SHELL: -s WASM=1"
+  PUBLIC "SHELL: -s USE_PTHREADS=0"
+  PUBLIC "SHELL: -s TOTAL_STACK=16mb"
+  PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
+  PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
+)
+
+target_compile_options(client
+  PUBLIC "SHELL: -fexceptions" 
+)
+
+target_link_options(client
+  PUBLIC "SHELL: -lembind"
+  PUBLIC "SHELL: --pre-js ${CMAKE_SOURCE_DIR}/pre.js"
   PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
   PUBLIC "SHELL: -fexceptions"
   PUBLIC "SHELL: -s ASYNCIFY=1"
@@ -64,21 +113,8 @@ target_link_options(listener
 )
 
 install(
-  TARGETS listener talker
+  TARGETS listener talker client server
   DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_package()
-
-  # PUBLIC "SHELL: -s ASYNCIFY_IMPORTS=[\"do_fetch\"]"
-  # PUBLIC "SHELL: -s FORCE_FILESYSTEM"
-  # PUBLIC "SHELL: -s DEMANGLE_SUPPORT=1"
-  # PUBLIC "SHELL: -s ASSERTIONS=1"
-  # PUBLIC "SHELL: -s EXIT_RUNTIME=1" 
-  # PUBLIC "SHELL: -s WASM=1"
-  # PUBLIC "SHELL: -s USE_PTHREADS=0"
-  # PUBLIC "SHELL: -s TOTAL_STACK=16mb"
-  # PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
-  # PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
-  # PUBLIC "SHELL: -O3"   # Optimize fo async
-  # PUBLIC "SHELL: --profiling"

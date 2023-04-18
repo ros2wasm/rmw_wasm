@@ -7,9 +7,12 @@
 
 extern "C"
 {
+
+    // Get the name of the rmw implementation being used
     const char * rmw_get_implementation_identifier()
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_get_implementation_identifier()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_get_implementation_identifier()");
         return rmw_wasm_cpp::identifier;
     } 
+
 } // extern "C"

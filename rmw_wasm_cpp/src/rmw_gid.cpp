@@ -6,15 +6,15 @@
 #include "rcutils/logging_macros.h"
 
 
-// NOTE: gid is a unique identifier
-
 extern "C" 
 {
+    
+    // Get the unique identifier of the publisher.
     rmw_ret_t rmw_get_gid_for_publisher(
         const rmw_publisher_t * publisher,
         rmw_gid_t * gid)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_get_gid_for_publisher()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_get_gid_for_publisher()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(publisher, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -24,19 +24,20 @@ extern "C"
             return RMW_RET_INCORRECT_RMW_IMPLEMENTATION);
         RMW_CHECK_ARGUMENT_FOR_NULL(gid, RMW_RET_INVALID_ARGUMENT);
 
-        // TODO: implement
+        // TODOTODO: implement
         // auto pub = static_cast<rmw_wasm_pub_t *>(publisher->data);
         // rmw_wasm_cpp::copy_gids(gid, &pub->gid);
         
         return RMW_RET_OK;
     }
 
+    // Check if two gid objects are the same.
     extern "C" rmw_ret_t rmw_compare_gids_equal(
         const rmw_gid_t * gid1,
         const rmw_gid_t * gid2,
         bool * result)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_compare_gids_equal()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_compare_gids_equal()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(gid1, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(

@@ -18,7 +18,7 @@ extern "C"
         const char * implementation_identifier,
         void * data)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace _event_init()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace _event_init()");
         
         RMW_CHECK_ARGUMENT_FOR_NULL(data, RMW_RET_INVALID_ARGUMENT);
 
@@ -28,12 +28,13 @@ extern "C"
         return RMW_RET_OK;
     }
 
+    // Initialize an rmw publisher event
     rmw_ret_t rmw_publisher_event_init(
         rmw_event_t * rmw_event,
         const rmw_publisher_t * publisher,
         rmw_event_type_t event_type)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_publisher_event_init()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_publisher_event_init()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_event, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -49,12 +50,13 @@ extern "C"
             publisher->data);
     }
 
+    // Initialize an rmw subscription event
     rmw_ret_t rmw_subscription_event_init(
         rmw_event_t * rmw_event,
         const rmw_subscription_t * subscription,
         rmw_event_type_t event_type)
     {   
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_subscription_event_init()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_subscription_event_init()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(subscription, RMW_RET_INVALID_ARGUMENT);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -68,26 +70,28 @@ extern "C"
             event_type,
             subscription->implementation_identifier,
             subscription->data);
-    }
+    }	
 
+    // TODO: add to rmw docs
     rmw_ret_t rmw_event_set_callback(
         rmw_event_t * rmw_event,
         [[maybe_unused]] rmw_event_callback_t callback,
         [[maybe_unused]] const void * user_data)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_event_set_callback()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_event_set_callback()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(rmw_event, RMW_RET_INVALID_ARGUMENT);
-        // TODO: implement if needed
+        // TODO: 
         return RMW_RET_OK;
     }
 
+    // Take an event from the event handle
     rmw_ret_t rmw_take_event(
         const rmw_event_t * event_handle,
         void * event_info,
         bool * taken)
     {
-        RCUTILS_LOG_DEBUG_NAMED("wasm_wasm", "trace rmw_take_event()");
+        RCUTILS_LOG_DEBUG_NAMED("rmw_wasm_cpp", "trace rmw_take_event()");
 
         RMW_CHECK_ARGUMENT_FOR_NULL(event_handle, RMW_RET_ERROR);
         RMW_CHECK_TYPE_IDENTIFIERS_MATCH(
@@ -98,7 +102,7 @@ extern "C"
         RMW_CHECK_ARGUMENT_FOR_NULL(event_info, RMW_RET_ERROR);
         RMW_CHECK_ARGUMENT_FOR_NULL(taken, RMW_RET_ERROR);
 
-        // TODO: implement if needed
+        // TODO: 
 
         // To avoid error: 
         // [rclcpp]: Couldn't take event info: error not set
