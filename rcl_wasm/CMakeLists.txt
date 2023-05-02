@@ -9,7 +9,8 @@ endif()
 find_package(ament_cmake REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
-find_package(rcl REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
 
 add_executable(test_node src/test_node.cpp)
 target_include_directories(test_node PUBLIC
@@ -25,6 +26,36 @@ target_compile_options(test_node
 )
 
 target_link_options(test_node
+  PUBLIC "SHELL: -lembind"
+  PUBLIC "SHELL: --pre-js ${CMAKE_SOURCE_DIR}/pre.js"
+  PUBLIC "SHELL: -fexceptions"
+  PUBLIC "SHELL: -s ASYNCIFY=1"
+  PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
+  PUBLIC "SHELL: -s DEMANGLE_SUPPORT=1"
+  PUBLIC "SHELL: -s ASSERTIONS=1"
+  PUBLIC "SHELL: -s EXIT_RUNTIME=1" 
+  PUBLIC "SHELL: -s WASM=1"
+  PUBLIC "SHELL: -s USE_PTHREADS=0"
+  PUBLIC "SHELL: -s TOTAL_STACK=16mb"
+  PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
+  PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
+)
+
+add_executable(node src/node.cpp)
+ament_target_dependencies(node rclcpp std_msgs)
+target_include_directories(node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_compile_features(node PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+
+install(TARGETS node
+  DESTINATION lib/${PROJECT_NAME})
+
+target_compile_options(node
+  PUBLIC "SHELL: -fexceptions" 
+)
+
+target_link_options(node
   PUBLIC "SHELL: -lembind"
   PUBLIC "SHELL: --pre-js ${CMAKE_SOURCE_DIR}/pre.js"
   PUBLIC "SHELL: -fexceptions"

@@ -5,12 +5,12 @@ function sleep(ms) {
 const msgMap = {};
 
 // When a new message is received from main
-self.onmessage = function(event) {
-  msgMap[event.data.topic] = {
-    message: event.data.message.replaceAll(", ", "\n"),
-    isStale: false
-  };  
-}
+// self.onmessage = function(event) {
+//   msgMap[event.data.topic] = {
+//     message: event.data.message.replaceAll(", ", "\n"),
+//     isStale: false
+//   };  
+// }
 
 Module["registerParticipant"] = function registerParticipant(topic_name, role)
 {
