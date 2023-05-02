@@ -16,7 +16,9 @@ using namespace std::chrono_literals;
 class Publisher : public rclcpp::Node
 {
 public:
-  Publisher() : Node("wasm_publisher"), m_count(0)
+  Publisher(const std::string & pub_name = "no name") 
+  : Node(pub_name)
+  , m_count(0)
   {
     m_publisher = this->create_publisher<std_msgs::msg::String>("wasm_topic", 10);
     m_timer = this->create_wall_timer(
@@ -39,12 +41,12 @@ public:
 };
 
 
-int create_publisher()
+int create_publisher(const std::string & pub_name)
 {
   int argc { };
   // char * argv[] = {""};
   rclcpp::init(argc, nullptr);
-  rclcpp::spin(std::make_shared<Publisher>());
+  rclcpp::spin(std::make_shared<Publisher>(pub_name));
 
   rclcpp::shutdown();
   return 0;
