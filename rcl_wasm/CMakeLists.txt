@@ -12,6 +12,11 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
+# Targets and link
+include(cmake/WasmBuildOptions.cmake)
+
+
+# ------------------------------------------------------------------------------
 add_executable(test_node src/test_node.cpp)
 target_include_directories(test_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -21,55 +26,38 @@ target_compile_features(test_node PUBLIC c_std_99 cxx_std_17)  # Require C99 and
 install(TARGETS test_node
   DESTINATION lib/${PROJECT_NAME})
 
-target_compile_options(test_node
-  PUBLIC "SHELL: -fexceptions" 
-)
+wasm_compile_options(test_node)
+wasm_link_options(test_node)
 
-target_link_options(test_node
-  PUBLIC "SHELL: -lembind"
-  PUBLIC "SHELL: --pre-js ${CMAKE_SOURCE_DIR}/pre.js"
-  PUBLIC "SHELL: -fexceptions"
-  PUBLIC "SHELL: -s ASYNCIFY=1"
-  PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
-  PUBLIC "SHELL: -s DEMANGLE_SUPPORT=1"
-  PUBLIC "SHELL: -s ASSERTIONS=1"
-  PUBLIC "SHELL: -s EXIT_RUNTIME=1" 
-  PUBLIC "SHELL: -s WASM=1"
-  PUBLIC "SHELL: -s USE_PTHREADS=0"
-  PUBLIC "SHELL: -s TOTAL_STACK=16mb"
-  PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
-  PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
-)
-
-add_executable(node src/node.cpp)
-ament_target_dependencies(node rclcpp std_msgs)
-target_include_directories(node PUBLIC
+# ------------------------------------------------------------------------------
+add_executable(rcl_publisher src/rcl_publisher.cpp)
+ament_target_dependencies(rcl_publisher rclcpp std_msgs)
+target_include_directories(rcl_publisher PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_compile_features(node PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+target_compile_features(rcl_publisher PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 
-install(TARGETS node
+install(TARGETS rcl_publisher
   DESTINATION lib/${PROJECT_NAME})
 
-target_compile_options(node
-  PUBLIC "SHELL: -fexceptions" 
-)
+wasm_compile_options(rcl_publisher)
+wasm_link_options(rcl_publisher)
 
-target_link_options(node
-  PUBLIC "SHELL: -lembind"
-  PUBLIC "SHELL: --pre-js ${CMAKE_SOURCE_DIR}/pre.js"
-  PUBLIC "SHELL: -fexceptions"
-  PUBLIC "SHELL: -s ASYNCIFY=1"
-  PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
-  PUBLIC "SHELL: -s DEMANGLE_SUPPORT=1"
-  PUBLIC "SHELL: -s ASSERTIONS=1"
-  PUBLIC "SHELL: -s EXIT_RUNTIME=1" 
-  PUBLIC "SHELL: -s WASM=1"
-  PUBLIC "SHELL: -s USE_PTHREADS=0"
-  PUBLIC "SHELL: -s TOTAL_STACK=16mb"
-  PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
-  PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
-)
+# ------------------------------------------------------------------------------
+add_executable(rcl_subscriber src/rcl_subscriber.cpp)
+ament_target_dependencies(rcl_subscriber rclcpp std_msgs)
+target_include_directories(rcl_subscriber PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_compile_features(rcl_subscriber PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+
+install(TARGETS rcl_subscriber
+  DESTINATION lib/${PROJECT_NAME})
+
+wasm_compile_options(rcl_subscriber)
+wasm_link_options(rcl_subscriber)
+
+# ------------------------------------------------------------------------------
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
