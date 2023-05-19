@@ -16,9 +16,6 @@ find_package(rcutils REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
-# Targets and link
-include(cmake/WasmBuildOptions.cmake)
-
 set(${PROJECT_NAME}_SOURCES
   src/guard_condition.cpp
   src/context.cpp
@@ -60,9 +57,6 @@ ament_target_dependencies(${PROJECT_NAME}
 )
 
 ament_export_include_directories(include)
-
-wasm_compile_options(wasm_cpp)
-wasm_link_options(wasm_cpp)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

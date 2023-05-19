@@ -36,4 +36,4 @@ namespace wasm_cpp
 
 } // namespace wasm_cpp
 
-#endif WASM_CPP__SERVICE_CLIENT_HPP_
+#endif // WASM_CPP__SERVICE_CLIENT_HPP_

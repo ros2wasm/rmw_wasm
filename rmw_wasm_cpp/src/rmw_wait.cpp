@@ -99,8 +99,8 @@ extern "C"
 
         // TODO: create rmw_wasm_wait_set
         // TODO: create wasm_wait_set
-        auto rmw_wasm_wait_set = static_cast<rmw_wait_set_t *>(wait_set->data);
-        auto wasm_wait_set = static_cast<rmw_wait_set_t *>(wait_set->data);
+        [[maybe_unused]] auto rmw_wasm_wait_set = static_cast<rmw_wait_set_t *>(wait_set->data);
+        [[maybe_unused]] auto wasm_wait_set = static_cast<rmw_wait_set_t *>(wait_set->data);
 
         // TODO: add objects to wait set
         if (subscriptions) {
