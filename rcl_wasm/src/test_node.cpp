@@ -1,15 +1,3 @@
-// #include <cstdio>
-
-// int main(int argc, char ** argv)
-// {
-//   (void) argc;
-//   (void) argv;
-
-//   printf("hello world rcl_wasm package\n");
-//   return 0;
-// }
-
-
 #include <emscripten/bind.h>
 
 using namespace emscripten;

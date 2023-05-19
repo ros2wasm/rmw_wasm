@@ -20,7 +20,8 @@ public:
     Publisher(
     const std::string & pub_name,
     const std::string & topic_name,
-    const std::string & msg
+    const std::string & msg,
+    std::chrono::seconds & seconds
     ) 
     : Node(pub_name)
     , m_topic(topic_name)
@@ -28,8 +29,10 @@ public:
     , m_count(0)
     {
         m_publisher = this->create_publisher<std_msgs::msg::String>(topic_name, 10);
+
+        seconds = (seconds == 0s) ? 3600s : seconds;
         m_timer = this->create_wall_timer(
-        1000ms, std::bind(&Publisher::timer_callback, this));
+            seconds, std::bind(&Publisher::timer_callback, this));
     }
 
 // private:
@@ -46,6 +49,7 @@ public:
         );
         std::string msg_str{ message.data };
         m_publisher->publish(message);
+
     }
 
     rclcpp::TimerBase::SharedPtr m_timer;
@@ -59,13 +63,15 @@ public:
 int create_publisher(
     const std::string & pub_name = "pub_name",
     const std::string & topic_name = "topic_name",
-    const std::string & msg = "hello there"
+    const std::string & msg = "hello there",
+    const int & int_seconds = 1
 )
 {
     int argc { };
     // char * argv[] = {""};
     rclcpp::init(argc, nullptr);
-    rclcpp::spin(std::make_shared<Publisher>(pub_name, topic_name, msg));
+    std::chrono::seconds seconds{ int_seconds };
+    rclcpp::spin(std::make_shared<Publisher>(pub_name, topic_name, msg, seconds));
 
     rclcpp::shutdown();
     return 0;

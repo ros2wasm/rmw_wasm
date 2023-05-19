@@ -56,7 +56,7 @@ int create_subscriber(
     return 0;
 }
 
-EMSCRIPTEN_BINDINGS(rcl_sub_module)
+EMSCRIPTEN_BINDINGS(rcl_module)
 {
     emscripten::function("createSubscriber", &create_subscriber);
 }
