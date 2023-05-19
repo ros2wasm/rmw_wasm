@@ -4,12 +4,34 @@ function sleep(ms) {
 
 const msgMap = {};
 
+onRuntimeInitialized: function initNode(node, topic, msg, msec) {
+  if (msg){
+    Module.createPublisher(node, topic, msg, msec);
+  } else {
+    Module.createSubscriber(node, topic);
+  }
+}
+
 // When a new message is received from main
 self.onmessage = function(event) {
-  msgMap[event.data.topic] = {
-    message: event.data.message.replaceAll(", ", "\n"),
-    isStale: false
-  };  
+  switch( event.data.command ) 
+  {
+    case "initNode":
+      initNode(
+        event.data.node,
+        event.data.topic,
+        event.data.message ? event.data.message : false,  // Only strings for now
+        event.data.mseconds
+      );
+      break;
+
+    case "broadcast":
+      msgMap[event.data.topic] = {
+        message: event.data.message.replaceAll(", ", "\n"),
+        isStale: false
+      };
+      break;
+  }
 }
 
 Module["registerParticipant"] = function registerParticipant(topic_name, role)
