@@ -78,7 +78,6 @@ install(
   RUNTIME DESTINATION bin
 )
 
-# add_executable(simple_test src/simple_test.cpp)
 ament_target_dependencies(${PROJECT_NAME}
   rmw
   wasm_cpp
@@ -91,7 +90,6 @@ ament_target_dependencies(${PROJECT_NAME}
   rosidl_typesupport_introspection_cpp
 )
 
-# ament_export_include_directories(include)
 ament_export_dependencies(
   rmw
   wasm_cpp

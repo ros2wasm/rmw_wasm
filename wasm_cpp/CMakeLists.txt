@@ -16,6 +16,9 @@ find_package(rcutils REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
+# Targets and link
+include(cmake/WasmBuildOptions.cmake)
+
 set(${PROJECT_NAME}_SOURCES
   src/guard_condition.cpp
   src/context.cpp
@@ -26,7 +29,6 @@ set(${PROJECT_NAME}_SOURCES
   src/participant.cpp
   src/service_server.cpp
   src/service_client.cpp
-  src/pre.js
 )
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})
@@ -59,27 +61,8 @@ ament_target_dependencies(${PROJECT_NAME}
 
 ament_export_include_directories(include)
 
-# if(DEFINED ENV{EMSDK})
-target_compile_options(wasm_cpp
-  PUBLIC "SHELL: -fexceptions"
-)
-
-target_link_options(wasm_cpp
-  PUBLIC "SHELL: -lembind"
-  PUBLIC "SHELL: --pre-js pre.js"
-  PUBLIC "SHELL: -fexceptions"
-  PUBLIC "SHELL: -s ASYNCIFY=1"
-  PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
-  PUBLIC "SHELL: -s DEMANGLE_SUPPORT=1"
-  PUBLIC "SHELL: -s ASSERTIONS=1"
-  PUBLIC "SHELL: -s EXIT_RUNTIME=1" 
-  PUBLIC "SHELL: -s WASM=1"
-  PUBLIC "SHELL: -s USE_PTHREADS=0"
-  PUBLIC "SHELL: -s TOTAL_STACK=16mb"
-  PUBLIC "SHELL: -s INITIAL_MEMORY=64mb"
-  PUBLIC "SHELL: -s ASYNCIFY_STACK_SIZE=24576"
-  PUBLIC "SHELL: -O3"   # Optimize fo async
-)
+wasm_compile_options(wasm_cpp)
+wasm_link_options(wasm_cpp)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
