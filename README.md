@@ -12,3 +12,18 @@ The figure below represents an overview of the middleware packages:
 
 ![Alt text](docs/images/structure_gray.png)
 
+<br>
+
+## Limitations
+
+`rmw_wasm` is currently under development. Not all features are supported (yet).
+
+| Feature         | Support   |
+|-----------------|-----------|
+| Publishers      | ✔️        |
+| Subscribers     | ✔️        |
+| Service servers | ✔️        |
+| Service clients | ✔️        |
+| Actions         | ❌        |
+| Parameters      | ❌        |
+| QoS             | ❌        |
