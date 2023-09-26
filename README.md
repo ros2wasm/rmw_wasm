@@ -27,3 +27,8 @@ The figure below represents an overview of the middleware packages:
 | Actions         | ❌        |
 | Parameters      | ❌        |
 | QoS             | ❌        |
+
+
+## Contributing
+
+If you would like to contribute, thank you!! We have some [guidelines](https://github.com/ihuicatl/rmw_wasm/blob/main/CONTRIBUTING.md) to help you along. If you have any questions, do not hesitate to ask 😁.
