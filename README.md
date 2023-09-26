@@ -10,7 +10,7 @@ A middleware implementation for ROS 2 (humble) which can be cross-compiled to We
 
 The figure below represents an overview of the middleware packages:
 
-![Alt text](docs/images/structure_gray.png)
+![Structure of middleware packages](docs/images/structure.png)
 
 <br>
 
