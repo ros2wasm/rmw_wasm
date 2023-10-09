@@ -22,8 +22,9 @@ jobs:
 
       # Runs action and builds package
       - name: Cross-compile package
-        uses: ihuicatl/ros2wasm-builder@0.1.2
+        uses: ihuicatl/ros2wasm-builder@0.1.3
         with:
           package: test_wasm
           ros_distro: 'humble'
           debug_mode: false
+          rmw_wasm: false
