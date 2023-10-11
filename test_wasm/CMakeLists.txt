@@ -33,17 +33,8 @@ add_link_options("SHELL:-s USE_PTHREADS")
 # if(DEFINED ENV{EMSDK})
 set(CMAKE_EXECUTABLE_SUFFIX ".html")
 
-wasm_compile_options(talker)
-wasm_link_options(talker)
-
-wasm_compile_options(listener)
-wasm_link_options(listener)
-
-wasm_compile_options(client)
-wasm_link_options(client)
-
-wasm_compile_options(server)
-wasm_link_options(server)
+wasm_compile_options(talker listener client server)
+wasm_link_options(talker listener client server)
 
 install(
   TARGETS listener talker client server
