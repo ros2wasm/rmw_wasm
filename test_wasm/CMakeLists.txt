@@ -10,6 +10,10 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(example_interfaces REQUIRED)
+# actions
+find_package(rclcpp_action REQUIRED)
+# find_package(rclcpp_components REQUIRED)
+find_package(action_tutorials_interfaces REQUIRED)
 
 # Targets and link
 include(cmake/WasmBuildOptions.cmake)
@@ -25,6 +29,12 @@ ament_target_dependencies(server rclcpp example_interfaces)
 
 add_executable(client src/test_service_client.cpp)
 ament_target_dependencies(client rclcpp example_interfaces)
+
+add_executable(action_client src/test_action_client.cpp)
+ament_target_dependencies(action_client rclcpp rclcpp_action action_tutorials_interfaces)
+
+add_executable(action_server src/test_action_server.cpp)
+ament_target_dependencies(action_server rclcpp rclcpp_action action_tutorials_interfaces)
 
 add_compile_options("SHELL:-s USE_PTHREADS")
 
