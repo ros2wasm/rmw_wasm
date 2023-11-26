@@ -215,5 +215,16 @@ extern "C"
       return RMW_RET_UNSUPPORTED;
     }
 
+    //==============================================================================
+    /// Set the content filter options for the subscription.
+    rmw_ret_t
+    rmw_subscription_set_content_filter(
+      rmw_subscription_t * subscription,
+      const rmw_subscription_content_filter_options_t * options)
+    {
+      static_cast<void>(subscription);
+      static_cast<void>(options);
+      return RMW_RET_UNSUPPORTED;
+    }
 
 }  // extern "C"
