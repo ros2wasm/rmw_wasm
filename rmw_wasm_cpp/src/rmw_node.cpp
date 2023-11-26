@@ -201,4 +201,19 @@ extern "C"
       return RMW_RET_UNSUPPORTED;
     }
 
+    //==============================================================================
+    /// Retrieve the content filter options of the subscription.
+    rmw_ret_t
+    rmw_subscription_get_content_filter(
+      const rmw_subscription_t * subscription,
+      rcutils_allocator_t * allocator,
+      rmw_subscription_content_filter_options_t * options)
+    {
+      static_cast<void>(subscription);
+      static_cast<void>(allocator);
+      static_cast<void>(options);
+      return RMW_RET_UNSUPPORTED;
+    }
+
+
 }  // extern "C"
