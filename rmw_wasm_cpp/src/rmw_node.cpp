@@ -189,4 +189,16 @@ extern "C"
         return rmw_node->context->impl->graph_guard_condition;
     }
 
+    //==============================================================================
+    /// Wait until all published message data is acknowledged or until the specified timeout elapses.
+    rmw_ret_t
+    rmw_publisher_wait_for_all_acked(
+      const rmw_publisher_t * publisher,
+      rmw_time_t wait_timeout)
+    {
+      static_cast<void>(publisher);
+      static_cast<void>(wait_timeout);
+      return RMW_RET_UNSUPPORTED;
+    }
+
 }  // extern "C"
