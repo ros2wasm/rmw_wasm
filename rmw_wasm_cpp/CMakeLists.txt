@@ -55,6 +55,7 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_gid.cpp
   src/rmw_qos.cpp
   src/rmw_log.cpp
+  src/rmw_get_network_flow_endpoints.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})

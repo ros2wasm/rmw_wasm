@@ -189,4 +189,42 @@ extern "C"
         return rmw_node->context->impl->graph_guard_condition;
     }
 
+    //==============================================================================
+    /// Wait until all published message data is acknowledged or until the specified timeout elapses.
+    rmw_ret_t
+    rmw_publisher_wait_for_all_acked(
+      const rmw_publisher_t * publisher,
+      rmw_time_t wait_timeout)
+    {
+      static_cast<void>(publisher);
+      static_cast<void>(wait_timeout);
+      return RMW_RET_UNSUPPORTED;
+    }
+
+    //==============================================================================
+    /// Retrieve the content filter options of the subscription.
+    rmw_ret_t
+    rmw_subscription_get_content_filter(
+      const rmw_subscription_t * subscription,
+      rcutils_allocator_t * allocator,
+      rmw_subscription_content_filter_options_t * options)
+    {
+      static_cast<void>(subscription);
+      static_cast<void>(allocator);
+      static_cast<void>(options);
+      return RMW_RET_UNSUPPORTED;
+    }
+
+    //==============================================================================
+    /// Set the content filter options for the subscription.
+    rmw_ret_t
+    rmw_subscription_set_content_filter(
+      rmw_subscription_t * subscription,
+      const rmw_subscription_content_filter_options_t * options)
+    {
+      static_cast<void>(subscription);
+      static_cast<void>(options);
+      return RMW_RET_UNSUPPORTED;
+    }
+
 }  // extern "C"
