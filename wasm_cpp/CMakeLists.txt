@@ -31,6 +31,9 @@ set(${PROJECT_NAME}_SOURCES
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})
 
+wasm_compile_options(wasm_cpp)
+wasm_link_options(wasm_cpp)
+
 ament_target_dependencies(${PROJECT_NAME})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
@@ -58,9 +61,6 @@ ament_target_dependencies(${PROJECT_NAME}
 )
 
 ament_export_include_directories(include)
-
-wasm_compile_options(wasm_cpp)
-wasm_link_options(wasm_cpp)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
