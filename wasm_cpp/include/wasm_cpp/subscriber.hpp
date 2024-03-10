@@ -28,10 +28,6 @@ namespace wasm_cpp
 
             bool has_message() const;
 
-            void add_waiter(std::mutex *pLock, std::condition_variable *pCV);
-
-            void remove_waiter(std::mutex *pLock, std::condition_variable *pCV);
-
             // TODO: add more funs when needed
         private:
             std::string m_topic_name;

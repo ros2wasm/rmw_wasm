@@ -48,10 +48,9 @@ namespace wasm_cpp
         // std::vector<ServiceClient *> m_clients;
         // std::vector<ServiceServer *> m_servers;
 
-        std::vector<Subscriber *> m_ready_subscribers;
-
-        std::mutex m_lock;
-        std::condition_variable m_cv;
+        // std::vector<Subscriber *> m_ready_subscribers;
+        // std::mutex m_lock;
+        // std::condition_variable m_cv;
     };
 
 } // namespace wasm_cpp

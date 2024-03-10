@@ -56,29 +56,6 @@ namespace wasm_cpp
     }
 
     void Subscriber::push_message(const std::string &message) {
-        auto waiters = m_waiters;
-
-        for (auto [lock, cv] : waiters)
-            lock->lock();
-
         m_queue.push(message);
-
-        for (auto [lock, cv] : waiters)
-            lock->unlock();
-
-        for (auto [lock, cv] : waiters)
-            cv->notify_all();
-    }
-
-    void Subscriber::add_waiter(std::mutex *pLock, std::condition_variable *pCV) {
-        m_waiters.emplace_back(pLock, pCV);
-    }
-
-    void Subscriber::remove_waiter(std::mutex *pLock, std::condition_variable *pCV) {
-        for (auto it = m_waiters.begin(); it != m_waiters.end(); ++it) {
-            if (it->first == pLock && it->second == pCV) {
-                it = m_waiters.erase(it);
-            }
-        }
     }
 } // namespace wasm_cpp
