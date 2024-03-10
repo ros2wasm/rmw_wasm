@@ -99,17 +99,17 @@ extern "C"
 
         // TODO: create rmw_wasm_wait_set
         // TODO: create wasm_wait_set
-        auto rmw_wasm_wait_set = static_cast<rmw_wait_set_t *>(wait_set->data);
-        auto wasm_wait_set = static_cast<rmw_wait_set_t *>(wait_set->data);
+        // auto rmw_wasm_wait_set = static_cast<rmw_wait_set_t *>(wait_set->data);
+        // auto wasm_wait_set = rmw_wasm_wait_set->wasm_wait_set;
 
         // TODO: add objects to wait set
-        if (subscriptions) {
-            // for (size_t i = 0u; i < subscriptions->subscriber_count; i++) {
-            // void * data = subscriptions->subscribers[i];
-            // auto rmw_wasm_sub = static_cast<rmw_wasm_sub_t *>(data);
-            // wasm_wait_set->add_subscription(rmw_wasm_sub->wasm_sub);
-            // }
-        }
+        // if (subscriptions) {
+        //     for (size_t i = 0u; i < subscriptions->subscriber_count; i++) {
+        //         void * data = subscriptions->subscribers[i];
+        //         auto rmw_wasm_sub = static_cast<rmw_wasm_sub_t *>(data);
+        //         wasm_wait_set->add_subscription(rmw_wasm_sub->wasm_sub);
+        //     }
+        // }
 
         if (guard_conditions) {
             // for (size_t i = 0u; i < guard_conditions->guard_condition_count; i++) {

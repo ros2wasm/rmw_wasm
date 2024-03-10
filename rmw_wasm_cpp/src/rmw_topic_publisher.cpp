@@ -95,7 +95,7 @@ extern "C"
         rmw_wasm_pub->type_support = *type_support;
         rmw_wasm_pub->wasm_pub = wasm_pub;
 
-        // TODOTODO: implement 
+        // TODO: implement 
         // rmw_wasm_pub->gid = rmw_wasm_cpp::convert_gid(wasm_pub->get_gid())
 
         rmw_publisher_t * publisher = rmw_publisher_allocate();

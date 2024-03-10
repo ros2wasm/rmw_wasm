@@ -4,9 +4,16 @@
 #include <string>
 #include <optional>
 
+#include <mutex>
+#include <map>
+#include <vector>
 
 namespace wasm_cpp
 {
+    class Subscriber;
+    extern std::mutex g_topicsLock;
+    extern std::map<std::string, std::vector<Subscriber*>> g_topics;
+
     class Participant
     {
 

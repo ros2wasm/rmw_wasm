@@ -6,10 +6,13 @@
 #include <emscripten/val.h>
 
 #include "wasm_cpp/publisher.hpp"
+#include "wasm_cpp/subscriber.hpp"
 
 
 namespace wasm_cpp
 {
+    std::mutex g_topicsLock;
+    std::map<std::string, std::vector<Subscriber*>> g_topics;
 
     Publisher::Publisher(const std::string & topic_name)
         : Participant(topic_name, "publisher")
@@ -27,11 +30,16 @@ namespace wasm_cpp
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Publisher::publish()");
 
         std::string topic_name{ get_name() };
-        auto js_publish = emscripten::val::module_property("publishMessage");
-        bool is_published = js_publish(message, topic_name).as<bool>();
-
-        if (!is_published) {
+        std::unique_lock guard { g_topicsLock };
+        auto channel = g_topics.find(topic_name);
+        if (channel == g_topics.end()) {
             RCUTILS_LOG_ERROR_NAMED("wasm_cpp", "Unable to publish message.");
+            return;
+        }
+
+        // Push message to all subscribers
+        for (Subscriber *subscriber : channel->second) {
+            subscriber->push_message(message);
         }
     }
 

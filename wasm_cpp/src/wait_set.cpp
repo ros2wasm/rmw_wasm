@@ -26,7 +26,16 @@ namespace wasm_cpp
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace WaitSet::wait()");
 
-        // TODO: implement if needed
+        // std::unique_lock ul {m_lock};
+        // return m_cv.wait_for(ul, timeout, [=]() {
+        //     for (Subscriber * subscriber : m_subscribers) {
+        //         if (subscriber->has_message()) {
+        //             m_ready_subscribers.push_back(subscriber);
+        //         }
+        //     }
+// 
+        //     return m_ready_subscribers.size() > 0;
+        // });
         return true;
     }
 
@@ -45,18 +54,28 @@ namespace wasm_cpp
     void WaitSet::add_subscriber(Subscriber * subscriber)
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace WaitSet::add_subscriber()");
-        m_subscribers.push_back(subscriber);
+        if (subscriber->has_message()) {
+            m_ready_subscribers.push_back(subscriber);
+        } else {
+            subscriber->add_waiter(&m_lock, &m_cv);
+            m_subscribers.push_back(subscriber);
+        }
     }
 
     const std::vector<Subscriber *> & WaitSet::get_subscribers() const
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace WaitSet::get_subscribers()");
-        return m_subscribers;
+        return m_ready_subscribers;
     }
 
     void WaitSet::clear()
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace WaitSet::clear()");
+
+        for (auto *subscriber : m_subscribers) {
+            subscriber->remove_waiter(&m_lock, &m_cv);
+        }
+
         m_guard_conditions.clear();
         m_subscribers.clear();
     }

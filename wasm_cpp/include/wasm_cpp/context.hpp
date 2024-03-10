@@ -10,7 +10,6 @@
 
 namespace wasm_cpp
 {
-
     class ContextError : public std::runtime_error
     {
         public:
