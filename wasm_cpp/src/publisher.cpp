@@ -7,6 +7,7 @@
 
 #include "wasm_cpp/publisher.hpp"
 #include "wasm_cpp/subscriber.hpp"
+#include "wasm_cpp/context.hpp"
 
 
 namespace wasm_cpp
@@ -29,18 +30,7 @@ namespace wasm_cpp
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Publisher::publish()");
 
-        std::string topic_name{ get_name() };
-        std::unique_lock guard { g_topicsLock };
-        auto channel = g_topics.find(topic_name);
-        if (channel == g_topics.end()) {
-            RCUTILS_LOG_ERROR_NAMED("wasm_cpp", "Unable to publish message.");
-            return;
-        }
-
-        // Push message to all subscribers
-        for (Subscriber *subscriber : channel->second) {
-            subscriber->push_message(message);
-        }
+        get_global_context()->push_message_to_subscribers(get_name(), message);
     }
 
 } // namespace wasm_cpp

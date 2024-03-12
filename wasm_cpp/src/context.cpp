@@ -1,6 +1,7 @@
 #include "rcutils/logging_macros.h"
 
 #include "wasm_cpp/context.hpp"
+#include "wasm_cpp/subscriber.hpp"
 
 namespace wasm_cpp
 {
@@ -53,6 +54,40 @@ namespace wasm_cpp
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::is_valid()");
         return m_is_valid;
+    }
+
+    bool Context::push_message_to_subscribers(const std::string &topic, const std::string &message)
+    {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::push_message_to_subscribers()");
+
+        std::scoped_lock guard{ m_topicLock };
+        auto it = m_topics.find(topic);
+        if (it == m_topics.end())
+            return false;
+
+        for (Subscriber *subscriber : it->second)
+            subscriber->push_message(message);
+
+        return true;
+    }
+
+    void Context::register_subscriber(Subscriber *subscriber)
+    {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::register_subscriber()");
+
+        std::scoped_lock guard{ m_topicLock };
+        m_topics[subscriber->get_name()].push_back(subscriber);
+    }
+
+    void Context::unregister_subscriber(Subscriber *subscriber)
+    {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::unregister_subscriber()");
+
+        std::scoped_lock guard{ m_topicLock };
+        std::vector<Subscriber*> &subscribers = m_topics[subscriber->get_name()];
+        auto it = std::find(subscribers.begin(), subscribers.end(), subscriber);
+        if (it != subscribers.end())
+            subscribers.erase(it);
     }
 
 } // namespace wasm_cpp

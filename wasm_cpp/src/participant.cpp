@@ -57,6 +57,8 @@ namespace wasm_cpp
 
     void Participant::is_valid_role() const
     {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Participant::is_valid_role()");
+
         std::vector<std::string> roles{
             "publisher",
             "subscriber",
@@ -101,6 +103,8 @@ namespace wasm_cpp
 
     void Participant::deregistration()
     {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Participant::deregistration()");
+        
         // if (m_gid.empty()) {
         //     RCUTILS_LOG_DEBUG_NAMED(
         //         "wasm_cpp", 

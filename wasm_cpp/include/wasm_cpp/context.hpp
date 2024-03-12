@@ -4,12 +4,16 @@
 #include <memory> // std::shared_ptr
 #include <stdexcept>
 #include <string>
+#include <map>
+#include <mutex>
 
 #include "wasm_cpp/visibility_control.hpp"
 // #include "wasm_cpp/options.hpp"
 
 namespace wasm_cpp
 {
+    class Subscriber;
+
     class ContextError : public std::runtime_error
     {
         public:
@@ -45,6 +49,14 @@ namespace wasm_cpp
 
             // TODO: wasm objects
 
+            // Push a message registered subscribers
+            bool push_message_to_subscribers(const std::string &topic, const std::string &message);
+
+            // Register a subscriber with the context.
+            void register_subscriber(Subscriber *subscriber);
+
+            void unregister_subscriber(Subscriber *subscriber);
+
         private:
 
             void init_context();
@@ -53,6 +65,9 @@ namespace wasm_cpp
 
             // REMOVE: will not parse options for now
             // std::shared_ptr<Options> m_options;
+
+            std::mutex m_topicLock;
+            std::map<std::string, std::vector<Subscriber*>> m_topics;
 
     }; // class Context
 
