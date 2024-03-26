@@ -1,7 +1,7 @@
 
 class WasmCppCtx {
     constructor() {
-        console.log('enetered wasmcpp_roslib_init');
+        console.log('entered wasmcpp_roslib_init');
 
         this.ros = new ROSLIB.Ros();
         this.ros.on('error', function(error) { console.error( error ); });
@@ -41,9 +41,11 @@ class WasmCppCtx {
 
         listener.subscribe(function(message) {
           console.log('Received message on ' + listener.name + ': ' + message.data);
-
+        
           callback(cb_handle, JSON.stringify(message));
         });
+
+        console.log(`Subscriber ${handle} created`);
 
         return handle;
     }
@@ -59,7 +61,7 @@ class WasmCppCtx {
 
     addPublisher(topic, msgType) {
         console.log(`Creating publisher {topic: ${topic}, msg: ${msgType}}`);
-        
+
         const handle = this.nextHandle++;
         const listener = new ROSLIB.Topic({
             ros: this.ros,
@@ -69,6 +71,9 @@ class WasmCppCtx {
 
         this.publishers.set(handle, listener);
         listener.advertise();
+
+        console.log(`Publisher ${handle} created`);
+
         return handle;
     }
 
@@ -116,36 +121,36 @@ Module["wasmcpp_roslib_shutdown"] = function ()
 
 Module["wasmcpp_roslib_connect"] = function (url)
 {
-    console.log('enetered wasmcpp_roslib_connect');
+    console.log('entered wasmcpp_roslib_connect');
     wasmcpp.connect(url);
 }
 
 Module["wasmcpp_roslib_create_subscriber"] = function (topic, message_type, callback, cb_handle)
 {
-    console.log('enetered wasmcpp_roslib_create_subscriber');
+    console.log('entered wasmcpp_roslib_create_subscriber');
     return wasmcpp.addSubscriber(topic, message_type, callback, cb_handle);
 }
 
 Module["wasmcpp_roslib_destroy_subscriber"] = function (handle)
 {
-    console.log('enetered wasmcpp_roslib_destroy_subscriber');
+    console.log('entered wasmcpp_roslib_destroy_subscriber');
     return wasmcpp.removeSubscribe(handle);
 }
 
 Module["wasmcpp_roslib_create_publisher"] = function (topic, message_type)
 {
-    console.log('enetered wasmcpp_roslib_create_publisher');
+    console.log('entered wasmcpp_roslib_create_publisher');
     return wasmcpp.addPublisher(topic, message_type);
 }
 
 Module["wasmcpp_roslib_publish_json"] = function (handle, message)
 {
-    console.log('enetered wasmcpp_roslib_publish_json');
+    console.log('entered wasmcpp_roslib_publish_json');
     return wasmcpp.publishJSON(handle, message);
 }
 
 Module["wasmcpp_roslib_destroy_publisher"] = function (handle)
 {
-    console.log('enetered wasmcpp_roslib_destroy_publisher');
+    console.log('entered wasmcpp_roslib_destroy_publisher');
     return wasmcpp.removePublisher(handle);
 }

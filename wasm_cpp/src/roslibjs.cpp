@@ -1,5 +1,6 @@
 #include "wasm_cpp/roslibjs.hpp"
 #include "rcutils/logging_macros.h"
+#include "wasm_cpp/tojson/tojson.hpp"
 
 #include <map>
 #include <emscripten/bind.h>
@@ -42,10 +43,26 @@ namespace detail {
 
     static void invoke_callback(int handle, const std::string &msg)
     {
+        EM_ASM({
+            console.log("entered invoke_callback");
+        });
+        std::string yml = tojson::emitters::toyaml(nlohmann::json::parse(msg));
+
         auto it = s_callbacks.find(handle);
 
         if (it != s_callbacks.end())
-            it->second(msg);
+        {
+            EM_ASM({
+                console.log("found callback");
+            });
+            it->second(yml);
+        }
+        else
+        {
+            EM_ASM({
+                console.log("no callback for this subscriber");
+            });
+        }
     }
 
     EMSCRIPTEN_BINDINGS(wasm_cpp) {
@@ -77,15 +94,21 @@ int RosLibJS::create_subscriber(
 {
     int cbHandle = detail::s_nextCBHandle++;
     detail::s_callbacks[cbHandle] = onMessage;
-    int id = detail::call(
+    emscripten::val cb = emscripten::val::module_property("wasmcpp_invoke_subscriber_callback");
+
+    emscripten::val result = detail::call(
         "wasmcpp_roslib_create_subscriber",
         topic,
         msg_type,
-        emscripten::val::module_property("wasmcpp_invoke_subscriber_callback"),
+        cb,
         cbHandle
-    ).as<int>();
+    );
+
+    int id = result.as<int>();
 
     detail::s_subToCb[id] = cbHandle;
+
+    return id;
 }
 
 bool RosLibJS::destroy_subscriber(int subscriber_id)
@@ -107,7 +130,8 @@ int RosLibJS::create_publisher(const std::string &topic, const std::string &msg_
 
 bool RosLibJS::publish(int publisher, const std::string &yamlMessage)
 {
-    const std::string jsonMessage = yamlMessage; // TODO: Convert YAML to JSON
+    const std::string jsonMessage = tojson::yaml2json(yamlMessage).dump();
+
     return detail::call("wasmcpp_roslib_publish_json", publisher, jsonMessage).as<bool>();
 }
 

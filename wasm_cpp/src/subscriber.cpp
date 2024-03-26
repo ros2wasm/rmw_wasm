@@ -22,7 +22,10 @@ namespace wasm_cpp
              topic_name,
              msg_type,
              [=] (const std::string &msg) {
-                 push_message(msg);
+                EM_ASM({
+                    console.log("subscriber received msg");
+                });
+                push_message(msg);
              });
     }
 

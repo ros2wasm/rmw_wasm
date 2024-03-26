@@ -12,6 +12,7 @@ endif()
 # Dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rcutils REQUIRED)
+find_package(yaml_cpp_vendor REQUIRED)
 
 # Targets and link
 include(cmake/WasmBuildOptions.cmake)
