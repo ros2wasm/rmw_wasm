@@ -35,6 +35,7 @@ set(${PROJECT_NAME}_SOURCES
   src/rmw_wasm_guard_condition.cpp
   src/rmw_wasm_validation.cpp
   src/rmw_wasm_yaml.cpp
+  src/rmw_wasm_type_support.cpp
   src/rmw_wasm_context_impl.cpp
   src/rmw_wasm_serialization_format.cpp
   src/rmw_init.cpp

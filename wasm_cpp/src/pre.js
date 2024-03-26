@@ -1,29 +1,151 @@
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+class WasmCppCtx {
+    constructor() {
+        console.log('enetered wasmcpp_roslib_init');
+
+        this.ros = new ROSLIB.Ros();
+        this.ros.on('error', function(error) { console.error( error ); });
+        this.ros.on('connection', function() { console.log('Connection made!'); });
+
+        this.subscribers = new Map();
+        this.publishers  = new Map();
+        this.nextHandle  = 1;
+    }
+
+    destroy() {
+        this.subscribers.forEach((handle, listener) => {
+            listener.unsubscribe();
+        });
+        this.subscribers.clear();
+        this.publishers.forEach((handle, listener) => {
+            listener.unadvertise();
+        });
+        this.publishers.clear();
+    }
+
+    connect(url) {
+        this.ros.connect(url);
+    }
+
+    addSubscriber(topic, msgType, callback, cb_handle) {
+        console.log(`Creating subscriber {topic: ${topic}, msg: ${msgType}}`);
+
+        const handle = this.nextHandle++;
+        const listener = new ROSLIB.Topic({
+            ros: this.ros,
+            name: topic,
+            messageType: msgType
+        });
+
+        this.subscribers.set(handle, listener);
+
+        listener.subscribe(function(message) {
+          console.log('Received message on ' + listener.name + ': ' + message.data);
+
+          callback(cb_handle, JSON.stringify(message));
+        });
+
+        return handle;
+    }
+
+    removeSubscribe(handle) {
+        const listener = this.subscribers.get(handle);
+        if (listener === undefined)
+            return false;
+        this.subscribers.delete(handle);
+        listener.unsubscribe();
+        return true;
+    }
+
+    addPublisher(topic, msgType) {
+        console.log(`Creating publisher {topic: ${topic}, msg: ${msgType}}`);
+        
+        const handle = this.nextHandle++;
+        const listener = new ROSLIB.Topic({
+            ros: this.ros,
+            name: topic,
+            messageType: msgType
+        });
+
+        this.publishers.set(handle, listener);
+        listener.advertise();
+        return handle;
+    }
+
+    removePublisher(handle) {
+        const listener = this.publishers.get(handle);
+        if (listener === undefined)
+            return false;
+        this.publishers.delete(handle);
+        listener.unadvertise();
+        return true;
+    }
+
+    // Publish a ROSLIB.Message
+    publish(handle, message) {
+        const listener = this.publishers.get(handle);
+        if (listener === undefined)
+            return false;
+        listener.publish(message);
+        return true;
+    }
+
+    // Convert a JSON string to a ROSLIB.Message and publish it.
+    publishJSON(handle, msgJson) {
+        console.log(`publishing message: ${msgJson}`);
+
+        return this.publish(handle, new ROSLIB.Message(JSON.parse(msgJson)));
+    }
 }
 
-Module["registerParticipant"] = function registerParticipant(name, role)
+let wasmcpp = null;
+
+Module["wasmcpp_roslib_init"] = function ()
 {
-
-    return gid;
+    console.log('entered wasmcpp_roslib_init');
+    wasmcpp = new WasmCppCtx();
 }
 
-Module["deregisterParticipant"] = function deregisterParticipant(gid)
+Module["wasmcpp_roslib_shutdown"] = function ()
 {
-    return;
+    console.log('entered wasmcpp_roslib_shutdown');
+
+    wasmcpp.destroy();
+    wasmcpp = null;
 }
 
-Module["publishMessage"] = function publishMessage(message, topic_name)
+Module["wasmcpp_roslib_connect"] = function (url)
 {
-    console.log("  [JS] Received " + message);
-    return 0;
+    console.log('enetered wasmcpp_roslib_connect');
+    wasmcpp.connect(url);
 }
 
-Module["retrieveMessage"] = async function retrieveMessage(topic_name)
+Module["wasmcpp_roslib_create_subscriber"] = function (topic, message_type, callback, cb_handle)
 {
-    console.log("  [JS] Listening for messages");
-    await sleep(10);
-    return "lastMessage";
+    console.log('enetered wasmcpp_roslib_create_subscriber');
+    return wasmcpp.addSubscriber(topic, message_type, callback, cb_handle);
 }
 
+Module["wasmcpp_roslib_destroy_subscriber"] = function (handle)
+{
+    console.log('enetered wasmcpp_roslib_destroy_subscriber');
+    return wasmcpp.removeSubscribe(handle);
+}
+
+Module["wasmcpp_roslib_create_publisher"] = function (topic, message_type)
+{
+    console.log('enetered wasmcpp_roslib_create_publisher');
+    return wasmcpp.addPublisher(topic, message_type);
+}
+
+Module["wasmcpp_roslib_publish_json"] = function (handle, message)
+{
+    console.log('enetered wasmcpp_roslib_publish_json');
+    return wasmcpp.publishJSON(handle, message);
+}
+
+Module["wasmcpp_roslib_destroy_publisher"] = function (handle)
+{
+    console.log('enetered wasmcpp_roslib_destroy_publisher');
+    return wasmcpp.removePublisher(handle);
+}

@@ -8,7 +8,7 @@
 #include <mutex>
 
 #include "wasm_cpp/visibility_control.hpp"
-// #include "wasm_cpp/options.hpp"
+#include "wasm_cpp/roslibjs.hpp"
 
 namespace wasm_cpp
 {
@@ -32,7 +32,6 @@ namespace wasm_cpp
 
     class Context
     {
-
         public:
             Context();
 
@@ -49,16 +48,9 @@ namespace wasm_cpp
 
             // TODO: wasm objects
 
-            // Push a message registered subscribers
-            bool push_message_to_subscribers(const std::string &topic, const std::string &message);
-
-            // Register a subscriber with the context.
-            void register_subscriber(Subscriber *subscriber);
-
-            void unregister_subscriber(Subscriber *subscriber);
+            RosLibJS& get_roslib_js();
 
         private:
-
             void init_context();
 
             bool m_is_valid;
@@ -68,6 +60,7 @@ namespace wasm_cpp
 
             std::mutex m_topicLock;
             std::map<std::string, std::vector<Subscriber*>> m_topics;
+            std::unique_ptr<RosLibJS> m_roslib;
 
     }; // class Context
 

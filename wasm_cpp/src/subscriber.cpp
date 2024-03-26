@@ -13,19 +13,24 @@
 
 namespace wasm_cpp
 {
-    Subscriber::Subscriber(const std::string & topic_name)
+    Subscriber::Subscriber(const std::string & topic_name, const std::string & msg_type)
         : Participant(topic_name, "subscriber")
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Subscriber::Subscriber()");
 
-        get_global_context()->register_subscriber(this);
+        m_roslib_handle = get_global_context()->get_roslib_js().create_subscriber(
+             topic_name,
+             msg_type,
+             [=] (const std::string &msg) {
+                 push_message(msg);
+             });
     }
 
     Subscriber::~Subscriber()
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Subscriber::~Subscriber()");
 
-        get_global_context()->unregister_subscriber(this);
+        get_global_context()->get_roslib_js().destroy_subscriber(m_roslib_handle);
     }
 
     std::string Subscriber::get_message()

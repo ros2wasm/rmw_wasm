@@ -18,7 +18,7 @@ namespace wasm_cpp
 
         public:
 
-            WASM_CPP_PUBLIC Subscriber(const std::string & topic_name);
+            WASM_CPP_PUBLIC Subscriber(const std::string & topic_name, const std::string & msg_type);
 
             WASM_CPP_PUBLIC ~Subscriber();
 
@@ -38,6 +38,7 @@ namespace wasm_cpp
         private:
             mutable std::mutex      m_lock;
             std::queue<std::string> m_messages;
+            int m_roslib_handle = -1;
 
             std::vector<std::pair<int64_t, std::function<void()>>> m_message_cb;
     };

@@ -4,6 +4,7 @@
 #include "rmw_wasm_cpp/rmw_wasm_validation.hpp"
 #include "rmw_wasm_cpp/rmw_context_impl.hpp"
 #include "rmw_wasm_cpp/rmw_types.hpp"
+#include "rmw_wasm_cpp/rmw_wasm_type_support.hpp"
 
 #include "wasm_cpp/publisher.hpp"
 
@@ -89,7 +90,9 @@ extern "C"
             return nullptr;
         }
 
-        auto wasm_pub = new (std::nothrow) wasm_cpp::Publisher(topic_name);
+        const char * msg_name = rmw_wasm_cpp::get_message_type_name(type_support);
+
+        auto wasm_pub = new (std::nothrow) wasm_cpp::Publisher(topic_name, msg_name);
 
         rmw_wasm_pub_t * rmw_wasm_pub = new (std::nothrow) rmw_wasm_pub_t();
         rmw_wasm_pub->type_support = *type_support;

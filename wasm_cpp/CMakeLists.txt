@@ -23,6 +23,7 @@ set(${PROJECT_NAME}_SOURCES
   src/publisher.cpp
   src/subscriber.cpp
   src/wait_set.cpp
+  src/roslibjs.cpp
   src/participant.cpp
   src/service_server.cpp
   src/service_client.cpp
