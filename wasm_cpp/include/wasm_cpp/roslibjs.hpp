@@ -18,7 +18,7 @@ namespace wasm_cpp
             WASM_CPP_PUBLIC ~RosLibJS();
 
             // Connect to a rosbridge_server node at the url specified.
-            WASM_CPP_PUBLIC void connect(const std::string &url);
+            WASM_CPP_PUBLIC void connect(const std::string & url);
 
             // Disconnect from the rosbridge_server node.
             WASM_CPP_PUBLIC void disconnect();
@@ -28,18 +28,18 @@ namespace wasm_cpp
             /// @param msg_type  The type of the message to expect on this topic.
             /// @param onMessage The callback to invoke when a message is received.
             WASM_CPP_PUBLIC int create_subscriber(
-                const std::string &topic,
-                const std::string &msg_type,
-                const std::function<void(const std::string &)> &onMessage);
+                const std::string & topic,
+                const std::string & msg_type,
+                const std::function<void(const std::string &)> & onMessage);
 
             // Destroy a subscriber created in RosLibJS
             WASM_CPP_PUBLIC bool destroy_subscriber(int subscriber_id);
 
             // Create a publisher with RosLibJS
-            WASM_CPP_PUBLIC int create_publisher(const std::string &topic, const std::string &msg_type);
+            WASM_CPP_PUBLIC int create_publisher(const std::string & topic, const std::string & msg_type);
 
             // Publish a message
-            WASM_CPP_PUBLIC bool publish(int publisher_id, const std::string &yamlMessage);
+            WASM_CPP_PUBLIC bool publish(int publisher_id, const std::string & yamlMessage);
 
             // Destroy a publisher created in RosLibJS
             WASM_CPP_PUBLIC bool destroy_publisher(int publisher_id);

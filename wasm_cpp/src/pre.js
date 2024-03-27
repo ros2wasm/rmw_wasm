@@ -13,11 +13,11 @@ class WasmCppCtx {
     }
 
     destroy() {
-        this.subscribers.forEach((handle, listener) => {
+        this.subscribers.forEach((_, listener) => {
             listener.unsubscribe();
         });
         this.subscribers.clear();
-        this.publishers.forEach((handle, listener) => {
+        this.publishers.forEach((_, listener) => {
             listener.unadvertise();
         });
         this.publishers.clear();
@@ -40,12 +40,8 @@ class WasmCppCtx {
         this.subscribers.set(handle, listener);
 
         listener.subscribe(function(message) {
-          console.log('Received message on ' + listener.name + ': ' + message.data);
-        
           callback(cb_handle, JSON.stringify(message));
         });
-
-        console.log(`Subscriber ${handle} created`);
 
         return handle;
     }
@@ -72,8 +68,6 @@ class WasmCppCtx {
         this.publishers.set(handle, listener);
         listener.advertise();
 
-        console.log(`Publisher ${handle} created`);
-
         return handle;
     }
 
@@ -97,8 +91,6 @@ class WasmCppCtx {
 
     // Convert a JSON string to a ROSLIB.Message and publish it.
     publishJSON(handle, msgJson) {
-        console.log(`publishing message: ${msgJson}`);
-
         return this.publish(handle, new ROSLIB.Message(JSON.parse(msgJson)));
     }
 }

@@ -24,7 +24,7 @@ namespace wasm_cpp
 {
 
 namespace detail {
-    template<typename... Args> emscripten::val call(const char *name, Args&&... args) {
+    template<typename... Args> emscripten::val call(const char * name, Args&&... args) {
         auto func = emscripten::val::module_property(name);
         if (!func) {
             RCUTILS_LOG_ERROR_NAMED("wasm_cpp", "%s is null", name);
@@ -41,28 +41,14 @@ namespace detail {
     static std::map<int, int> s_subToCb;
     static std::map<int, std::function<void(const std::string &)>> s_callbacks;
 
-    static void invoke_callback(int handle, const std::string &msg)
+    static void invoke_callback(int handle, const std::string & msg)
     {
-        EM_ASM({
-            console.log("entered invoke_callback");
-        });
         std::string yml = tojson::emitters::toyaml(nlohmann::json::parse(msg));
 
         auto it = s_callbacks.find(handle);
 
         if (it != s_callbacks.end())
-        {
-            EM_ASM({
-                console.log("found callback");
-            });
             it->second(yml);
-        }
-        else
-        {
-            EM_ASM({
-                console.log("no callback for this subscriber");
-            });
-        }
     }
 
     EMSCRIPTEN_BINDINGS(wasm_cpp) {
@@ -80,7 +66,7 @@ RosLibJS::~RosLibJS()
     detail::call("wasmcpp_roslib_shutdown");
 }
 
-void RosLibJS::connect(const std::string &url)
+void RosLibJS::connect(const std::string & url)
 {
     detail::call("wasmcpp_roslib_connect", url);
 }
@@ -88,9 +74,9 @@ void RosLibJS::connect(const std::string &url)
 void RosLibJS::disconnect() {}
 
 int RosLibJS::create_subscriber(
-    const std::string &topic,
-    const std::string &msg_type,
-    const std::function<void(const std::string &)> &onMessage)
+    const std::string & topic,
+    const std::string & msg_type,
+    const std::function<void(const std::string &)> & onMessage)
 {
     int cbHandle = detail::s_nextCBHandle++;
     detail::s_callbacks[cbHandle] = onMessage;
@@ -123,12 +109,12 @@ bool RosLibJS::destroy_subscriber(int subscriber_id)
     return detail::call("wasmcpp_roslib_destroy_subscriber", subscriber_id).as<bool>();
 }
 
-int RosLibJS::create_publisher(const std::string &topic, const std::string &msg_type)
+int RosLibJS::create_publisher(const std::string & topic, const std::string & msg_type)
 {
     return detail::call("wasmcpp_roslib_create_publisher", topic, msg_type).as<int>();
 }
 
-bool RosLibJS::publish(int publisher, const std::string &yamlMessage)
+bool RosLibJS::publish(int publisher, const std::string & yamlMessage)
 {
     const std::string jsonMessage = tojson::yaml2json(yamlMessage).dump();
 

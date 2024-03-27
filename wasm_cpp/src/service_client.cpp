@@ -8,8 +8,8 @@ namespace wasm_cpp
 
     ServiceClient::ServiceClient(const std::string & service_name)
         : Participant(service_name, "service_client")
-        , m_publisher("/request" + service_name, "std_msgs/String")
-        , m_subscriber("/response" + service_name, "std_msgs/String")
+        , m_publisher("/request" + service_name, "String", "std_msgs")
+        , m_subscriber("/response" + service_name, "String", "std_msgs")
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::ServiceClient()");
     }

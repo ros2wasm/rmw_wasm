@@ -72,8 +72,9 @@ extern "C"
             return nullptr);
 
         const char * msg_name = rmw_wasm_cpp::get_message_type_name(type_support);
+        const char * msg_namespace = rmw_wasm_cpp::get_message_namespace(type_support);
 
-        auto wasm_sub = new (std::nothrow) wasm_cpp::Subscriber(topic_name, msg_name);
+        auto wasm_sub = new (std::nothrow) wasm_cpp::Subscriber(topic_name, msg_name, msg_namespace);
 
         rmw_wasm_sub_t * rmw_wasm_sub = new (std::nothrow) rmw_wasm_sub_t();
         rmw_wasm_sub->type_support = *type_support;

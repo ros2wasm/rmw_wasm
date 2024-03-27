@@ -30,4 +30,24 @@ namespace rmw_wasm_cpp
         return "";
     }
 
+    const char * get_message_namespace(const rosidl_message_type_support_t *type_support)
+    {
+        const rosidl_message_type_support_t * ts = nullptr;
+
+        // Get C message name
+        ts = get_message_typesupport_handle(type_support, rosidl_typesupport_introspection_c__identifier);
+        if (ts) {
+          auto members = static_cast<const rosidl_typesupport_introspection_c__MessageMembers *>(ts->data);
+          return members->message_namespace_;
+        }
+      
+        // Get CPP message name
+        ts = get_message_typesupport_handle(type_support, rosidl_typesupport_introspection_cpp::typesupport_identifier);
+        if (ts) {
+          auto members = static_cast<const rosidl_typesupport_introspection_cpp::MessageMembers*>(ts->data);
+          return members->message_namespace_;
+        }
+      
+        return "";
+    }
 } // rmw_wasm_cpp

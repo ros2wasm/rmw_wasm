@@ -7,6 +7,7 @@ namespace rmw_wasm_cpp
 {
 
     const char * get_message_type_name(const rosidl_message_type_support_t *type_support);
+    const char * get_message_namespace(const rosidl_message_type_support_t *type_support);
 
 } // rmw_wasm_cpp
 
