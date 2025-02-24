@@ -48,7 +48,7 @@ namespace wasm_cpp
 
             // TODO: wasm objects
 
-            RosLibJS& get_roslib_js();
+            WASM_CPP_PUBLIC RosLibJS& get_roslib_js();
 
         private:
             void init_context();
