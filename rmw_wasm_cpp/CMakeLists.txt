@@ -101,7 +101,7 @@ install(
 
 target_link_libraries(${PROJECT_NAME}
   rmw::rmw
-  wasm_cpp::wasm_cpp
+  ${wasm_cpp_LIBRARIES}
   rcpputils::rcpputils
   rcutils::rcutils
   dynmsg::dynmsg
