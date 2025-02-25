@@ -29,6 +29,11 @@ find_package(rosidl_runtime_c REQUIRED)
 find_package(rosidl_runtime_cpp REQUIRED)
 find_package(rosidl_typesupport_introspection_c REQUIRED)
 find_package(rosidl_typesupport_introspection_cpp REQUIRED)
+find_package(BZip2 REQUIRED)
+find_package(SQLite3 REQUIRED)
+find_package(ZLIB REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(libffi REQUIRED libffi)
 
 set(${PROJECT_NAME}_SOURCES
   src/rmw_wasm_identifier.cpp
@@ -82,16 +87,32 @@ install(
 )
 
 # add_executable(simple_test src/simple_test.cpp)
-ament_target_dependencies(${PROJECT_NAME}
-  rmw
-  wasm_cpp
-  rcpputils
-  rcutils
-  dynmsg
-  rosidl_runtime_c
-  rosidl_runtime_cpp
-  rosidl_typesupport_introspection_c
-  rosidl_typesupport_introspection_cpp
+# ament_target_dependencies(${PROJECT_NAME}
+#   rmw
+#   wasm_cpp
+#   rcpputils
+#   rcutils
+#   dynmsg
+#   rosidl_runtime_c
+#   rosidl_runtime_cpp
+#   rosidl_typesupport_introspection_c
+#   rosidl_typesupport_introspection_cpp
+# )
+
+target_link_libraries(${PROJECT_NAME}
+  rmw::rmw
+  wasm_cpp::wasm_cpp
+  rcpputils::rcpputils
+  rcutils::rcutils
+  dynmsg::dynmsg
+  rosidl_runtime_c::rosidl_runtime_c
+  rosidl_runtime_cpp::rosidl_runtime_cpp
+  rosidl_typesupport_introspection_c::rosidl_typesupport_introspection_c
+  rosidl_typesupport_introspection_cpp::rosidl_typesupport_introspection_cpp
+  ${libffi_LINK_LIBRARIES}
+  ${SQLite3_LIBRARIES}
+  BZip2::BZip2
+  ZLIB::ZLIB
 )
 
 # ament_export_include_directories(include)
