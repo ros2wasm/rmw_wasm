@@ -60,6 +60,7 @@ set(${PROJECT_NAME}_SOURCES
 )
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})
+target_compile_options(${PROJECT_NAME} PUBLIC -fPIC)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
