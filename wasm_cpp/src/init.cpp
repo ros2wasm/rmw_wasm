@@ -5,7 +5,6 @@
 
 namespace wasm_cpp
 {
-
     void init()
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace init()");

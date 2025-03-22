@@ -1,6 +1,8 @@
 #include "rcutils/logging_macros.h"
 
 #include "wasm_cpp/context.hpp"
+#include "wasm_cpp/subscriber.hpp"
+#include "wasm_cpp/roslibjs.hpp"
 
 namespace wasm_cpp
 {
@@ -46,6 +48,8 @@ namespace wasm_cpp
     void Context::init_context()
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::init_context()");
+        m_roslib = std::make_unique<RosLibJS>();
+        m_roslib->connect("ws:\\\\localhost:9090");
         m_is_valid = true;
     }
 
@@ -55,4 +59,9 @@ namespace wasm_cpp
         return m_is_valid;
     }
 
+    RosLibJS& Context::get_roslib_js()
+    {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::get_roslib_js()");
+        return *m_roslib;
+    }
 } // namespace wasm_cpp

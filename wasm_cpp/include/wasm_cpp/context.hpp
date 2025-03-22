@@ -4,12 +4,15 @@
 #include <memory> // std::shared_ptr
 #include <stdexcept>
 #include <string>
+#include <map>
+#include <mutex>
 
 #include "wasm_cpp/visibility_control.hpp"
-// #include "wasm_cpp/options.hpp"
+#include "wasm_cpp/roslibjs.hpp"
 
 namespace wasm_cpp
 {
+    class Subscriber;
 
     class ContextError : public std::runtime_error
     {
@@ -29,7 +32,6 @@ namespace wasm_cpp
 
     class Context
     {
-
         public:
             Context();
 
@@ -46,14 +48,19 @@ namespace wasm_cpp
 
             // TODO: wasm objects
 
-        private:
+            WASM_CPP_PUBLIC RosLibJS& get_roslib_js();
 
+        private:
             void init_context();
 
             bool m_is_valid;
 
             // REMOVE: will not parse options for now
             // std::shared_ptr<Options> m_options;
+
+            std::mutex m_topicLock;
+            std::map<std::string, std::vector<Subscriber*>> m_topics;
+            std::unique_ptr<RosLibJS> m_roslib;
 
     }; // class Context
 

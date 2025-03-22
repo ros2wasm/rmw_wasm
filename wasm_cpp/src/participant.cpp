@@ -57,6 +57,8 @@ namespace wasm_cpp
 
     void Participant::is_valid_role() const
     {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Participant::is_valid_role()");
+
         std::vector<std::string> roles{
             "publisher",
             "subscriber",
@@ -84,43 +86,45 @@ namespace wasm_cpp
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Participant::registration()");
 
-        auto js_registration = emscripten::val::module_property("registerParticipant");
-
-        // A unique identifier is returned if registration is successful
-        m_gid = js_registration(m_name, m_role).as<std::string>();
-
-        if (m_gid.empty()) {
-            RCUTILS_LOG_ERROR_NAMED(
-                "wasm_cpp", 
-                "Failed to register participant '%s'.",
-                m_name.c_str()
-            );
-        }
+        // auto js_registration = emscripten::val::module_property("registerParticipant");
+// 
+        // // A unique identifier is returned if registration is successful
+        // m_gid = js_registration(m_name, m_role).as<std::string>();
+// 
+        // if (m_gid.empty()) {
+        //     RCUTILS_LOG_ERROR_NAMED(
+        //         "wasm_cpp", 
+        //         "Failed to register participant '%s'.",
+        //         m_name.c_str()
+        //     );
+        // }
 
     }
 
     void Participant::deregistration()
     {
-        if (m_gid.empty()) {
-            RCUTILS_LOG_DEBUG_NAMED(
-                "wasm_cpp", 
-                "Participant is not registered '%s'.",
-                m_name.c_str()
-            );
-            return;
-        }
-
-        auto js_deregistration = emscripten::val::module_property("deregisterParticipant");
-        bool is_deregistered = js_deregistration(m_gid, m_role).as<bool>();
-
-        if (!is_deregistered) {
-            RCUTILS_LOG_ERROR_NAMED(
-                "wasm_cpp", 
-                "Failed to deregister participant '%s' with gid '%s'.",
-                m_name.c_str(),
-                m_gid.c_str()
-            );
-        }
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Participant::deregistration()");
+        
+        // if (m_gid.empty()) {
+        //     RCUTILS_LOG_DEBUG_NAMED(
+        //         "wasm_cpp", 
+        //         "Participant is not registered '%s'.",
+        //         m_name.c_str()
+        //     );
+        //     return;
+        // }
+// 
+        // auto js_deregistration = emscripten::val::module_property("deregisterParticipant");
+        // bool is_deregistered = js_deregistration(m_gid, m_role).as<bool>();
+// 
+        // if (!is_deregistered) {
+        //     RCUTILS_LOG_ERROR_NAMED(
+        //         "wasm_cpp", 
+        //         "Failed to deregister participant '%s' with gid '%s'.",
+        //         m_name.c_str(),
+        //         m_gid.c_str()
+        //     );
+        // }
     }
 
 } // namespace wasm_cpp

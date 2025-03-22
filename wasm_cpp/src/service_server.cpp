@@ -8,8 +8,8 @@ namespace wasm_cpp
 
     ServiceServer::ServiceServer(const std::string & service_name)
         : Participant(service_name, "service_server")
-        , m_publisher("/response" + service_name)
-        , m_subscriber("/request" + service_name)
+        , m_publisher("/response" + service_name, "String", "std_msgs")
+        , m_subscriber("/request" + service_name, "String", "std_msgs")
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceServer::ServiceServer()");
     }
