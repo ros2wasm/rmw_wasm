@@ -4,6 +4,7 @@ function(wasm_compile_options target)
     target_compile_options("${target}"
         PUBLIC "SHELL: -fexceptions"
     )
+    target_compile_options("${target}" PUBLIC -fPIC)
 endfunction()
 
 function(wasm_link_options target)
