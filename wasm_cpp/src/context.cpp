@@ -3,6 +3,7 @@
 #include "wasm_cpp/context.hpp"
 #include "wasm_cpp/subscriber.hpp"
 #include "wasm_cpp/roslibjs.hpp"
+#include "wasm_cpp/modes.hpp"
 
 namespace wasm_cpp
 {
@@ -48,8 +49,10 @@ namespace wasm_cpp
     void Context::init_context()
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::init_context()");
-        m_roslib = std::make_unique<RosLibJS>();
-        m_roslib->connect("ws:\\\\localhost:9090");
+        if(roslibjs_enable()){
+            m_roslib = std::make_unique<RosLibJS>();
+            m_roslib->connect("ws:\\\\localhost:9090");
+        }
         m_is_valid = true;
     }
 
@@ -63,5 +66,38 @@ namespace wasm_cpp
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::get_roslib_js()");
         return *m_roslib;
+    }
+    bool Context::push_message_to_subscribers(const std::string &topic, const std::string &message)
+    {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::push_message_to_subscribers()");
+
+        std::scoped_lock guard{ m_topicLock };
+        auto it = m_topics.find(topic);
+        if (it == m_topics.end())
+            return false;
+
+        for (Subscriber *subscriber : it->second)
+            subscriber->push_message(message);
+
+        return true;
+    }
+
+    void Context::register_subscriber(Subscriber *subscriber)
+    {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::register_subscriber()");
+
+        std::scoped_lock guard{ m_topicLock };
+        m_topics[subscriber->get_name()].push_back(subscriber);
+    }
+
+    void Context::unregister_subscriber(Subscriber *subscriber)
+    {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Context::unregister_subscriber()");
+
+        std::scoped_lock guard{ m_topicLock };
+        std::vector<Subscriber*> &subscribers = m_topics[subscriber->get_name()];
+        auto it = std::find(subscribers.begin(), subscribers.end(), subscriber);
+        if (it != subscribers.end())
+            subscribers.erase(it);
     }
 } // namespace wasm_cpp

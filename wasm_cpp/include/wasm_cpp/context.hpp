@@ -49,6 +49,13 @@ namespace wasm_cpp
             // TODO: wasm objects
 
             WASM_CPP_PUBLIC RosLibJS& get_roslib_js();
+            // Push a message registered subscribers
+            bool push_message_to_subscribers(const std::string &topic, const std::string &message);
+
+            // Register a subscriber with the context.
+            void register_subscriber(Subscriber *subscriber);
+
+            void unregister_subscriber(Subscriber *subscriber);
 
         private:
             void init_context();

@@ -1,6 +1,7 @@
 #include "rmw_wasm_cpp/rmw_wasm_identifier.hpp"
 #include "rmw_wasm_cpp/rmw_wasm_type_support.hpp"
 #include "rmw_wasm_cpp/rmw_types.hpp"
+#include "wasm_cpp/modes.hpp"
 #include "wasm_cpp/subscriber.hpp"
 
 #include "rmw/rmw.h"
@@ -71,10 +72,16 @@ extern "C"
             rmw_wasm_cpp::identifier,
             return nullptr);
 
-        const char * msg_name = rmw_wasm_cpp::get_message_type_name(type_support);
-        const char * msg_namespace = rmw_wasm_cpp::get_message_namespace(type_support);
 
-        auto wasm_sub = new (std::nothrow) wasm_cpp::Subscriber(topic_name, msg_name, msg_namespace);
+        auto wasm_sub = new (std::nothrow) wasm_cpp::Subscriber(topic_name);
+        if(roslibjs_enable()){
+            const char * msg_name = rmw_wasm_cpp::get_message_type_name(type_support);
+            const char * msg_namespace = rmw_wasm_cpp::get_message_namespace(type_support);
+
+            auto wasm_sub = new (std::nothrow) wasm_cpp::Subscriber(topic_name, msg_name, msg_namespace);
+        } else{
+            auto wasm_sub = new (std::nothrow) wasm_cpp::Subscriber(topic_name);
+        }
 
         rmw_wasm_sub_t * rmw_wasm_sub = new (std::nothrow) rmw_wasm_sub_t();
         rmw_wasm_sub->type_support = *type_support;

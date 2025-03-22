@@ -9,33 +9,53 @@
 #include "wasm_cpp/context.hpp"
 #include "wasm_cpp/subscriber.hpp"
 #include "wasm_cpp/participant.hpp"
-
+#include "wasm_cpp/modes.hpp"
 
 namespace wasm_cpp
 {
+    Subscriber::Subscriber(const std::string & topic_name)
+        : Participant(topic_name, "subscriber")
+    {
+        RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Subscriber::Subscriber()");
+        
+        get_global_context()->register_subscriber(this);
+    }
+
+    
+
     Subscriber::Subscriber(const std::string & topic_name, const std::string & msg_type, const std::string & msg_namespace)
         : Participant(topic_name, "subscriber")
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Subscriber::Subscriber()");
+        if (roslibjs_enable()){
+            std::string module_name = msg_namespace.substr(0, msg_namespace.find("__"));
+            std::string full_interface_name = msg_type;
+            if (module_name.length() > 0)
+                full_interface_name = module_name + "/" + full_interface_name;
 
-        std::string module_name = msg_namespace.substr(0, msg_namespace.find("__"));
-        std::string full_interface_name = msg_type;
-        if (module_name.length() > 0)
-            full_interface_name = module_name + "/" + full_interface_name;
+            m_roslib_handle = get_global_context()->get_roslib_js().create_subscriber(
+                topic_name,
+                full_interface_name,
+                [=] (const std::string &msg) {
+                    push_message(msg);
+                });
+        }
+        else{
+            get_global_context()->register_subscriber(this);
+        }
 
-        m_roslib_handle = get_global_context()->get_roslib_js().create_subscriber(
-             topic_name,
-             full_interface_name,
-             [=] (const std::string &msg) {
-                push_message(msg);
-             });
     }
 
     Subscriber::~Subscriber()
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Subscriber::~Subscriber()");
 
-        get_global_context()->get_roslib_js().destroy_subscriber(m_roslib_handle);
+        if(roslibjs_enable()){
+            get_global_context()->get_roslib_js().destroy_subscriber(m_roslib_handle);
+        }
+        else{
+            get_global_context()->unregister_subscriber(this);
+        }
     }
 
     std::string Subscriber::get_message()

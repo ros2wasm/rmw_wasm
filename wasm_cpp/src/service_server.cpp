@@ -1,6 +1,7 @@
 #include "rcutils/logging_macros.h"
 
 #include "wasm_cpp/service_server.hpp"
+#include "wasm_cpp/modes.hpp"
 
 
 namespace wasm_cpp

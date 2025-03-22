@@ -17,6 +17,7 @@ namespace wasm_cpp
     {
 
         public:
+            WASM_CPP_PUBLIC Subscriber(const std::string & topic_name);        
 
             WASM_CPP_PUBLIC Subscriber(const std::string & topic_name, const std::string & msg_type, const std::string &msg_namespace);
 
