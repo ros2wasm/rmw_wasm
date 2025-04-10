@@ -5,21 +5,6 @@
 #include <map>
 #include <emscripten/bind.h>
 
-// EM_JS(emscripten::EM_VAL, wasmcpp_roslib_init, (), {
-//     console.log('entered wasmcpp_roslib_init');
-//     const ros = new ROSLIB.Ros();
-//     ros.on('error', function(error) { console.error( error ); });
-//     ros.on('connection', function() { console.log('Connection made!'); });
-//     return Emval.toHandle(ros);
-// });
-// 
-// EM_JS(void, wasmcpp_roslib_connect, (emscripten::EM_VAL ros_handle, const char * url), {
-//     console.log('enetered wasmcpp_roslib_connect');
-//     const ros = Emval.fromHandle(ros_handle);
-// 
-//     ros.connect(url);
-// });
-
 namespace wasm_cpp
 {
 

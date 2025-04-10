@@ -86,19 +86,6 @@ install(
   RUNTIME DESTINATION bin
 )
 
-# add_executable(simple_test src/simple_test.cpp)
-# ament_target_dependencies(${PROJECT_NAME}
-#   rmw
-#   wasm_cpp
-#   rcpputils
-#   rcutils
-#   dynmsg
-#   rosidl_runtime_c
-#   rosidl_runtime_cpp
-#   rosidl_typesupport_introspection_c
-#   rosidl_typesupport_introspection_cpp
-# )
-
 target_link_libraries(${PROJECT_NAME}
   rmw::rmw
   ${wasm_cpp_LIBRARIES}
@@ -115,7 +102,6 @@ target_link_libraries(${PROJECT_NAME}
   ZLIB::ZLIB
 )
 
-# ament_export_include_directories(include)
 ament_export_dependencies(
   rmw
   wasm_cpp
