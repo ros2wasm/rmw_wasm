@@ -12,6 +12,7 @@ endif()
 # Dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rcutils REQUIRED)
+find_package(yaml_cpp_vendor REQUIRED)
 
 # Targets and link
 include(cmake/WasmBuildOptions.cmake)
@@ -23,6 +24,7 @@ set(${PROJECT_NAME}_SOURCES
   src/publisher.cpp
   src/subscriber.cpp
   src/wait_set.cpp
+  src/roslibjs.cpp
   src/participant.cpp
   src/service_server.cpp
   src/service_client.cpp

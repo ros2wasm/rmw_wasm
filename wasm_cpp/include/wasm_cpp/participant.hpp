@@ -4,6 +4,9 @@
 #include <string>
 #include <optional>
 
+#include <mutex>
+#include <map>
+#include <vector>
 
 namespace wasm_cpp
 {

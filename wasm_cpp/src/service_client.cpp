@@ -1,6 +1,7 @@
 #include "rcutils/logging_macros.h"
 
 #include "wasm_cpp/service_client.hpp"
+#include "wasm_cpp/modes.hpp"
 
 
 namespace wasm_cpp
@@ -8,8 +9,8 @@ namespace wasm_cpp
 
     ServiceClient::ServiceClient(const std::string & service_name)
         : Participant(service_name, "service_client")
-        , m_publisher("/request" + service_name)
-        , m_subscriber("/response" + service_name)
+        , m_publisher("/request" + service_name, "String", "std_msgs")
+        , m_subscriber("/response" + service_name, "String", "std_msgs")
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace ServiceClient::ServiceClient()");
     }

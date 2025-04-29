@@ -99,16 +99,16 @@ extern "C"
 
         // TODO: create rmw_wasm_wait_set
         // TODO: create wasm_wait_set
-        auto rmw_wasm_wait_set = static_cast<rmw_wait_set_t *>(wait_set->data);
-        auto wasm_wait_set = static_cast<rmw_wait_set_t *>(wait_set->data);
+        auto rmw_wasm_wait_set = static_cast<rmw_wasm_wait_set_t *>(wait_set->data);
+        auto wasm_wait_set = rmw_wasm_wait_set->wasm_wait_set;
 
         // TODO: add objects to wait set
         if (subscriptions) {
-            // for (size_t i = 0u; i < subscriptions->subscriber_count; i++) {
-            // void * data = subscriptions->subscribers[i];
-            // auto rmw_wasm_sub = static_cast<rmw_wasm_sub_t *>(data);
-            // wasm_wait_set->add_subscription(rmw_wasm_sub->wasm_sub);
-            // }
+            for (size_t i = 0u; i < subscriptions->subscriber_count; i++) {
+                void * data = subscriptions->subscribers[i];
+                auto rmw_wasm_sub = static_cast<rmw_wasm_sub_t *>(data);
+                wasm_wait_set->add_subscriber(rmw_wasm_sub->wasm_sub);
+            }
         }
 
         if (guard_conditions) {
@@ -148,19 +148,19 @@ extern "C"
             wait_timeout_chrono_ms =
                 std::chrono::duration_cast<std::chrono::milliseconds>(wait_timeout_chrono);
         }
-        // const bool timedout = wasm_wait_set->wait(wait_timeout_chrono_ms);
-        const bool timedout{ false };
+        const bool timedout = wasm_wait_set->wait(wait_timeout_chrono_ms);
+        // const bool timedout{ false };
 
         // TODO: implement
         // Set elements that were not triggered/that are not ready to nullptr in the arrays
         if (subscriptions) {
-            // const auto & wait_set_subscriptions = wasm_wait_set->get_subscriptions();
-            // assert(subscriptions->subscriber_count == wait_set_subscriptions.size());
-            // for (size_t i = 0u; i < subscriptions->subscriber_count; i++) {
-            //     if (nullptr == wait_set_subscriptions[i]) {
-            //         subscriptions->subscribers[i] = nullptr;
-            //     }
-            // }
+            const auto & wait_set_subscriptions = wasm_wait_set->get_subscribers();
+            assert(subscriptions->subscriber_count == wait_set_subscriptions.size());
+            for (size_t i = 0u; i < subscriptions->subscriber_count; i++) {
+                if (nullptr == wait_set_subscriptions[i]) {
+                    subscriptions->subscribers[i] = nullptr;
+                }
+            }
         }
         
         if (guard_conditions) {
