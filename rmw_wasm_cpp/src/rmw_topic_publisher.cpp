@@ -91,13 +91,13 @@ extern "C"
             return nullptr;
         }
 
-        auto wasm_pub = new (std::nothrow) wasm_cpp::Publisher(topic_name);
+	wasm_cpp::Publisher* wasm_pub = nullptr;
         if(roslibjs_enable()){
             const char * msg_name = rmw_wasm_cpp::get_message_type_name(type_support);
             const char * msg_namespace = rmw_wasm_cpp::get_message_namespace(type_support);
-            auto wasm_pub = new (std::nothrow) wasm_cpp::Publisher(topic_name, msg_name, msg_namespace);
+            wasm_pub = new (std::nothrow) wasm_cpp::Publisher(topic_name, msg_name, msg_namespace);
         } else{
-            auto wasm_pub = new (std::nothrow) wasm_cpp::Publisher(topic_name);
+            wasm_pub = new (std::nothrow) wasm_cpp::Publisher(topic_name);
         }
 
         rmw_wasm_pub_t * rmw_wasm_pub = new (std::nothrow) rmw_wasm_pub_t();

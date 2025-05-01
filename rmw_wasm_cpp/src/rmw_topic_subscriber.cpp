@@ -73,14 +73,14 @@ extern "C"
             return nullptr);
 
 
-        auto wasm_sub = new (std::nothrow) wasm_cpp::Subscriber(topic_name);
+        wasm_cpp::Subscriber* wasm_sub = nullptr;
         if(roslibjs_enable()){
             const char * msg_name = rmw_wasm_cpp::get_message_type_name(type_support);
             const char * msg_namespace = rmw_wasm_cpp::get_message_namespace(type_support);
 
-            auto wasm_sub = new (std::nothrow) wasm_cpp::Subscriber(topic_name, msg_name, msg_namespace);
+            wasm_sub = new (std::nothrow) wasm_cpp::Subscriber(topic_name, msg_name, msg_namespace);
         } else{
-            auto wasm_sub = new (std::nothrow) wasm_cpp::Subscriber(topic_name);
+            wasm_sub = new (std::nothrow) wasm_cpp::Subscriber(topic_name);
         }
 
         rmw_wasm_sub_t * rmw_wasm_sub = new (std::nothrow) rmw_wasm_sub_t();
